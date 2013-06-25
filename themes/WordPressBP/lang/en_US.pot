@@ -1,0 +1,37 @@
+# WordPressBP theme English template
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: functions.php
+msgid "Main menu"
+msgstr ""
+
+msgid "Sidebar 1"
+msgstr ""
+
+#: index.php
+msgid "Category"
+msgstr ""
+
+msgid "Tags"
+msgstr ""
+
+msgid "Author"
+msgstr ""
+
+msgid "Sorry, no posts matched your criteria."
+msgstr ""
+
+#: sidebar.php
+msgid "No active widgets"
+msgstr ""
+
+#: 404.php
+msgid "Missing page!"
+msgstr ""
+
+msgid "We couldn’t find any content at this address."
+msgstr ""

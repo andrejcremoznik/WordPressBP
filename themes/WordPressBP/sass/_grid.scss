@@ -1,0 +1,55 @@
+/*
+ * Grid definitions
+ */
+
+// Settings
+$number_of_columns: 12;
+$container_width:   960;   // px (unitless)
+$gutter_width:      20;    // px (unitless)
+$is_fluid:          false; // true/false for percentage grid
+
+$column_width: $container_width / $number_of_columns - $gutter_width;
+
+.grid-container {
+	@if $is_fluid {
+		max-width: #{ $container_width - $gutter_width }px;
+	} @else {
+		width: #{ $container_width - $gutter_width }px;
+	}
+	margin: 0 auto;
+}
+
+.grid-row {
+	@if $is_fluid {
+		margin-left: pc(-$gutter_width, $container_width);
+	} @else {
+		margin-left: #{ -$gutter_width }px;
+	}
+}
+
+[class*="grid-span"] {
+	float: left;
+	@if $is_fluid {
+		margin-left: pc($gutter_width, $container_width);
+	} @else {
+		margin-left: #{ $gutter_width }px;
+	}
+}
+
+@for $i from 1 through $number_of_columns {
+	$s: $column_width * $i + $gutter_width * ($i - 1);
+	@if $is_fluid {
+		.grid-span#{ $i } { width: pc($s, $container_width) }
+	} @else {
+		.grid-span#{ $i } { width: #{ $s }px }
+	}
+}
+
+@for $i from 1 through $number_of_columns - 1 {
+	$o: $column_width * $i + $gutter_width * ($i + 1);
+	@if $is_fluid {
+		.grid-offset#{ $i } { margin-left: pc($o, $container_width) }
+	} @else {
+		.grid-offset#{ $i } { margin-left: #{ $o }px }
+	}
+}

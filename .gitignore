@@ -1,0 +1,6 @@
+# SASS cache and CSS
+.sass*
+style.css
+
+# Language binaries
+*.mo
