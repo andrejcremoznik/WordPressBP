@@ -1,15 +1,27 @@
 <?php
 
-/*
+/**
  * Set up theme's defaults, register various features...
+ *
+ * - executed in after_setup_theme hook
  */
 function theme_setup() {
 
-	// Load theme text domain
+	/**
+	 * Load theme text domain
+	 *
+	 * If you're not familiar with WP localization, read this first:
+	 * http://codex.wordpress.org/I18n_for_WordPress_Developers
+	 */
 	load_theme_textdomain('WordPressBP', get_template_directory() . '/lang');
 
-	// Custom editor style
-	//add_editor_style('editor-style.css');
+	/**
+	 * Custom editor style
+	 *
+	 * To enable custom styles for the visual editor add editor-style.css
+	 * to the template directory and uncomment the line below
+	 */
+	//add_editor_style();
 
 	// Register navigation menus
 	register_nav_menus(array(
@@ -17,28 +29,34 @@ function theme_setup() {
 	));
 
 	// Enable support for certain features
-	add_theme_support('automatic-feed-links');
+	add_theme_support('post-thumbnails');
 	//add_theme_support('post-formats');
 	//add_theme_support('custom-background');
 	//add_theme_support('custom-header');
+	add_theme_support('automatic-feed-links');
 
-	// TODO: better comments
-	add_theme_support('post-thumbnails');
-	add_image_size('size_name', 300, 200, true);
-	// To list the sizes in WP media manager dropdown, add them to
-	// theme_image_sizes function below
-	add_filter('image_size_names_choose', 'theme_image_sizes' );
+	/**
+	 * Custom thumbnail sizes
+	 *
+	 * To list any of the defined sizes in WP media manager dropdown
+	 * uncomment the 'image_size_names_choose' filter and add them to the
+	 * 'theme_image_sizes' function defined below
+	 */
+	//add_image_size('size_name', 300, 200, true);
+	//add_filter('image_size_names_choose', 'theme_image_sizes' );
 
 }
 
 function theme_image_sizes($sizes) {
-	$sizes['size_name'] = __('New size', 'WordPressBP');
+	$sizes['size_name'] = __('New size label', 'WordPressBP');
 	return $sizes;
 }
 
 add_action('after_setup_theme', 'theme_setup');
 
-/*
+
+
+/**
  * Set up theme's sidebars
  */
 function theme_widgets_init() {
@@ -51,22 +69,21 @@ add_action('widgets_init', 'theme_widgets_init');
 
 
 
-
-/*
- * Get file timestamp for automatic cache busting
+/**
+ * Get file timestamp for automatic cache busting on update
  * - http://calendar.perfplanet.com/2012/using-nginx-php-fpmapc-and-varnish-to-make-wordpress-websites-fly/
  */
-function autoVer($url){
+function autoVer($url) {
 	$name = explode('.', $url);
 	$lastext = array_pop($name);
 	array_push(
 		$name,
 		filemtime($_SERVER['DOCUMENT_ROOT'] . parse_url($url, PHP_URL_PATH)),
 		$lastext);
-	echo implode('.', $name) ;
+	echo implode('.', $name);
 }
 
-/*
+/**
  * Register styles and scripts for frontend
  *
  * - Styles (wp_register_style, wp_enqueue_style)
@@ -89,8 +106,11 @@ function theme_scripts_styles() {
 add_action('wp_enqueue_scripts', 'theme_scripts_styles');
 
 
-/*
- ********* Clean up wp_head(): http://codex.wordpress.org/Plugin_API/Action_Reference/wp_head *********
+
+/**
+ * Clean up wp_head()
+ *
+ * http://codex.wordpress.org/Plugin_API/Action_Reference/wp_head
  */
 remove_action('wp_head', 'rsd_link');
 remove_action('wp_head', 'wp_generator');
@@ -103,15 +123,17 @@ remove_action('wp_head', 'parent_post_rel_link', 10, 0);
 remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
 
 
-/*
- ********* Modify main query*********
+/* TODO: move to plugin
+ * Modify main query
+ *
+ * Default query modifications executed in the pre_get_posts hook
  */
 /*
 function theme_queries($query) {
 	if(!is_admin() && $query->is_main_query()) {
 
 		if(is_archive() || is_single() || is_home()) {
-			// Include a custom post type in query
+			// Example: Include a custom post type in query
 			$query->set('post_type', array('post', 'custom_post_type'));
 		}
 
