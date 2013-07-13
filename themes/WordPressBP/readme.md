@@ -38,8 +38,7 @@ While building your theme write all strings in US English
 and wrap them properly for translations with gettext:
 [I18n for WordPress Developers](http://codex.wordpress.org/I18n_for_WordPress_Developers)
 
-Before prepping your theme for translation you might want to change
-the textdomain string used. Do a search and replace for WordPressBP.
+The textdomain is set in the functions.php file.
 
 Compile all translatable strings in the en_US.pot file.
 

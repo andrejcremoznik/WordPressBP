@@ -5,7 +5,7 @@
  *
  * - executed in after_setup_theme hook
  */
-function theme_setup() {
+function WordPressBP_setup() {
 
 	/**
 	 * Load theme text domain
@@ -52,20 +52,20 @@ function theme_image_sizes($sizes) {
 	return $sizes;
 }
 
-add_action('after_setup_theme', 'theme_setup');
+add_action('after_setup_theme', 'WordPressBP_setup');
 
 
 
 /**
  * Set up theme's sidebars
  */
-function theme_widgets_init() {
+function WordPressBP_widgets_init() {
 	register_sidebar(array(
 		'name' => __('Sidebar 1', 'WordPressBP'),
 		'id'   => 'sidebar1'
 	));
 }
-add_action('widgets_init', 'theme_widgets_init');
+add_action('widgets_init', 'WordPressBP_widgets_init');
 
 
 
@@ -88,8 +88,12 @@ function autoVer($url) {
  *
  * - Styles (wp_register_style, wp_enqueue_style)
  * - Scripts (wp_register_script, wp_enqueue_script)
+ *
+ * WARNING: autoVer requires correct URL rewrites to function properly. Read the link above on
+ * how to configure Nginx. If you don't want to use this way of cache busting, remove the function
+ * from style and scripts registration calls below.
  */
-function theme_scripts_styles() {
+function WordPressBP_scripts_styles() {
 	// Register styles
 	wp_register_style('default', get_template_directory_uri() . autoVer('/style.css'), false, null, 'all');
 
@@ -103,7 +107,7 @@ function theme_scripts_styles() {
 	wp_enqueue_script('jquery');
 	wp_enqueue_script('global');
 }
-add_action('wp_enqueue_scripts', 'theme_scripts_styles');
+add_action('wp_enqueue_scripts', 'WordPressBP_scripts_styles');
 
 
 
@@ -114,37 +118,19 @@ add_action('wp_enqueue_scripts', 'theme_scripts_styles');
  */
 remove_action('wp_head', 'rsd_link');
 remove_action('wp_head', 'wp_generator');
-//remove_action('wp_head', 'feed_links', 2);
+//remove_action('wp_head', 'feed_links',     2);
+remove_action('wp_head', 'feed_links_extra', 3);
 remove_action('wp_head', 'index_rel_link');
 remove_action('wp_head', 'wlwmanifest_link');
-remove_action('wp_head', 'feed_links_extra', 3);
-remove_action('wp_head', 'start_post_rel_link', 10, 0 );
+remove_action('wp_head', 'start_post_rel_link',  10, 0);
 remove_action('wp_head', 'parent_post_rel_link', 10, 0);
+remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
 remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
 
 
-/* TODO: move to plugin
- * Modify main query
- *
- * Default query modifications executed in the pre_get_posts hook
- */
-/*
-function theme_queries($query) {
-	if(!is_admin() && $query->is_main_query()) {
 
-		if(is_archive() || is_single() || is_home()) {
-			// Example: Include a custom post type in query
-			$query->set('post_type', array('post', 'custom_post_type'));
-		}
-
-	}
-}
-add_action('pre_get_posts', 'theme_queries');
-*/
-
-
-/*
- ********* Filters *********
+/**
+ * Various filters
  */
 /*
 function modify_excerpt_more($more) {
