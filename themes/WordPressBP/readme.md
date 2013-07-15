@@ -8,12 +8,14 @@ CSS from SASS sources, do the following:
 Install the necessary tools
 ---------------------------
 
-1. ruby (from packet manager or preferably [RVM](http://rvm.io))
-2. `gem install compass --no-ri --no-rdoc`
+Ruby (from packet manager or preferably [RVM](http://rvm.io)):
+* `\curl -L https://get.rvm.io | bash -s stable --ruby`
+
+Compass:
+* `gem install compass --no-ri --no-rdoc`
 
 To keep your gems up-to-date:
-
-2. `gem update --no-ri --no-rdoc`
+* `gem update --no-ri --no-rdoc`
 
 
 Compile static CSS

@@ -17,7 +17,7 @@ fi
 
 echo "Creating a working copy of WordPressBP in $project_path"
 
-git archive --format=tar devel | tar -x -C $project_path
+git archive --format=tar master | tar -x -C $project_path
 
 echo "Renaming folders and files..."
 
@@ -34,6 +34,6 @@ done
 
 echo "Namespacing file contents..."
 
-find $project_path -type f -print0 | xargs -0 sed -i "s/WordPressBP/${namespace}/g"
+find ${project_path}/* -type f -print0 | xargs -0 sed -i "s/WordPressBP/${namespace}/g"
 
 echo "All done. Happy hacking!"
