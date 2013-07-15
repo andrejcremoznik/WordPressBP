@@ -1,4 +1,0 @@
-WordPressBP
-===========
-
-The WordPress boilerplate

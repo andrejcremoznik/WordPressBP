@@ -1,12 +1,10 @@
-<?php get_header(); ?>
+<?php get_header() ?>
 
-<div class="main p404" role="main">
+<main class="main p404" role="main">
 	<article class="hentry">
-		<h1><?php _e('Missing page!', 'WordPressBP'); ?></h1>
-		<p><?php _e('We couldn’t find any content at this address.', 'WordPressBP'); ?></p>
+		<h1><?php _e('Missing page!', 'WordPressBP') ?></h1>
+		<p><?php _e('We couldn’t find any content at this address.', 'WordPressBP') ?></p>
 	</article>
-</div>
+</main>
 
-<?php get_sidebar(); ?>
-
-<?php get_footer(); ?>
+<?php get_footer() ?>

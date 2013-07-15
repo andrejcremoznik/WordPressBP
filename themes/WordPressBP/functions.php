@@ -1,116 +1,137 @@
 <?php
 
-/*
- ********* Load Text Domain http://codex.wordpress.org/I18n_for_WordPress_Developers *********
+/**
+ * Set up theme's defaults, register various features...
+ *
+ * - executed in after_setup_theme hook
  */
-function theme_textdomain() {
+function WordPressBP_setup() {
+
+	/**
+	 * Load theme text domain
+	 *
+	 * If you're not familiar with WP localization, read this first:
+	 * http://codex.wordpress.org/I18n_for_WordPress_Developers
+	 */
 	load_theme_textdomain('WordPressBP', get_template_directory() . '/lang');
-}
-add_action('after_setup_theme', 'theme_textdomain');
 
+	/**
+	 * Custom editor style
+	 *
+	 * To enable custom styles for the visual editor add editor-style.css
+	 * to the template directory and uncomment the line below
+	 */
+	//add_editor_style();
 
-/*
- ********* Menus (register_nav_menus) *********
- */
-function create_menus() {
+	// Register navigation menus
 	register_nav_menus(array(
 		'primary' => __('Main menu', 'WordPressBP')
 	));
+
+	// Enable support for certain features
+	add_theme_support('post-thumbnails');
+	//add_theme_support('post-formats');
+	//add_theme_support('custom-background');
+	//add_theme_support('custom-header');
+	add_theme_support('automatic-feed-links');
+
+	/**
+	 * Custom thumbnail sizes
+	 *
+	 * To list any of the defined sizes in WP media manager dropdown
+	 * uncomment the 'image_size_names_choose' filter and add them to the
+	 * 'theme_image_sizes' function defined below
+	 */
+	//add_image_size('size_name', 300, 200, true);
+	//add_filter('image_size_names_choose', 'WordPressBP_image_sizes' );
+
 }
-add_action('init', 'create_menus');
+
+function WordPressBP_image_sizes($sizes) {
+	$sizes['size_name'] = __('New size label', 'WordPressBP');
+	return $sizes;
+}
+
+add_action('after_setup_theme', 'WordPressBP_setup');
 
 
-/*
- ********* Sidebars (register_sidebar) *********
+
+/**
+ * Set up theme's sidebars
  */
-function create_sidebars() {
+function WordPressBP_widgets_init() {
 	register_sidebar(array(
 		'name' => __('Sidebar 1', 'WordPressBP'),
 		'id'   => 'sidebar1'
 	));
 }
-add_action('init', 'create_sidebars');
+add_action('widgets_init', 'WordPressBP_widgets_init');
 
 
-/*
- ********* Styles (wp_register_style, wp_enqueue_style) *********
+
+/**
+ * Get file timestamp for automatic cache busting on update
+ * - http://calendar.perfplanet.com/2012/using-nginx-php-fpmapc-and-varnish-to-make-wordpress-websites-fly/
  */
-function theme_styles() {
+function autoVer($url, $echo = false) {
+	$name = explode('.', $url);
+	$lastext = array_pop($name);
+	array_push(
+		$name,
+		filemtime($_SERVER['DOCUMENT_ROOT'] . parse_url($url, PHP_URL_PATH)),
+		$lastext);
+	$out = implode('.', $name);
+	if($echo) echo $out; else return $out;
+}
+
+/**
+ * Register styles and scripts for frontend
+ *
+ * - Styles (wp_register_style, wp_enqueue_style)
+ * - Scripts (wp_register_script, wp_enqueue_script)
+ *
+ * WARNING: autoVer requires correct URL rewrites to function properly. Read the link above on
+ * how to configure Nginx. If you don't want to use this way of cache busting, remove the function
+ * from style and scripts registration calls below.
+ */
+function WordPressBP_scripts_styles() {
 	// Register styles
-	wp_register_style('default', get_template_directory_uri().'/style.css', false, null, 'all');
+	wp_register_style('default', autoVer(get_template_directory_uri() . '/style.css'), false, null, 'all');
+
+	// Register scripts
+	wp_register_script('global', autoVer(get_template_directory_uri() . '/js/global.js'), array('jquery'), null, true);
 
 	// Enqueue styles
 	wp_enqueue_style('default');
-}
-add_action('wp_enqueue_scripts', 'theme_styles');
-
-// Custom editor style
-//add_editor_style('editor_style.css');
-
-
-/*
- ********* Scripts (wp_register_script, wp_enqueue_script) *********
- */
-function theme_scripts() {
-	// Register scripts
-	wp_register_script('global', get_template_directory_uri().'/js/global.js', array('jquery'), '1.0', true);
 
 	// Enqueue scripts
 	wp_enqueue_script('jquery');
 	wp_enqueue_script('global');
 }
-add_action('wp_enqueue_scripts', 'theme_scripts');
+add_action('wp_enqueue_scripts', 'WordPressBP_scripts_styles');
 
 
-/*
- ********* Theme support (add_theme_support) *********
- */
-add_theme_support('automatic-feed-links');
-//add_theme_support('post-formats');
-add_theme_support('post-thumbnails');
-//add_theme_support('custom-background');
-//add_theme_support('custom-header');
 
-/*
- ********* Image sizes (add_image_size) *********
- */
-//add_image_size('banner', 960, 250, true);
-
-
-/*
- ********* Clean up wp_head(): http://codex.wordpress.org/Plugin_API/Action_Reference/wp_head *********
+/**
+ * Clean up wp_head()
+ *
+ * http://codex.wordpress.org/Plugin_API/Action_Reference/wp_head
  */
 remove_action('wp_head', 'rsd_link');
 remove_action('wp_head', 'wp_generator');
-//remove_action('wp_head', 'feed_links', 2);
+//remove_action('wp_head', 'feed_links',       2);
+remove_action('wp_head', 'feed_links_extra', 3);
 remove_action('wp_head', 'index_rel_link');
 remove_action('wp_head', 'wlwmanifest_link');
-remove_action('wp_head', 'feed_links_extra', 3);
-remove_action('wp_head', 'start_post_rel_link', 10, 0 );
+remove_action('wp_head', 'start_post_rel_link',  10, 0);
 remove_action('wp_head', 'parent_post_rel_link', 10, 0);
+remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
 remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
 
 
-/*
- ********* Modify main query*********
- */
-/*
-function theme_queries($query) {
-	if(!is_admin() && $query->is_main_query()) {
 
-		if(is_archive() || is_single() || is_home()) {
-			// Include a custom post type in query
-			$query->set('post_type', array('post', 'custom_post_type'));
-		}
-
-	}
-}
-add_action('pre_get_posts', 'theme_queries');
-*/
-
-
-/*
- ********* Filters *********
+/**
+ * Various filters
  */
 /*
 function modify_excerpt_more($more) {

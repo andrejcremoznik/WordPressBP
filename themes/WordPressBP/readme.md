@@ -8,12 +8,14 @@ CSS from SASS sources, do the following:
 Install the necessary tools
 ---------------------------
 
-1. ruby (from packet manager or preferably [RVM](http://rvm.io))
-2. `gem install compass --no-ri --no-rdoc`
+Ruby (from packet manager or preferably [RVM](http://rvm.io)):
+* `\curl -L https://get.rvm.io | bash -s stable --ruby`
+
+Compass:
+* `gem install compass --no-ri --no-rdoc`
 
 To keep your gems up-to-date:
-
-2. `gem update --no-ri --no-rdoc`
+* `gem update --no-ri --no-rdoc`
 
 
 Compile static CSS
@@ -38,8 +40,7 @@ While building your theme write all strings in US English
 and wrap them properly for translations with gettext:
 [I18n for WordPress Developers](http://codex.wordpress.org/I18n_for_WordPress_Developers)
 
-Before prepping your theme for translation you might want to change
-the textdomain string used. Do a search and replace for WordPressBP.
+The textdomain is set in the functions.php file.
 
 Compile all translatable strings in the en_US.pot file.
 
