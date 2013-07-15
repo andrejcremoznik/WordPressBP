@@ -17,7 +17,7 @@ fi
 
 echo "Creating a working copy of WordPressBP in $project_path"
 
-git archive --format=tar master | tar -x -C $project_path
+git archive --format=tar master | tar -xf -C $project_path
 
 echo "Renaming folders and files..."
 
@@ -31,6 +31,8 @@ for f in `find $project_path -depth -name '*WordPressBP*'`; do
 	# do the move
 	mv ${tmp_path}/${tmp_file} ${tmp_path}/${tmp_file_new}
 done
+
+rm ${project_path}/readme.md
 
 echo "Namespacing file contents..."
 

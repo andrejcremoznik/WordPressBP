@@ -222,24 +222,14 @@ Set up a post-receive hook to copy the code to the `code` directory and run Comp
 #!/bin/sh
 BASE_DIR='/srv/http/project/code'
 THEME_DIR='/srv/http/myproject/code/themes/mytheme1'
-GIT_WORK_TREE=$BASE_DIR git checkout -f
 
-git archive --format=tar master | tar -x -C $BASE_DIR
-
+git archive --format=tar master | tar -xf -C $BASE_DIR
 cd $THEME_DIR
 compass compile -e production --force
 #--- end post receive hook
 
+[/srv/http/project/repo/myproject]$ chmod +x hooks/post-receive
 [/srv/http/project/repo/myproject]$ mkdir /srv/http/project/code
-[/srv/http/project/repo/myproject]$ git archive --format=tar master | tar -x -C /srv/http/project/code
-```
-
-Create symlinks from the contents of `code` to appropriate locations inside `webdir`
-
-```
-[/srv/http/project]$ ln -s code/themes/mytheme1 webdir/wp-content/themes/mytheme1
-[/srv/http/project]$ ln -s code/plugins/myplugin1 webdir/wp-content/plugins/myplugin1
-[/srv/http/project]$ ln -s code/plugins/myplugin2 webdir/wp-content/plugins/myplugin2
 ```
 
 *On development environment:*
@@ -254,6 +244,16 @@ To deploy am update simply push to this new remote
 
 ```
 [/srv/http/project/repo/myproject]$ git push production master
+```
+
+*On production server:*
+
+Create symlinks from the contents of `code` to appropriate locations inside `webdir`.
+
+```
+[/srv/http/project]$ ln -s code/themes/mytheme1 webdir/wp-content/themes/mytheme1
+[/srv/http/project]$ ln -s code/plugins/myplugin1 webdir/wp-content/plugins/myplugin1
+[/srv/http/project]$ ln -s code/plugins/myplugin2 webdir/wp-content/plugins/myplugin2
 ```
 
 *IMPORTANT: The post-receive hook runs Compass to compile CSS. Make sure Compass is installed on the remote.*

@@ -1,6 +1,4 @@
-# SASS cache and CSS
+# SASS cache and compiled CSS
 .sass*
 style.css
-
-# Language binaries
-*.mo
+editor-style.css

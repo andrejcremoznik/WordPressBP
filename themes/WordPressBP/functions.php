@@ -43,11 +43,11 @@ function WordPressBP_setup() {
 	 * 'theme_image_sizes' function defined below
 	 */
 	//add_image_size('size_name', 300, 200, true);
-	//add_filter('image_size_names_choose', 'theme_image_sizes' );
+	//add_filter('image_size_names_choose', 'WordPressBP_image_sizes' );
 
 }
 
-function theme_image_sizes($sizes) {
+function WordPressBP_image_sizes($sizes) {
 	$sizes['size_name'] = __('New size label', 'WordPressBP');
 	return $sizes;
 }
@@ -73,14 +73,15 @@ add_action('widgets_init', 'WordPressBP_widgets_init');
  * Get file timestamp for automatic cache busting on update
  * - http://calendar.perfplanet.com/2012/using-nginx-php-fpmapc-and-varnish-to-make-wordpress-websites-fly/
  */
-function autoVer($url) {
+function autoVer($url, $echo = false) {
 	$name = explode('.', $url);
 	$lastext = array_pop($name);
 	array_push(
 		$name,
 		filemtime($_SERVER['DOCUMENT_ROOT'] . parse_url($url, PHP_URL_PATH)),
 		$lastext);
-	echo implode('.', $name);
+	$out = implode('.', $name);
+	if($echo) echo $out; else return $out;
 }
 
 /**
@@ -95,10 +96,10 @@ function autoVer($url) {
  */
 function WordPressBP_scripts_styles() {
 	// Register styles
-	wp_register_style('default', get_template_directory_uri() . autoVer('/style.css'), false, null, 'all');
+	wp_register_style('default', autoVer(get_template_directory_uri() . '/style.css'), false, null, 'all');
 
 	// Register scripts
-	wp_register_script('global', get_template_directory_uri() . autoVer('/js/global.js'), array('jquery'), null, true);
+	wp_register_script('global', autoVer(get_template_directory_uri() . '/js/global.js'), array('jquery'), null, true);
 
 	// Enqueue styles
 	wp_enqueue_style('default');
@@ -118,7 +119,7 @@ add_action('wp_enqueue_scripts', 'WordPressBP_scripts_styles');
  */
 remove_action('wp_head', 'rsd_link');
 remove_action('wp_head', 'wp_generator');
-//remove_action('wp_head', 'feed_links',     2);
+//remove_action('wp_head', 'feed_links',       2);
 remove_action('wp_head', 'feed_links_extra', 3);
 remove_action('wp_head', 'index_rel_link');
 remove_action('wp_head', 'wlwmanifest_link');

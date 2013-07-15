@@ -17,7 +17,7 @@ class WordPressBP_extensions {
 		/**
 		 * Init main query modification
 		 */
-		//add_action('pre_get_posts', 'modifyQuery');
+		add_action('pre_get_posts', array($this, 'modifyQuery'));
 	}
 
 	public static function get_instance() {
@@ -56,7 +56,7 @@ class WordPressBP_extensions {
 	 */
 	public function onPluginsLoaded() {
 
-		load_plugin_textdomain('WordPressBP-extensions', false, dirname(plugin_basename(__FILE__)) . '/lang/');
+		load_plugin_textdomain('WordPressBP-extensions', false, basename(dirname(__FILE__)) . '/lang/');
 
 	}
 
@@ -99,7 +99,7 @@ class WordPressBP_extensions {
 
 	// Modify main query
 	/*
-	public function modifyQuery() {
+	public function modifyQuery($query) {
 		if(!is_admin() && $query->is_main_query()) {
 
 			if(is_archive() || is_single() || is_home()) {

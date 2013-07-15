@@ -9,6 +9,9 @@ msgstr ""
 msgid "Main menu"
 msgstr ""
 
+msgid "New size label"
+msgstr ""
+
 msgid "Sidebar 1"
 msgstr ""
 
