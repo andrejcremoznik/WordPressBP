@@ -1,5 +1,4 @@
-WordPress Boilerplate
-=====================
+# WordPress Boilerplate
 
 The WordPress Boilerplate is a starting base for development of any [WordPress](http://wordpress.org)
 based web project. It provides all the files and most common code patterns — the bare essentials needed
@@ -16,8 +15,7 @@ pre-processor.
 3. a [WordPress Widget Boilerplate](https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate)
 
 
-Get stared with WordPressBP
----------------------------
+## Get stared with WordPressBP
 
 Getting started includes the following steps:
 
@@ -147,8 +145,7 @@ a WordPress project.
 
 
 
-Tips
-----
+## Tips
 
 ### WP installation on a VPS/devbox
 
@@ -259,8 +256,7 @@ Create symlinks from the contents of `code` to appropriate locations inside `web
 *IMPORTANT: The post-receive hook runs Compass to compile CSS. Make sure Compass is installed on the remote.*
 
 
-Attribution
-===========
+## Attribution
 
 WordPressBP comes with [Normalize.css by Nicolas Gallagher](https://github.com/necolas/normalize.css)
 (license included) and [HTML5 Shiv](https://github.com/aFarkas/html5shiv).
@@ -269,8 +265,8 @@ All this wouldn't be possible without the excellent [WordPress CMS](http://wordp
 and Libre Open Source Software.
 
 
-License
-=======
+## License
 
 WordPressBP is [Public Domain](http://en.wikipedia.org/wiki/Public_domain) except for the third party
 code distributed with it (currently: normalize.css) which keeps the original license.
+

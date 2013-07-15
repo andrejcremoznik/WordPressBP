@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [ $# -ne 2 ]; then
 	echo -e "Usage:\n $0 <namespace> <project_path>\n"
