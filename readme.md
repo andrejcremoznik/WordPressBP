@@ -144,7 +144,6 @@ a WordPress project.
 * [WordPress Widget Boilerplate](https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate)
 
 
-
 ## Tips
 
 ### WP installation on a VPS/devbox
@@ -220,7 +219,7 @@ Set up a post-receive hook to copy the code to the `code` directory and run Comp
 BASE_DIR='/srv/http/project/code'
 THEME_DIR='/srv/http/myproject/code/themes/mytheme1'
 
-git archive --format=tar master | tar -xf -C $BASE_DIR
+git archive --format=tar master | tar -x -C $BASE_DIR
 cd $THEME_DIR
 compass compile -e production --force
 #--- end post receive hook
@@ -269,4 +268,3 @@ and Libre Open Source Software.
 
 WordPressBP is [Public Domain](http://en.wikipedia.org/wiki/Public_domain) except for the third party
 code distributed with it (currently: normalize.css) which keeps the original license.
-
