@@ -11,7 +11,7 @@ if(!defined('WPINC')) {
 }
 
 function enable_maintenance_i18n() {
-	load_plugin_textdomain('enable-maintenance', false, dirname(plugin_basename(__FILE__)) . '/lang/');
+	load_plugin_textdomain('enable-maintenance', false, basename(dirname(__FILE__)) . '/lang/');
 }
 add_action('plugins_loaded', 'enable_maintenance_i18n');
 
