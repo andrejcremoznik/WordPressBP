@@ -3,12 +3,12 @@
 The WordPress Boilerplate is a starting base for development of any [WordPress](http://wordpress.org)
 based web project. It provides all the files and most common code patterns — the bare essentials needed
 to get down and dirty quickly without wasting time setting up directory and file structure, importing
-CSS resets, setting up the functions.php file etc.
+CSS resets, setting up the `functions.php` file etc.
 
-WordPressBP is *meant for developers* developing a WordPress site *from stratch* using *Sass/Compass* CSS
-pre-processor.
+WordPressBP is **meant for developers** developing a WordPress site **from stratch** using
+**Sass/Compass** CSS pre-processor.
 
-*It is not:*
+**It is not:**
 
 1. an end-user template
 2. a [WordPress Plugin Boilerplate](https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate)
@@ -44,8 +44,8 @@ Ideally you will have a linux based development environment set up in a virtual 
 
 ### Clone WordPressBP and apply it to your project by runing the provided setup script
 
-*WARNING: setup.sh is a bash script. Before runing 3rd party bash scripts ALWAYS check the code to see
-what it does. I won't be responsible if it scares your cat!* That being said, the script from WordPressBP
+**WARNING: setup.sh is a bash script. Before runing 3rd party bash scripts ALWAYS check the code to see
+what it does. I won't be responsible if it scares your cat!** That being said, the script from WordPressBP
 does the following:
 
 - Exports files from `WordPressBP` repo to your "project path"
@@ -72,8 +72,8 @@ A typical command would be:
 ./setup.sh myproject /var/www/myproject/repo/
 ```
 
-This would copy the folders `themes` and `plugins` to `/var/www/myproject/repo/` and
-do the operations listed above on them and their contents.
+This would copy the folders `themes` and `plugins` to `/var/www/myproject/repo/` and do the operations
+listed above on them and their contents.
 
 Please see Tips below for a recommended WP installation structure.
 
@@ -137,8 +137,8 @@ you will see the basic structure set up by WordPress standards and commented sam
 post types, taxonomies and modifying the main query. That's probably 90% of everything you'll ever need in
 a WordPress project.
 
-*If you're going to develop custom plugins or widgets, look at the boilerplate projects by
-[Tom McFarlin](https://github.com/tommcfarlin).*
+**If you're going to develop custom plugins or widgets, look at the boilerplate projects by
+[Tom McFarlin](https://github.com/tommcfarlin).**
 
 * [WordPress Plugin Boilerplate](https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate)
 * [WordPress Widget Boilerplate](https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate)
@@ -183,7 +183,7 @@ are symlinked from there into the WordPress `wp-content/plugins` and `wp-content
 
 `repo` is a directory holding a bare repository for our code. A Git post-receive hook is set up to
 create a static copy in `code` after every push to this repository. The repository set up in `repo` is
-defined as a remote we can push to. For an explanation read *Using Git for deployment* below.
+defined as a remote we can push to. For an explanation read **Using Git for deployment** below.
 
 `webdir` is the web root and holds all the WordPress core files.
 
@@ -199,7 +199,7 @@ Assuming your master branch is always production ready (by using a development m
 [GitFlow](http://nvie.com/posts/a-successful-git-branching-model/)) you can use the
 following approach to deploy your code:
 
-*On production server:*
+**On production server:**
 
 Create a bare git repository
 
@@ -228,7 +228,7 @@ compass compile -e production --force
 [/srv/http/project/repo/myproject]$ mkdir /srv/http/project/code
 ```
 
-*On development environment:*
+**On development environment:**
 
 Add a new Git remote
 
@@ -236,13 +236,13 @@ Add a new Git remote
 [/srv/http/project/repo/myproject]$ git remote add production user@remotehost:/srv/http/project/repo/myproject
 ```
 
-To deploy am update simply push to this new remote
+To deploy an update simply push to this new remote
 
 ```
 [/srv/http/project/repo/myproject]$ git push production master
 ```
 
-*On production server:*
+**On production server:**
 
 Create symlinks from the contents of `code` to appropriate locations inside `webdir`.
 
@@ -252,7 +252,7 @@ Create symlinks from the contents of `code` to appropriate locations inside `web
 [/srv/http/project]$ ln -s code/plugins/myplugin2 webdir/wp-content/plugins/myplugin2
 ```
 
-*IMPORTANT: The post-receive hook runs Compass to compile CSS. Make sure Compass is installed on the remote.*
+**IMPORTANT: The post-receive hook runs Compass to compile CSS. Make sure Compass is installed on the remote.**
 
 
 ## Attribution
