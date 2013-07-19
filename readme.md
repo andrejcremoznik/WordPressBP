@@ -255,6 +255,24 @@ Create symlinks from the contents of `code` to appropriate locations inside `web
 **IMPORTANT: The post-receive hook runs Compass to compile CSS. Make sure Compass is installed on the remote.**
 
 
+### Recommended plugins for developers
+
+**PLUGIN RULE #1: Do not use plugins if doing it by yourself is reasonable!**
+
+You don't need plugins for sliders, lightboxes, social widgets etc. and you certainly don't want plugins
+not being actively developed.
+
+These plugins here, however, bring so much added value, that not using them (provided you need them of
+course) would be just dumb.
+
+* [Advanced Custom Fields](http://wordpress.org/plugins/advanced-custom-fields/) - custom fields for posts
+* [Polylang](http://wordpress.org/plugins/polylang/) - everything you need for multilingual sites
+* [WordPress SEO](http://wordpress.org/plugins/wordpress-seo/) - SEO metadata for posts, sitemap…
+* [WP-PageNavi](http://wordpress.org/plugins/wp-pagenavi/) - numbered pagination for archives
+* [Redirect Editor](http://wordpress.org/plugins/redirect-editor/) - need to 301 redirect a URL?
+* [Ninja Forms](http://wordpress.org/plugins/ninja-forms/) - works fairly well for forms
+
+
 ## Attribution
 
 WordPressBP comes with [Normalize.css by Nicolas Gallagher](https://github.com/necolas/normalize.css)
@@ -262,6 +280,11 @@ WordPressBP comes with [Normalize.css by Nicolas Gallagher](https://github.com/n
 
 All this wouldn't be possible without the excellent [WordPress CMS](http://wordpress.org) and the Free
 and Libre Open Source Software.
+
+
+### Contributors
+
+* [Oto Brglez](https://github.com/otobrglez)
 
 
 ## License
