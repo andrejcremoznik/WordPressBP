@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [ $# -ne 2 ]; then
 	echo -e "Usage:\n $0 <namespace> <project_path>\n"
@@ -17,7 +17,7 @@ fi
 
 echo "Creating a working copy of WordPressBP in $project_path"
 
-git archive --format=tar master | tar -xf -C $project_path
+git archive --format=tar master | tar -x -C $project_path
 
 echo "Renaming folders and files..."
 

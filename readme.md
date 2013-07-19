@@ -1,23 +1,21 @@
-WordPress Boilerplate
-=====================
+# WordPress Boilerplate
 
 The WordPress Boilerplate is a starting base for development of any [WordPress](http://wordpress.org)
 based web project. It provides all the files and most common code patterns — the bare essentials needed
 to get down and dirty quickly without wasting time setting up directory and file structure, importing
-CSS resets, setting up the functions.php file etc.
+CSS resets, setting up the `functions.php` file etc.
 
-WordPressBP is *meant for developers* developing a WordPress site *from stratch* using *Sass/Compass* CSS
-pre-processor.
+WordPressBP is **meant for developers** developing a WordPress site **from stratch** using
+**Sass/Compass** CSS pre-processor.
 
-*It is not:*
+**It is not:**
 
 1. an end-user template
 2. a [WordPress Plugin Boilerplate](https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate)
 3. a [WordPress Widget Boilerplate](https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate)
 
 
-Get stared with WordPressBP
----------------------------
+## Get stared with WordPressBP
 
 Getting started includes the following steps:
 
@@ -46,8 +44,8 @@ Ideally you will have a linux based development environment set up in a virtual 
 
 ### Clone WordPressBP and apply it to your project by runing the provided setup script
 
-*WARNING: setup.sh is a bash script. Before runing 3rd party bash scripts ALWAYS check the code to see
-what it does. I won't be responsible if it scares your cat!* That being said, the script from WordPressBP
+**WARNING: setup.sh is a bash script. Before runing 3rd party bash scripts ALWAYS check the code to see
+what it does. I won't be responsible if it scares your cat!** That being said, the script from WordPressBP
 does the following:
 
 - Exports files from `WordPressBP` repo to your "project path"
@@ -74,8 +72,8 @@ A typical command would be:
 ./setup.sh myproject /var/www/myproject/repo/
 ```
 
-This would copy the folders `themes` and `plugins` to `/var/www/myproject/repo/` and
-do the operations listed above on them and their contents.
+This would copy the folders `themes` and `plugins` to `/var/www/myproject/repo/` and do the operations
+listed above on them and their contents.
 
 Please see Tips below for a recommended WP installation structure.
 
@@ -139,16 +137,14 @@ you will see the basic structure set up by WordPress standards and commented sam
 post types, taxonomies and modifying the main query. That's probably 90% of everything you'll ever need in
 a WordPress project.
 
-*If you're going to develop custom plugins or widgets, look at the boilerplate projects by
-[Tom McFarlin](https://github.com/tommcfarlin).*
+**If you're going to develop custom plugins or widgets, look at the boilerplate projects by
+[Tom McFarlin](https://github.com/tommcfarlin).**
 
 * [WordPress Plugin Boilerplate](https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate)
 * [WordPress Widget Boilerplate](https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate)
 
 
-
-Tips
-----
+## Tips
 
 ### WP installation on a VPS/devbox
 
@@ -187,7 +183,7 @@ are symlinked from there into the WordPress `wp-content/plugins` and `wp-content
 
 `repo` is a directory holding a bare repository for our code. A Git post-receive hook is set up to
 create a static copy in `code` after every push to this repository. The repository set up in `repo` is
-defined as a remote we can push to. For an explanation read *Using Git for deployment* below.
+defined as a remote we can push to. For an explanation read **Using Git for deployment** below.
 
 `webdir` is the web root and holds all the WordPress core files.
 
@@ -203,7 +199,7 @@ Assuming your master branch is always production ready (by using a development m
 [GitFlow](http://nvie.com/posts/a-successful-git-branching-model/)) you can use the
 following approach to deploy your code:
 
-*On production server:*
+**On production server:**
 
 Create a bare git repository
 
@@ -223,7 +219,7 @@ Set up a post-receive hook to copy the code to the `code` directory and run Comp
 BASE_DIR='/srv/http/project/code'
 THEME_DIR='/srv/http/myproject/code/themes/mytheme1'
 
-git archive --format=tar master | tar -xf -C $BASE_DIR
+git archive --format=tar master | tar -x -C $BASE_DIR
 cd $THEME_DIR
 compass compile -e production --force
 #--- end post receive hook
@@ -232,7 +228,7 @@ compass compile -e production --force
 [/srv/http/project/repo/myproject]$ mkdir /srv/http/project/code
 ```
 
-*On development environment:*
+**On development environment:**
 
 Add a new Git remote
 
@@ -240,13 +236,13 @@ Add a new Git remote
 [/srv/http/project/repo/myproject]$ git remote add production user@remotehost:/srv/http/project/repo/myproject
 ```
 
-To deploy am update simply push to this new remote
+To deploy an update simply push to this new remote
 
 ```
 [/srv/http/project/repo/myproject]$ git push production master
 ```
 
-*On production server:*
+**On production server:**
 
 Create symlinks from the contents of `code` to appropriate locations inside `webdir`.
 
@@ -256,11 +252,28 @@ Create symlinks from the contents of `code` to appropriate locations inside `web
 [/srv/http/project]$ ln -s code/plugins/myplugin2 webdir/wp-content/plugins/myplugin2
 ```
 
-*IMPORTANT: The post-receive hook runs Compass to compile CSS. Make sure Compass is installed on the remote.*
+**IMPORTANT: The post-receive hook runs Compass to compile CSS. Make sure Compass is installed on the remote.**
 
 
-Attribution
-===========
+### Recommended plugins for developers
+
+**PLUGIN RULE #1: Do not use plugins if doing it by yourself is reasonable!**
+
+You don't need plugins for sliders, lightboxes, social widgets etc. and you certainly don't want plugins
+not being actively developed.
+
+These plugins here, however, bring so much added value, that not using them (provided you need them of
+course) would be just dumb.
+
+* [Advanced Custom Fields](http://wordpress.org/plugins/advanced-custom-fields/) - custom fields for posts
+* [Polylang](http://wordpress.org/plugins/polylang/) - everything you need for multilingual sites
+* [WordPress SEO](http://wordpress.org/plugins/wordpress-seo/) - SEO metadata for posts, sitemap…
+* [WP-PageNavi](http://wordpress.org/plugins/wp-pagenavi/) - numbered pagination for archives
+* [Redirect Editor](http://wordpress.org/plugins/redirect-editor/) - need to 301 redirect a URL?
+* [Ninja Forms](http://wordpress.org/plugins/ninja-forms/) - works fairly well for forms
+
+
+## Attribution
 
 WordPressBP comes with [Normalize.css by Nicolas Gallagher](https://github.com/necolas/normalize.css)
 (license included) and [HTML5 Shiv](https://github.com/aFarkas/html5shiv).
@@ -269,8 +282,12 @@ All this wouldn't be possible without the excellent [WordPress CMS](http://wordp
 and Libre Open Source Software.
 
 
-License
-=======
+### Contributors
+
+* [Oto Brglez](https://github.com/otobrglez)
+
+
+## License
 
 WordPressBP is [Public Domain](http://en.wikipedia.org/wiki/Public_domain) except for the third party
 code distributed with it (currently: normalize.css) which keeps the original license.
