@@ -17,7 +17,7 @@ class WordPressBP_extensions {
 		/**
 		 * Init main query modification
 		 */
-		add_action('pre_get_posts', array($this, 'modifyQuery'));
+		//add_action('pre_get_posts', array($this, 'modifyQuery'));
 	}
 
 	public static function get_instance() {

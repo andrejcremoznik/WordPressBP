@@ -71,7 +71,6 @@ add_action('widgets_init', 'WordPressBP_widgets_init');
 
 /**
  * Get file timestamp for automatic cache busting on update
- * - http://calendar.perfplanet.com/2012/using-nginx-php-fpmapc-and-varnish-to-make-wordpress-websites-fly/
  */
 function autoVer($url, $echo = false) {
 	$name = explode('.', $url);
@@ -90,9 +89,11 @@ function autoVer($url, $echo = false) {
  * - Styles (wp_register_style, wp_enqueue_style)
  * - Scripts (wp_register_script, wp_enqueue_script)
  *
- * WARNING: autoVer requires correct URL rewrites to function properly. Read the link above on
- * how to configure Nginx. If you don't want to use this way of cache busting, remove the function
- * from style and scripts registration calls below.
+ * WARNING: autoVer requires correct URL rewrites to function properly.
+ *
+ * location ~* (.+)\.(?:\d+)\.(js|css)$ {
+ *   try_files $uri $1.$2;
+ * }
  */
 function WordPressBP_scripts_styles() {
 	// Register styles
