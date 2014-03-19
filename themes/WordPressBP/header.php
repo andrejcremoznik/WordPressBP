@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<!--[if lt IE 9]><html class="no-js lt-ie9" <?php language_attributes() ?>><![endif]-->
-<!--[if gte IE 9]><!--><html class="no-js" <?php language_attributes() ?>><!--<![endif]-->
+<html class="no-js" <?php language_attributes() ?>>
 <head>
 <meta charset="<?php bloginfo('charset') ?>">
-<title><?php wp_title('', true) ?></title>
-<meta name="viewport" content="width=device-width">
-<script>(function(H){H.className=H.className.replace(/\bno-js\b/,'js')})(document.documentElement)</script>
-<!--[if lt IE 9]><script src="<?= get_template_directory_uri() ?>/lib/html5shiv.js"></script><![endif]-->
+<title><?php wp_title('·', true, 'right') ?></title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<script>(function(h,c){if(/MSIE (\d+\.\d+);/.test(navigator.userAgent)){var v=new Number(RegExp.$1);c=c+' ie'+v}h.className=c}(document.documentElement,'js'))</script>
 <?php wp_head() ?>
 </head>
 <body <?php body_class() ?>>
@@ -16,7 +14,7 @@
 	<nav class="nav" role="navigation">
 		<?php wp_nav_menu(array(
 			'theme_location' => 'primary',
-			'container' => false,
+			'container' => false
 		)) ?>
 	</nav>
 </header>

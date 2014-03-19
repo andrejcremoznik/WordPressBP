@@ -1,4 +1,3 @@
 # SASS cache and compiled CSS
 .sass*
-style.css
-editor-style.css
+assets/*.css

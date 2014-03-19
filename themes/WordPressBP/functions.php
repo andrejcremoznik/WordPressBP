@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * Global variables
+ */
+$asset_version = 'dev'; // Change this during deploy
+
+/**
  * Set up theme's defaults, register various features...
  *
  * - executed in after_setup_theme hook
@@ -18,29 +23,36 @@ function WordPressBP_setup() {
 	/**
 	 * Custom editor style
 	 *
-	 * To enable custom styles for the visual editor add editor-style.css
-	 * to the template directory and uncomment the line below
+	 * To enable custom styles for the visual editor add editor_theme_default.css
+	 * to the template assets subdirectory and uncomment the line below
 	 */
-	//add_editor_style();
+	//add_editor_style('assets/editor_theme_default.css');
 
-	// Register navigation menus
+	/**
+	 * Register navigation menus
+	 */
 	register_nav_menus(array(
 		'primary' => __('Main menu', 'WordPressBP')
 	));
 
-	// Enable support for certain features
+	/**
+	 * Enable support for certain theme features
+	 */
 	add_theme_support('post-thumbnails');
 	//add_theme_support('post-formats');
 	//add_theme_support('custom-background');
 	//add_theme_support('custom-header');
 	add_theme_support('automatic-feed-links');
+	add_theme_support('html5', array('search-form', 'comment-form', 'comment-list'));
 
 	/**
 	 * Custom thumbnail sizes
 	 *
+	 * Define custom image sizes with 'add_image_size'.
+	 *
 	 * To list any of the defined sizes in WP media manager dropdown
 	 * uncomment the 'image_size_names_choose' filter and add them to the
-	 * 'theme_image_sizes' function defined below
+	 * 'WordPressBP_image_sizes' function defined below
 	 */
 	//add_image_size('size_name', 300, 200, true);
 	//add_filter('image_size_names_choose', 'WordPressBP_image_sizes' );
@@ -70,44 +82,24 @@ add_action('widgets_init', 'WordPressBP_widgets_init');
 
 
 /**
- * Get file timestamp for automatic cache busting on update
- */
-function autoVer($url, $echo = false) {
-	$name = explode('.', $url);
-	$lastext = array_pop($name);
-	array_push(
-		$name,
-		filemtime($_SERVER['DOCUMENT_ROOT'] . parse_url($url, PHP_URL_PATH)),
-		$lastext);
-	$out = implode('.', $name);
-	if($echo) echo $out; else return $out;
-}
-
-/**
  * Register styles and scripts for frontend
  *
- * - Styles (wp_register_style, wp_enqueue_style)
- * - Scripts (wp_register_script, wp_enqueue_script)
- *
- * WARNING: autoVer requires correct URL rewrites to function properly.
- *
- * location ~* (.+)\.(?:\d+)\.(js|css)$ {
- *   try_files $uri $1.$2;
- * }
+ * Styles (wp_register_style, wp_enqueue_style)
+ * Scripts (wp_register_script, wp_enqueue_script)
  */
 function WordPressBP_scripts_styles() {
 	// Register styles
-	wp_register_style('default', autoVer(get_template_directory_uri() . '/style.css'), false, null, 'all');
+	wp_register_style('default', get_template_directory_uri() . '/assets/theme_default.css', false, $asset_version, 'all');
 
 	// Register scripts
-	wp_register_script('global', autoVer(get_template_directory_uri() . '/js/global.js'), array('jquery'), null, true);
+	wp_register_script('app', get_template_directory_uri() . '/assets/app.js', array('jquery'), $asset_version, true);
 
 	// Enqueue styles
 	wp_enqueue_style('default');
 
 	// Enqueue scripts
 	wp_enqueue_script('jquery');
-	wp_enqueue_script('global');
+	wp_enqueue_script('app');
 }
 add_action('wp_enqueue_scripts', 'WordPressBP_scripts_styles');
 
@@ -134,6 +126,25 @@ remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
 /**
  * Various filters
  */
+function WordPressBP_wp_title($title, $sep) {
+	global $paged, $page;
+
+	if(is_feed())
+		return $title;
+
+	$title .= get_bloginfo('name');
+
+	$site_description = get_bloginfo('description', 'display');
+	if($site_description && (is_home() || is_front_page()))
+		$title = "$title $sep $site_description";
+
+	if($paged >= 2 || $page >= 2)
+		$title = "$title $sep " . sprintf(__('Page %s', 'WordPressBP' ), max($paged, $page));
+
+	return $title;
+}
+add_filter('wp_title', 'WordPressBP_wp_title', 10, 2);
+
 /*
 function modify_excerpt_more($more) {
 	global $post;
@@ -142,7 +153,7 @@ function modify_excerpt_more($more) {
 add_filter('excerpt_more', 'modify_excerpt_more');
 
 function modify_excerpt_length($length) {
-	return 35; // # of words
+	return 35; // number of words
 }
 add_filter('excerpt_length', 'modify_excerpt_length');
 
@@ -161,4 +172,12 @@ function modify_body_classes($classes) {
 	return $classes;
 }
 add_filter('body_class', 'modify_body_classes');
+
+function modify_post_classes($classes) {
+	if(!post_password_required() && has_post_thumbnail())
+		$classes[] = 'has-post-thumbnail';
+
+	return $classes;
+}
+add_filter('post_class', 'modify_post_classes');
 */

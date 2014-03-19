@@ -9,14 +9,13 @@
 // Micro clearfix
 .cf:before, .cf:after { content: ""; display: table; }
 .cf:after { clear: both; }
-//.cf { *zoom: 1; } /* uncomment for IE 6, 7 */
 
-// Image replacement - Method 1 - use if box size depends on font-size (EM units)
-.ir { display: block; text-indent: -999em; overflow: hidden; }
-// Image replacement - Method 2 - use if box size independent of font-size
-.ir2 { font: 0/0 a; text-shadow: none; color: transparent; }
+// Image replacement - Method 1 - use if box size independent of font-size
+.ir { font: 0/0 a; text-shadow: none; color: transparent; }
+// Image replacement - Method 2 - use if box size depends on font-size (EM units)
+.ir2 { display: block; text-indent: -999em; overflow: hidden; }
 
-//Hide element from screenreaders and browsers */
+// Hide element from screenreaders and browsers
 .hidden { display: none !important; visibility: hidden; }
 
 // Hide element visually, but have it available for screenreaders
