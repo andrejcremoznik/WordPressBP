@@ -1,2 +1,4 @@
+* text=auto
+
 .gitattributes export-ignore
 setup.sh export-ignore

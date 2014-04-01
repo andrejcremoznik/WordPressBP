@@ -2,8 +2,8 @@
 
 if [ $# -ne 2 ]; then
 	echo -e "Usage:\n $0 <namespace> <project_path>\n"
-	echo " <namespace>:    Alphanumeric name for your project. Used for namespacing functions, textdomains etc."
-	echo " <project_path>: Path to where the plugins and themes directories will be set up."
+	echo " <namespace>:    Alphanumeric name for your project. Used for namespacing functions, file names etc."
+	echo " <project_path>: Path to where the project structure will be set up."
 	exit
 fi
 
