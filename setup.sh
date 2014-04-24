@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
-if [ $# -ne 2 ]; then
-	echo -e "Usage:\n $0 <namespace> <project_path>\n"
+if [ $# -lt 2 ]; then
+	echo -e "Usage:\n $0 <namespace> <project_path> [<branch>]\n"
 	echo " <namespace>:    Alphanumeric name for your project. Used for namespacing functions, file names etc."
 	echo " <project_path>: Path to where the project structure will be set up."
+	echo " <branch>:       Branch from which to create the project structure. Defaults to 'master'"
 	exit
 fi
 
@@ -17,7 +18,7 @@ fi
 
 echo "Creating a working copy of WordPressBP in $project_path"
 
-git archive --format=tar master | tar -x -C $project_path
+git archive --format=tar ${3:-master} | tar -x -C $project_path
 
 echo "Renaming folders and files..."
 

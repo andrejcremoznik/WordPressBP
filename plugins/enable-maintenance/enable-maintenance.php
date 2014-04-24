@@ -6,9 +6,7 @@ Version: 1.0
 */
 
 // If this file is called directly, abort.
-if(!defined('WPINC')) {
-	die;
-}
+if(!defined('WPINC')) die();
 
 function enable_maintenance_i18n() {
 	load_plugin_textdomain('enable-maintenance', false, basename(dirname(__FILE__)) . '/lang/');
