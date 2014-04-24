@@ -3,7 +3,7 @@
 /**
  * Global variables
  */
-$asset_version = 'dev'; // Change this during deploy
+define('ASSET_VERSION', 'dev'); // Change this during deploy
 
 /**
  * Set up theme's defaults, register various features...
@@ -89,10 +89,10 @@ add_action('widgets_init', 'WordPressBP_widgets_init');
  */
 function WordPressBP_scripts_styles() {
 	// Register styles
-	wp_register_style('default', get_template_directory_uri() . '/assets/theme_default.css', false, $asset_version, 'all');
+	wp_register_style('default', get_template_directory_uri() . '/assets/theme_default.css', false, ASSET_VERSION, 'all');
 
 	// Register scripts
-	wp_register_script('app', get_template_directory_uri() . '/assets/app.js', array('jquery'), $asset_version, true);
+	wp_register_script('app', get_template_directory_uri() . '/assets/app.js', array('jquery'), ASSET_VERSION, true);
 
 	// Enqueue styles
 	wp_enqueue_style('default');
