@@ -49,6 +49,14 @@ A typical command would be:
 ```
 
 
+## Useage
+
+Install `grunt-cli` and `bower`:
+
+```
+sudo npm install grunt-cli bower -g
+```
+
 ## Tips
 
 

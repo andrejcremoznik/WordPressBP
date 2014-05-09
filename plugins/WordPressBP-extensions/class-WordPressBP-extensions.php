@@ -10,15 +10,9 @@ class WordPressBP_extensions {
 
 		add_action('init', array($this, 'WordPressBP_textdomain'));
 
-		/**
-		 * Init functions for custom post types and taxonomies
-		 */
 		//add_action('init', array($this, 'createTaxonomies'), 0);
 		//add_action('init', array($this, 'createPostTypes'));
 
-		/**
-		 * Init main query modification
-		 */
 		//add_action('pre_get_posts', array($this, 'modifyQuery'));
 	}
 
@@ -113,7 +107,7 @@ class WordPressBP_extensions {
 			'public'              => true,
 			'exclude_from_search' => true,
 			'has_archive'         => true,
-			'rewrite'             => true
+			'rewrite'             => array('slug' => __('slug', $domain))
 		));
 	}
 	*/
