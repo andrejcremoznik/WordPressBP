@@ -3,7 +3,7 @@
 /**
  * Global variables
  */
-define('ASSET_VERSION', 'dev'); // Change this during deploy
+define('ASSET_VERSION', 'dev'); // Change during deploy with Grunt
 
 /**
  * Set up theme's defaults, register various features...
@@ -89,17 +89,18 @@ add_action('widgets_init', 'WordPressBP_widgets_init');
  */
 function WordPressBP_scripts_styles() {
 	// Register styles
-	wp_register_style('default', get_template_directory_uri() . '/assets/theme_default.css', false, ASSET_VERSION, 'all');
+	wp_register_style('default', get_template_directory_uri() . '/assets/theme_default.css', array(), ASSET_VERSION, 'all');
 
 	// Register scripts
-	wp_register_script('app', get_template_directory_uri() . '/assets/app.js', array('jquery'), ASSET_VERSION, true);
+	wp_register_script('top',    get_template_directory_uri() . '/assets/top.js',    array(), ASSET_VERSION, false);
+	wp_register_script('bottom', get_template_directory_uri() . '/assets/bottom.js', array(), ASSET_VERSION, true);
 
 	// Enqueue styles
 	wp_enqueue_style('default');
 
 	// Enqueue scripts
-	wp_enqueue_script('jquery');
-	wp_enqueue_script('app');
+	wp_enqueue_script('top');
+	wp_enqueue_script('bottom');
 }
 add_action('wp_enqueue_scripts', 'WordPressBP_scripts_styles');
 

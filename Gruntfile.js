@@ -5,7 +5,6 @@ module.exports = function(grunt) {
 
 	// Custom variables
 	var
-		theme = 'WordPressBP',
 		version = Math.round(+new Date()/1000), // cache-bust timestamp
 
 		// Use Grunt to deploy the code
@@ -19,40 +18,52 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 
 		watch: {
-			scripts: {
-				files: ['themes/' + theme + '/js/**/*.js'],
-				tasks: ['concat']
-			},
 			stylesheets: {
-				files: ['themes/' + theme + '/css/**/*.scss'],
+				files: ['themes/WordPressBP/css/**/*.scss'],
 				tasks: ['shell:compassDev', 'autoprefixer']
-			}
-		},
-
-		concat: {
-			options: {
-				stripBanners: true,
-				separator: ';'
 			},
 			scripts1: {
-				'themes/' + theme + '/assets/app.js': [
-					'theme/' + theme + '/js/app/global.js',
-					// More files to concat to app.js
-				]
+				files: ['themes/WordPressBP/js/head/*.js'],
+				tasks: ['uglify']
 			},
-			// More script files
+			scripts2: {
+				files: [
+					'themes/WordPressBP/js/*.js',
+					'themes/WordPressBP/js/**/*.js',
+					'!themes/WordPressBP/js/head/*.js'
+				],
+				tasks: ['requirejs:concat']
+			}
 		},
 
 		uglify: {
 			options: {
-				preserveComments: false
+				preserveComments: 'some'
 			},
-			// This will uglify all .js files at src
 			build: {
-				expand: true,
-				flatten: true,
-				src: 'themes/' + theme + '/assets/*.js',
-				dest: 'themes/' + theme + '/assets/'
+				files: {
+					'themes/WordPressBP/assets/top.js': [
+						'themes/WordPressBP/js/head/head.js'
+					]
+				}
+			}
+		},
+
+		requirejs: {
+			options: {
+				baseUrl: 'themes/WordPressBP/js',
+				mainConfigFile: 'themes/WordPressBP/js/main.js',
+				name: 'main',
+				out: 'themes/WordPressBP/assets/bottom.js',
+				include: ['lib/requirejs/require']
+			},
+			concat: {
+				options: {
+					optimize: 'none'
+				}
+			},
+			uglify: {
+				optimize: 'uglify2'
 			}
 		},
 
@@ -64,51 +75,49 @@ module.exports = function(grunt) {
 			build: {
 				expand: true,
 				flatten: true,
-				src: 'themes/' + theme + '/assets/*.css',
-				dest: 'themes/' + theme + '/assets/'
+				src: 'themes/WordPressBP/assets/*.css',
+				dest: 'themes/WordPressBP/assets/'
 			}
 		},
 
 		csso: {
-			// This will optimize all .css files in src
+			// This will optimize all .css files at src
 			build: {
 				expand: true,
 				flatten: true,
-				src: 'themes/' + theme + '/assets/*.css',
-				dest: 'themes/' + theme + '/assets/'
+				src: 'themes/WordPressBP/assets/*.css',
+				dest: 'themes/WordPressBP/assets/'
 			}
 		},
 
 		shell: {
 			options: {
-				options: {
-					stdout: true,
-					stderr: true
-				},
-				compassDev: {
-					command: 'compass compile --force'
-				},
-				compassProd: {
-					command: 'compass compile -e production --force'
-				},
-				clean: {
-					command: [
-					'compass clean',
-					'rm -f themes/' + theme + '/assets/*.js',
-					'rm -fr build'
-					].join('&&')
-				},
-				build: {
-					command: [
-					'mkdir build',
-					'git archive --format=tar master | tar -x -C build',
-					'cp themes/' + theme + '/assets/*.js build/themes/' + theme + '/assets/',
-					'cp themes/' + theme + '/assets/*.css build/themes/' + theme + '/assets/',
-					'sed -i "s/vDEV/' + version + '/g" build/themes/' + theme + '/functions.php',
-					'cd build',
-					'tar -zcf build.tar.gz *'
-					].join('&&')
-				}
+				stdout: true,
+				stderr: true
+			},
+			compassDev: {
+				command: 'compass compile --force'
+			},
+			compassProd: {
+				command: 'compass compile -e production --force'
+			},
+			clean: {
+				command: [
+				'compass clean',
+				'rm -f themes/WordPressBP/assets/*.js',
+				'rm -fr build'
+				].join('&&')
+			},
+			build: {
+				command: [
+				'mkdir build',
+				'git archive --format=tar master | tar -x -C build',
+				'cp themes/WordPressBP/assets/*.js build/themes/WordPressBP/assets/',
+				'cp themes/WordPressBP/assets/*.css build/themes/WordPressBP/assets/',
+				'sed -i "s/vDEV/' + version + '/g" build/themes/WordPressBP/functions.php',
+				'cd build',
+				'tar -zcf build.tar.gz *'
+				].join('&&')
 			}
 		},
 
@@ -116,7 +125,7 @@ module.exports = function(grunt) {
 			'production': {
 				host: deploy_ip,
 				port: deploy_port,
-				username: deploy_username,
+				username: deploy_user,
 				agent: process.env.SSH_AUTH_SOCK
 			}
 		},
@@ -149,10 +158,10 @@ module.exports = function(grunt) {
 
 	});
 
-	grunt.registerTask('default', ['concat', 'shell:compassDev', 'autoprefixer']);
-	grunt.registerTask('production', ['concat', 'uglify', 'shell:compassProd', 'autoprefixer', 'csso']);
+	grunt.registerTask('default', ['uglify', 'requirejs:concat', 'shell:compassDev', 'autoprefixer']);
+	grunt.registerTask('production', ['uglify', 'requirejs:uglify', 'shell:compassProd', 'autoprefixer', 'csso']);
 	grunt.registerTask('clean', ['shell:clean']);
-	grunt.registerTask('deploy', ['shell:clean', 'concat', 'uglify', 'shell:compassProd', 'autoprefixer', 'csso', 'shell:build', 'sshexec:backup', 'sftp:uploadBuild', 'sshexec:applyBuild']);
+	grunt.registerTask('deploy', ['shell:clean', 'uglify', 'requirejs:uglify', 'shell:compassProd', 'autoprefixer', 'csso', 'shell:build', 'sshexec:backup', 'sftp:uploadBuild', 'sshexec:applyBuild']);
 	grunt.registerTask('deploy-revert', ['sshexec:revert']);
 
 }
