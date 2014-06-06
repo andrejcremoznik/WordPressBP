@@ -25,8 +25,8 @@ class WordPressBP_extensions {
 		if(function_exists('is_multisite') && is_multisite()) {
 			if($network_wide) {
 				$blog_ids = self::get_blog_ids();
-				foreach ($blog_ids as $blog_id) {
-					switch_to_blog( $blog_id );
+				foreach($blog_ids as $blog_id) {
+					switch_to_blog($blog_id);
 					self::single_activate();
 				}
 				restore_current_blog();
@@ -42,8 +42,8 @@ class WordPressBP_extensions {
 		if(function_exists('is_multisite') && is_multisite()) {
 			if($network_wide) {
 				$blog_ids = self::get_blog_ids();
-				foreach ( $blog_ids as $blog_id ) {
-					switch_to_blog( $blog_id );
+				foreach ($blog_ids as $blog_id) {
+					switch_to_blog($blog_id);
 					self::single_deactivate();
 				}
 				restore_current_blog();
@@ -83,8 +83,8 @@ class WordPressBP_extensions {
 		$domain = $this->plugin_slug;
 		$locale = apply_filters('plugin_locale', get_locale(), $domain);
 
-		load_textdomain($domain, trailingslashit( WP_LANG_DIR ) . $domain . '/' . $domain . '-' . $locale . '.mo');
-		load_plugin_textdomain($domain, false, basename(plugin_dir_path( __FILE__ )) . '/lang/');
+		load_textdomain($domain, trailingslashit(WP_LANG_DIR) . $domain . '/' . $domain . '-' . $locale . '.mo');
+		load_plugin_textdomain($domain, false, basename(plugin_dir_path(dirname(__FILE__))) . '/lang/');
 	}
 
 

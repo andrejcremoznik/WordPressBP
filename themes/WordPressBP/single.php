@@ -12,13 +12,10 @@
 					<span class="author"><?php _e('Author', 'WordPressBP')?>: <?php the_author_posts_link() ?></span>
 				</p>
 			</header>
-			<?php the_excerpt() ?>
+			<?php the_content() ?>
+			<?php if(comments_open() || get_comments_number()) comments_template() ?>
 		</article>
-	<?php endwhile; else: ?>
-		<article class="no-results">
-			<h1><?php _e('Sorry, no posts matched your criteria.', 'WordPressBP') ?></h1>
-		</article>
-	<?php endif ?>
+	<?php endwhile; endif ?>
 </main>
 
 <?php get_sidebar() ?>

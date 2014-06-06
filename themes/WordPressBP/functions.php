@@ -157,16 +157,20 @@ function modify_excerpt_length($length) {
 	return 35; // number of words
 }
 add_filter('excerpt_length', 'modify_excerpt_length');
+*/
 
-function next_posts_link_attr() {
-	return 'class="nextLink"';
+function nav_next_link_attr() {
+	return 'class="nav-prev"';
 }
-function prev_posts_link_attr() {
-	return 'class="prevLink"';
+function nav_prev_link_attr() {
+	return 'class="nav-next"';
 }
-add_filter('next_posts_link_attributes',     'next_posts_link_attr');
-add_filter('previous_posts_link_attributes', 'prev_posts_link_attr');
+add_filter('next_posts_link_attributes',        'nav_next_link_attr');
+add_filter('previous_posts_link_attributes',    'nav_prev_link_attr');
+add_filter('next_comments_link_attributes',     'nav_next_link_attr');
+add_filter('previous_comments_link_attributes', 'nav_prev_link_attr');
 
+/*
 function modify_body_classes($classes) {
 	global $post;
 	if(is_active_sidebar('sidebar1')) $classes[] = 'has-sidebar';
@@ -182,3 +186,11 @@ function modify_post_classes($classes) {
 }
 add_filter('post_class', 'modify_post_classes');
 */
+
+function modify_comment_form_fields($fields) {
+	if(isset($fields['url']))
+		unset($fields['url']);
+
+	return $fields;
+}
+add_filter('comment_form_default_fields', 'modify_comment_form_fields');
