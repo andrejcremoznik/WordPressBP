@@ -4,7 +4,6 @@
 <meta charset="<?php bloginfo('charset') ?>">
 <title><?php wp_title('·', true, 'right') ?></title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<script>(function(h,c){if(/MSIE (\d+\.\d+);/.test(navigator.userAgent)){var v=new Number(RegExp.$1);c=c+' ie'+v}h.className=c}(document.documentElement,'js'))</script>
 <?php wp_head() ?>
 </head>
 <body <?php body_class() ?>>
