@@ -37,6 +37,6 @@ rm ${project_path}/readme.md
 
 echo "Namespacing file contents..."
 
-find ${project_path}/* -type f -print0 | xargs -0 sed -i "s/WordPressBP/${namespace}/g"
+find ${project_path}/ -type f -print0 | xargs -0 sed -i "s/WordPressBP/${namespace}/g"
 
 echo "All done. Happy hacking!"
