@@ -1,6 +1,5 @@
-(function($) {
-	// On DOM ready
-	$(function() {
-		// Do stuff
-	});
-})(jQuery);
+define(['jquery'], function($) {
+
+	console.log('global.js loaded');
+
+});

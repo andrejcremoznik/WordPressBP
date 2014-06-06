@@ -1,4 +1,12 @@
 # SASS cache and compiled CSS
 .sass*
-style.css
-editor-style.css
+themes/WordPressBP/assets/*.css
+
+# Compiled JS
+themes/WordPressBP/assets/*.js
+
+# Bower components
+themes/WordPressBP/js/lib
+
+# Node modules
+node_modules

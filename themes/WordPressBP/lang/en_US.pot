@@ -15,6 +15,9 @@ msgstr ""
 msgid "Sidebar 1"
 msgstr ""
 
+msgid "Page %s"
+msgstr ""
+
 #: index.php
 msgid "Category"
 msgstr ""

@@ -1,6 +1,0 @@
-Interactive elements
-====================
-
-* Buttons
-* Tabs
-* ...

@@ -1,0 +1,24 @@
+/*
+ * Typography
+ */
+
+// Custom fonts
+/*
+ @ i*nclude font-face('FontName',
+ font-files(
+	 'FontName.woff', woff,
+	 'FontName.ttf', ttf,
+	 'FontName.svg', svg),
+	 'FontName.eot' or false,
+	 weight,
+	 style);
+
+	 %fontname_style {
+	 font-family: FontName, sans-serif;
+	 font-weight: weight;
+	 }
+	 */
+
+html {
+	font: #{$default_font_size}px/#{$default_line_height} $default_font_family;
+}
