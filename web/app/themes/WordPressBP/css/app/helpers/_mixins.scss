@@ -3,7 +3,7 @@
  * Ex: font-size: pem(16);
  */
 @function pem($pxval, $base: $default_font_size) {
-	@return #{$pxval / $base}em;
+  @return #{$pxval / $base}em;
 }
 
 /*
@@ -11,7 +11,7 @@
  * Ex: font-size: rem(16);
  */
 @function rem($pxval, $base: $default_font_size) {
-	@return #{$pxval / $base}rem;
+  @return #{$pxval / $base}rem;
 }
 
 /*
@@ -19,5 +19,5 @@
  * Ex: width: pc(600,960);
  */
 @function pc($target, $container) {
-	@return ($target / $container) * 100%;
+  @return ($target / $container) * 100%;
 }

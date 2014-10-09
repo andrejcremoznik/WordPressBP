@@ -13,11 +13,9 @@
 
 // Regions
 body {
-	color: $default_text_color;
-	background: $default_background_color;
+  color: $default_text_color;
+  background: $default_background_color;
 }
-
-img { vertical-align: middle; }
 
 @import "regions/header";
 @import "regions/footer";

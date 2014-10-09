@@ -15,23 +15,16 @@ WordPressBP is **meant for developers** developing a WordPress site **from strat
 3. a [WordPress Widget Boilerplate](https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate)
 
 
-## Get stared with WordPressBP
-
-Getting started includes the following steps:
-
-1. Check requirements
-2. Clone WordPressBP locally on your development environment
-3. Run the setup script
-4. Code
-
-
-### Requirements
+## System requirements
 
 * Ruby and [Compass](http://compass-style.org) `gem install compass`
 * Nodejs and [Grunt CLI](http://gruntjs.com/getting-started#installing-the-cli)
 
 
-#### Setup.sh
+## Quickstart guide
+
+
+### Setup.sh
 
 ```
 $ ./setup.sh
@@ -47,17 +40,6 @@ A typical command would be:
 ```
 ./setup.sh myproject /var/www/myproject/repo/
 ```
-
-
-## Useage
-
-Install `grunt-cli` and `bower`:
-
-```
-sudo npm install grunt-cli bower -g
-```
-
-## Tips
 
 
 ### Recommended plugins for developers

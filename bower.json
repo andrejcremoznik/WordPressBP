@@ -1,10 +1,9 @@
 {
   "name": "WordPressBP",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "WordPressBP WordPress template",
   "private": true,
   "dependencies": {
-    "requirejs": "~2.1.14",
     "jquery": "~2.1.1"
   }
 }

@@ -1,12 +1,39 @@
-# SASS cache and compiled CSS
-.sass*
-themes/WordPressBP/assets/*.css
+# WordPress
+web/wp
 
-# Compiled JS
-themes/WordPressBP/assets/*.js
+# WP-CLI
+db-sync
+sql-dump-*.sql
+
+# Dotenv
+.env
+.env.*
+!.env.example
+
+# Application
+web/app/plugins/*
+!web/app/plugins/.gitkeep
+!web/app/plugins/WordPressBP*
+web/app/uploads/*
+!web/app/uploads/.gitkeep
+
+# Vendor (e.g. Composer)
+vendor/*
+!vendor/.gitkeep
+
+# Node Package Manager
+node_modules
 
 # Bower components
-themes/WordPressBP/js/lib
+web/app/themes/WordPressBP/js/lib/*
+!web/app/themes/WordPressBP/js/lib/.gitkeep
 
-# Node modules
-node_modules
+# SASS cache and compiled CSS
+.sass*
+web/app/themes/WordPressBP/assets/*.css
+
+# Compiled JS
+web/app/themes/WordPressBP/assets/*.js
+
+# Build dir
+build

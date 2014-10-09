@@ -20,14 +20,14 @@
 
 // Hide element visually, but have it available for screenreaders
 .visuallyhidden {
-	width: 1px;
-	height: 1px;
-	margin: -1px;
-	padding: 0;
-	border: 0;
-	overflow: hidden;
-	position: absolute;
-	clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  position: absolute;
+  clip: rect(0 0 0 0);
 }
 
 // Hide element visually and from screenreaders, but maintain layout
