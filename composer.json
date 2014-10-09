@@ -1,13 +1,13 @@
 {
   "name": "WordPressBP",
   "type": "project",
-  "description": "WordPressBP WordPress template",
+  "description": "WordPressBP WordPress website",
   "homepage": "",
   "authors": [
     {
-      "name": "Andrej Čremožnik",
-      "email": "andrej.cremoznik@dlabs.si",
-      "homepage": "http://si.linkedin.com/in/andrejcremoznik/"
+      "name": "",
+      "email": "",
+      "homepage": ""
     }
   ],
   "repositories": [

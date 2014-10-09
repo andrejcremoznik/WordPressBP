@@ -261,8 +261,9 @@ module.exports = function(grunt) {
       },
       clean: {
         command: [
-        'compass clean',
+        'rm -f web/app/themes/WordPressBP/assets/*.css',
         'rm -f web/app/themes/WordPressBP/assets/*.js',
+        'rm -f web/app/themes/WordPressBP/assets/*.map',
         'rm -fr build'
         ].join('&&')
       },
@@ -364,7 +365,7 @@ module.exports = function(grunt) {
    */
   grunt.registerTask('default',       ['concat', 'sass:development', 'autoprefixer']);
   grunt.registerTask('production',    ['concat', 'uglify', 'sass:production', 'autoprefixer', 'csso']);
-  grunt.registerTask('deploy',        ['shell:clean', 'concat', 'uglify', 'sass', 'autoprefixer', 'csso', 'shell:build'].concat(tasks_deploy));
+  grunt.registerTask('deploy',        ['shell:clean', 'concat', 'uglify', 'sass:production', 'autoprefixer', 'csso', 'shell:build'].concat(tasks_deploy));
   grunt.registerTask('deploy-revert', tasks_revert);
   grunt.registerTask('clean',         ['shell:clean']);
 
