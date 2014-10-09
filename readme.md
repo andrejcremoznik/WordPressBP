@@ -6,7 +6,7 @@ to get down and dirty quickly without wasting time setting up directory and file
 CSS resets, setting up the `functions.php` file etc.
 
 WordPressBP is **meant for developers** developing a WordPress site **from stratch** using
-**Sass/Compass** CSS pre-processor.
+**Sass** CSS pre-processor.
 
 **It is not:**
 
@@ -15,23 +15,35 @@ WordPressBP is **meant for developers** developing a WordPress site **from strat
 3. a [WordPress Widget Boilerplate](https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate)
 
 
-## Get stared with WordPressBP
+## System requirements
 
-Getting started includes the following steps:
-
-1. Check requirements
-2. Clone WordPressBP locally on your development environment
-3. Run the setup script
-4. Code
-
-
-### Requirements
-
-* Ruby and [Compass](http://compass-style.org) `gem install compass`
-* Nodejs and [Grunt CLI](http://gruntjs.com/getting-started#installing-the-cli)
+* LEMP stack (Linux, Nginx, PHP, MySQL)
+* NodeJS & Node Package Manager (npm)
+  * [Grunt CLI](http://gruntjs.com/getting-started#installing-the-cli) `sudo npm install -g grunt-cli`
+  * [Bower](http://bower.io/) `sudo npm install -g bower`
+* [Composer](https://getcomposer.org/) - installed as 'composer' in user's $PATH
+* [WP-CLI](http://wp-cli.org/) - installed as 'wp' in user's $PATH
 
 
-#### Setup.sh
+## Quickstart guide
+
+1. Run the `setup` script (see details below)
+  1. Example: `./setup.sh myproject /var/www/myproject/repo`
+2. Edit the **.env** file - setup database access, environment and salts
+3. Edit **composer.json** - fill in the required metadata then run `composer install`
+4. Run `npm install` to install Node build tools
+5. Run `bower install` to install Bower front-end assets
+6. Run `grunt` to compile all front-end assets
+7. Setup WordPress with WP-CLI
+  1. `wp db create`
+  2. `wp core install --url=<url> --title=<site-title> --admin_user=<username> --admin_password=<password> --admin_email=<email>`
+  3. `wp site empty --yes`
+  4. `wp theme activate <namespace>` - the same namespace as used in the setup script
+8. Visit your new site eg. *http://mysite.dev*
+  1. Login is at *http://mysite.dev/wp/wp-login.php*
+
+
+### Setup script
 
 ```
 $ ./setup.sh
@@ -49,18 +61,7 @@ A typical command would be:
 ```
 
 
-## Useage
-
-Install `grunt-cli` and `bower`:
-
-```
-sudo npm install grunt-cli bower -g
-```
-
-## Tips
-
-
-### Recommended plugins for developers
+### Recommended plugins
 
 **PLUGIN RULE #1: Do not use plugins if doing it by yourself is reasonable!**
 
@@ -89,5 +90,6 @@ WordPressBP comes with [Normalize.css by Nicolas Gallagher](https://github.com/n
 
 ## License
 
-WordPressBP is [CC0](http://creativecommons.org/publicdomain/zero/1.0/) except for the third party
-code distributed with it (currently: normalize.css) which keeps the original license.
+WordPressBP is [CC0](http://creativecommons.org/publicdomain/zero/1.0/) except for any third party
+code distributed with it (currently: normalize.css) which keeps the original license. Contributions
+to this project should adhere to the CC0 license.

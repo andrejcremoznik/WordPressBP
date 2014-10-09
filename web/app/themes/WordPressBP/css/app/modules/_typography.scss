@@ -1,0 +1,6 @@
+/*
+ * Typography
+ */
+html {
+  font: #{$default_font_size}px/#{$default_line_height} $default_font_family;
+}
