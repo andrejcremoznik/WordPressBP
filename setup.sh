@@ -34,7 +34,7 @@ for f in `find $project_path -depth -name '*WordPressBP*'`; do
 done
 
 rm ${project_path}/readme.md
-cp .env.example .env
+cp ${project_path}/.env.example ${project_path}/.env
 
 echo "Namespacing file contents..."
 
