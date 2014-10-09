@@ -8,6 +8,7 @@
     "grunt-contrib-concat": "^0.5.0",
     "grunt-contrib-uglify": "^0.6.0",
     "grunt-contrib-watch": "^0.6.1",
+    "grunt-sass": "^0.14.2",
     "grunt-csso": "^0.6.3",
     "grunt-shell": "^1.1.1",
     "grunt-ssh": "^0.12.0"

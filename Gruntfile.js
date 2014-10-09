@@ -135,6 +135,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-autoprefixer');
+  grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-csso');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-ssh');
@@ -147,7 +148,7 @@ module.exports = function(grunt) {
     watch: {
       stylesheets: {
         files: ['web/app/themes/WordPressBP/css/**/*.scss'],
-        tasks: ['shell:compassDev', 'autoprefixer']
+        tasks: ['sass:development', 'autoprefixer']
       },
       scriptsTop: {
         files: ['web/app/themes/WordPressBP/js/top/*.js'],
@@ -197,6 +198,36 @@ module.exports = function(grunt) {
         src: 'web/app/themes/WordPressBP/assets/*.js',
         dest: 'web/app/themes/WordPressBP/assets/'
       }
+    },
+
+    // Compile SASS with node libsass
+    sass: {
+      options: {
+        imagePath: '/app/themes/WordPressBP/assets',
+        precision: 5
+      },
+      development: {
+        options: {
+          sourceMap: true,
+          outputStyle: 'nested'
+        },
+        expand: true,
+        flatten: true,
+        src: 'web/app/themes/WordPressBP/css/*.scss',
+        dest: 'web/app/themes/WordPressBP/assets/',
+        ext: '.css'
+      },
+      production: {
+        options: {
+          sourceMap: false,
+          outputStyle: 'compressed'
+        },
+        expand: true,
+        flatten: true,
+        src: 'web/app/themes/WordPressBP/css/*.scss',
+        dest: 'web/app/themes/WordPressBP/assets/',
+        ext: '.css'
+      },
     },
 
     // Auto-add vendor prefixes to CSS if necessary
@@ -331,9 +362,9 @@ module.exports = function(grunt) {
   /*
    * Set up tasks' aliases
    */
-  grunt.registerTask('default',       ['concat', 'autoprefixer']);
-  grunt.registerTask('production',    ['concat', 'uglify', 'autoprefixer', 'csso']);
-  grunt.registerTask('deploy',        ['shell:clean', 'concat', 'uglify', 'autoprefixer', 'csso', 'shell:build'].concat(tasks_deploy));
+  grunt.registerTask('default',       ['concat', 'sass:development', 'autoprefixer']);
+  grunt.registerTask('production',    ['concat', 'uglify', 'sass:production', 'autoprefixer', 'csso']);
+  grunt.registerTask('deploy',        ['shell:clean', 'concat', 'uglify', 'sass', 'autoprefixer', 'csso', 'shell:build'].concat(tasks_deploy));
   grunt.registerTask('deploy-revert', tasks_revert);
   grunt.registerTask('clean',         ['shell:clean']);
 
