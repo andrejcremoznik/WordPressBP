@@ -60,7 +60,7 @@ Directory structure:
 
 * `nginx.conf` - Nginx configuration from my [conf](https://github.com/andrejcremoznik/conf/tree/master/nginx) repository. If you're using WordPressBP installed into the `repo` directory, then the `root` path for the server would be `/srv/http/mysite.dev/repo/web`.
 * `log` - Contains server logs - has to be writable by Nginx
-* `repo` - The directory you'd use for <project_path> when using the `setup` script.
+* `repo` - The directory you'd use for `project_path` when using the `setup` script.
 
 
 ### Setup script
