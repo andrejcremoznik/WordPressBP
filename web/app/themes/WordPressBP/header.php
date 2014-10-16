@@ -9,12 +9,12 @@
 <body <?php body_class() ?>>
 
 <header class="header" role="banner">
-  <div class="logo"><a href="<?= site_url("/") ?>" title="<?php bloginfo('name') ?>" rel="home"><?php bloginfo('name') ?></a></div>
+  <div class="logo"><a href="<?= home_url('/') ?>" title="<?php bloginfo('name') ?>" rel="home"><?php bloginfo('name') ?></a></div>
   <nav class="nav" role="navigation">
-    <?php wp_nav_menu(array(
+    <?php wp_nav_menu([
       'theme_location' => 'primary',
       'container' => false
-    )) ?>
+    ]) ?>
   </nav>
 </header>
 

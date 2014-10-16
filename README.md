@@ -24,23 +24,43 @@ WordPressBP is **meant for developers** developing a WordPress site **from strat
 * [Composer](https://getcomposer.org/) - installed as 'composer' in user's $PATH
 * [WP-CLI](http://wp-cli.org/) - installed as 'wp' in user's $PATH
 
+PHP 5.4 + required.
+
 
 ## Quickstart guide
 
-1. Run the `setup` script (see details below)
-  1. Example: `./setup.sh myproject /var/www/myproject/repo`
-2. Edit the **.env** file - setup database access, environment and salts
-3. Edit **composer.json** - fill in the required metadata then run `composer install`
-4. Run `npm install` to install Node build tools
-5. Run `bower install` to install Bower front-end assets
-6. Run `grunt` to compile all front-end assets
-7. Setup WordPress with WP-CLI
+1. Configure your web server (see details below)
+2. Run the `setup` script (see details below)
+  1. Example: `./setup.sh myproject /srv/http/myproject/repo`
+3. Edit the **.env** file - setup database access, environment and salts
+4. Edit **composer.json** - fill in the required metadata then run `composer install`
+5. Run `npm install` to install Node build tools
+6. Run `bower install` to install Bower front-end assets
+7. Run `grunt` to compile all front-end assets
+8. Setup WordPress with WP-CLI
   1. `wp db create`
   2. `wp core install --url=<url> --title=<site-title> --admin_user=<username> --admin_password=<password> --admin_email=<email>`
   3. `wp site empty --yes`
   4. `wp theme activate <namespace>` - the same namespace as used in the setup script
-8. Visit your new site eg. *http://mysite.dev*
+9. Make `web/app/uploads` directory writeable by the webserver
+10. Visit your new site eg. *http://mysite.dev*
   1. Login is at *http://mysite.dev/wp/wp-login.php*
+
+
+### Web server setup example
+
+Directory structure:
+
+```
+/srv/http/mysite.dev ┬ etc ─ nginx.conf
+                     ├ log ┬ access.log
+                     │     └ error.log
+                     └ repo
+```
+
+* `nginx.conf` - Nginx configuration from my [conf](https://github.com/andrejcremoznik/conf/tree/master/nginx) repository. If you're using WordPressBP installed into the `repo` directory, then the `root` path for the server would be `/srv/http/mysite.dev/repo/web`.
+* `log` - Contains server logs - has to be writable by Nginx
+* `repo` - The directory you'd use for <project_path> when using the `setup` script.
 
 
 ### Setup script
@@ -57,7 +77,7 @@ Usage:
 A typical command would be:
 
 ```
-./setup.sh myproject /var/www/myproject/repo/
+./setup.sh myproject /srv/http/myproject/repo/
 ```
 
 
