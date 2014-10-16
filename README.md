@@ -24,6 +24,8 @@ WordPressBP is **meant for developers** developing a WordPress site **from strat
 * [Composer](https://getcomposer.org/) - installed as 'composer' in user's $PATH
 * [WP-CLI](http://wp-cli.org/) - installed as 'wp' in user's $PATH
 
+PHP 5.4 + required.
+
 
 ## Quickstart guide
 
