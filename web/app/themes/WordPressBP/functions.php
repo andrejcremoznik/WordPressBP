@@ -31,9 +31,9 @@ function WordPressBP_setup() {
   /**
    * Register navigation menus
    */
-  register_nav_menus(array(
+  register_nav_menus([
     'primary' => __('Main menu', 'WordPressBP')
-  ));
+  ]);
 
   /**
    * Enable support for certain theme features
@@ -43,7 +43,7 @@ function WordPressBP_setup() {
   //add_theme_support('custom-background');
   //add_theme_support('custom-header');
   add_theme_support('automatic-feed-links');
-  add_theme_support('html5', array('search-form', 'comment-form', 'comment-list'));
+  add_theme_support('html5', ['search-form', 'comment-form', 'comment-list']);
 
   /**
    * Custom thumbnail sizes
@@ -72,10 +72,10 @@ add_action('after_setup_theme', 'WordPressBP_setup');
  * Set up theme's sidebars
  */
 function WordPressBP_widgets_init() {
-  register_sidebar(array(
+  register_sidebar([
     'name' => __('Sidebar 1', 'WordPressBP'),
     'id'   => 'sidebar1'
-  ));
+  ]);
 }
 add_action('widgets_init', 'WordPressBP_widgets_init');
 
@@ -89,11 +89,11 @@ add_action('widgets_init', 'WordPressBP_widgets_init');
  */
 function WordPressBP_scripts_styles() {
   // Register styles
-  wp_register_style('default', get_template_directory_uri() . '/assets/theme_default.css', array(), ASSET_VERSION, 'all');
+  wp_register_style('default', get_template_directory_uri() . '/assets/theme_default.css', [], ASSET_VERSION, 'all');
 
   // Register scripts
-  wp_register_script('top',    get_template_directory_uri() . '/assets/top.js',    array(), ASSET_VERSION, false);
-  wp_register_script('bottom', get_template_directory_uri() . '/assets/bottom.js', array(), ASSET_VERSION, true);
+  wp_register_script('top',    get_template_directory_uri() . '/assets/top.js',    [], ASSET_VERSION, false);
+  wp_register_script('bottom', get_template_directory_uri() . '/assets/bottom.js', [], ASSET_VERSION, true);
 
   // Enqueue styles
   wp_enqueue_style('default');

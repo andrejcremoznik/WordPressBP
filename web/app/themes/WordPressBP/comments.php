@@ -20,11 +20,11 @@
     <?php endif ?>
 
     <ol class="comment-list"><?php
-      wp_list_comments(array(
+      wp_list_comments([
         'style'      => 'ol',
         'short_ping' => true,
         'avatar_size'=> 34
-      ));
+      ]);
     ?></ol>
 
     <?php if(get_comment_pages_count() > 1 && get_option('page_comments')): ?>
