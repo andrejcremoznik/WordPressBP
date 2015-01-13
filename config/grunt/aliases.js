@@ -12,7 +12,7 @@ module.exports = {
     'csso'
   ],
   'clean': [
-    'shell:'
+    'shell:clean'
   ],
   'deploy': [
     'shell:clean',
