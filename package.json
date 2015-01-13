@@ -4,13 +4,14 @@
   "description": "WordPressBP WordPress website",
   "devDependencies": {
     "grunt": "^0.4.5",
-    "grunt-autoprefixer": "^1.0.1",
+    "grunt-autoprefixer": "^2.1.0",
     "grunt-contrib-concat": "^0.5.0",
-    "grunt-contrib-uglify": "^0.6.0",
+    "grunt-contrib-uglify": "^0.7.0",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-sass": "^0.14.2",
-    "grunt-csso": "^0.6.3",
+    "grunt-csso": "^0.7.0",
+    "grunt-sass": "^0.17.0",
     "grunt-shell": "^1.1.1",
-    "grunt-ssh": "^0.12.0"
+    "grunt-ssh": "^0.12.0",
+    "load-grunt-config": "^0.16.0"
   }
 }

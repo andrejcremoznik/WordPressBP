@@ -43,7 +43,8 @@ function WordPressBP_setup() {
   //add_theme_support('custom-background');
   //add_theme_support('custom-header');
   add_theme_support('automatic-feed-links');
-  add_theme_support('html5', ['search-form', 'comment-form', 'comment-list']);
+  add_theme_support('html5', ['search-form', 'comment-form', 'comment-list', 'gallery', 'caption']);
+  add_theme_support('title-tag');
 
   /**
    * Custom thumbnail sizes
@@ -127,25 +128,6 @@ remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
 /**
  * Various filters
  */
-function WordPressBP_wp_title($title, $sep) {
-  global $paged, $page;
-
-  if(is_feed())
-    return $title;
-
-  $title .= get_bloginfo('name');
-
-  $site_description = get_bloginfo('description', 'display');
-  if($site_description && (is_home() || is_front_page()))
-    $title = "$title $sep $site_description";
-
-  if($paged >= 2 || $page >= 2)
-    $title = "$title $sep " . sprintf(__('Page %s', 'WordPressBP' ), max($paged, $page));
-
-  return $title;
-}
-add_filter('wp_title', 'WordPressBP_wp_title', 10, 2);
-
 /*
 function modify_excerpt_more($more) {
   global $post;

@@ -33,17 +33,18 @@ PHP 5.4 + required.
 2. Run the `setup` script (see details below)
   1. Example: `./setup.sh myproject /srv/http/myproject/repo`
 3. Edit the **.env** file - setup database access, environment and salts
-4. Edit **composer.json** - fill in the required metadata then run `composer install`
-5. Run `npm install` to install Node build tools
-6. Run `bower install` to install Bower front-end assets
-7. Run `grunt` to compile all front-end assets
-8. Setup WordPress with WP-CLI
+4. Check the settings in **config/application.php** and the files in the **environments** subdirectory
+5. Edit **composer.json** - fill in the required metadata then run `composer install`
+6. Run `npm install` to install Node build tools
+7. Run `bower install` to install Bower front-end assets
+8. Run `grunt` to compile all front-end assets
+9. Setup WordPress with WP-CLI
   1. `wp db create`
   2. `wp core install --url=<url> --title=<site-title> --admin_user=<username> --admin_password=<password> --admin_email=<email>`
   3. `wp site empty --yes`
   4. `wp theme activate <namespace>` - the same namespace as used in the setup script
-9. Make `web/app/uploads` directory writeable by the webserver
-10. Visit your new site eg. *http://mysite.dev*
+10. Make `web/app/uploads` directory writeable by the webserver
+11. Visit your new site eg. *http://mysite.dev*
   1. Login is at *http://mysite.dev/wp/wp-login.php*
 
 
