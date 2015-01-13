@@ -4,6 +4,6 @@
   "description": "WordPressBP WordPress website",
   "private": true,
   "dependencies": {
-    "jquery": "~2.1.1"
+    "jquery": "~2.1.3"
   }
 }
