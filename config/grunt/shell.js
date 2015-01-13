@@ -12,6 +12,6 @@ module.exports = {
     ].join('&&')
   },
   build: {
-    command: <%= deploy_create_build %>
+    command: '<%= deploy_create_build %>'
   }
 }

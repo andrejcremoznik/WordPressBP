@@ -33,7 +33,7 @@ for f in `find $project_path -depth -name '*WordPressBP*'`; do
   mv ${tmp_path}/${tmp_file} ${tmp_path}/${tmp_file_new}
 done
 
-rm ${project_path}/readme.md
+echo "# ${namespace}" > ${project_path}/README.md
 cp ${project_path}/.env.example ${project_path}/.env
 
 echo "Namespacing file contents..."

@@ -19,11 +19,11 @@
       "type": "package",
       "package": {
         "name": "wordpress/wordpress",
-        "version": "4.0",
+        "version": "4.1",
         "type": "webroot",
         "dist": {
           "type": "zip",
-          "url": "https://wordpress.org/wordpress-4.0.zip"
+          "url": "https://wordpress.org/wordpress-4.1.zip"
         },
         "require" : {
           "fancyguy/webroot-installer": "1.1.0"
@@ -33,10 +33,10 @@
   ],
   "require": {
     "php": ">=5.5.15",
-    "wordpress/wordpress": "4.0",
+    "wordpress/wordpress": "4.1",
     "fancyguy/webroot-installer": "1.1.0",
-    "composer/installers": "v1.0.18",
-    "vlucas/phpdotenv": "1.0.6"
+    "composer/installers": "v1.0.19",
+    "vlucas/phpdotenv": "1.1.0"
   },
   "extra": {
     "installer-paths": {
