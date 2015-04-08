@@ -6,13 +6,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: functions.php
-msgid "Main menu"
+msgid "Primary Navigation"
 msgstr ""
 
 msgid "New size label"
 msgstr ""
 
-msgid "Sidebar 1"
+msgid "Primary Sidebar"
 msgstr ""
 
 msgid "Page %s"

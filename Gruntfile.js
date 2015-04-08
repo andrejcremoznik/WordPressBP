@@ -71,7 +71,7 @@ module.exports = function(grunt) {
     // Copy generated static assets into the build dir
     'cp web/app/themes/WordPressBP/assets/*.js build/web/app/themes/WordPressBP/assets/',
     'cp web/app/themes/WordPressBP/assets/*.css build/web/app/themes/WordPressBP/assets/',
-    // Replace version string (sDEV) in functions.php for cache busting
+    // Replace version string (vDEV) in functions.php for cache busting
     'sed -i "s/vDEV/' + version + '/g" build/web/app/themes/WordPressBP/functions.php',
     // Uploads dir is not needed in build (will be symlinked into place on deploy)
     'rm -fr build/web/app/uploads',

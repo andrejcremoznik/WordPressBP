@@ -1,8 +1,8 @@
 // Custom mixins
 @import "helpers/mixins";
 
-// 3rd party assets
-@import "../lib/normalize";
+// Normalize (Bower dependency)
+@import "../../../../../../bower_modules/normalize-scss/_normalize.scss";
 
 // Modules
 @import "modules/typography";

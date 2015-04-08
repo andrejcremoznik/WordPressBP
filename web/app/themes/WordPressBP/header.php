@@ -11,7 +11,7 @@
   <div class="logo"><a href="<?= home_url('/') ?>" title="<?php bloginfo('name') ?>" rel="home"><?php bloginfo('name') ?></a></div>
   <nav class="nav" role="navigation">
     <?php wp_nav_menu([
-      'theme_location' => 'primary',
+      'theme_location' => 'primary_navigation',
       'container' => false
     ]) ?>
   </nav>
