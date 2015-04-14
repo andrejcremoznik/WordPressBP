@@ -2,5 +2,25 @@
  * Typography
  */
 html {
-  font: #{$default_font_size}px/#{$default_line_height} $default_font_family;
+  font: #{$default-font-size}px/#{$default-line-height} $default-font-family;
 }
+
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+.text-justify { text-align: justify; }
+
+.text-wrap { white-space: normal; }
+.text-nowrap { white-space: nowrap; }
+
+.text-uppercase { text-transform: uppercase; }
+.text-lowercase { text-transform: lowercase; }
+.text-capitalize { text-transform: capitalize; }
+
+.font-inherit { font: inherit; }
+.font-bold { font-weight: bold; }
+.font-italic { font-style: italic; }
+.font-small { font-size: $small-font-size; }
+.font-large { font-size: $large-font-size; }
+.font-smaller { font-size: $smaller-font-size; }
+.font-larger { font-size: $larger-font-size; }

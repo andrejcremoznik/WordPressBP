@@ -2,18 +2,9 @@
 .pull-left { float: left; }
 .pull-right { float: right; }
 
-.text-left { text-align: left; }
-.text-right { text-align: right; }
-.text-center { text-align: center; }
-
 // Micro clearfix
 .cf:before, .cf:after { content: ""; display: table; }
 .cf:after { clear: both; }
-
-// Image replacement - Method 1 - use if box size independent of font-size
-.ir { font: 0/0 a; text-shadow: none; color: transparent; }
-// Image replacement - Method 2 - use if box size depends on font-size (EM units)
-.ir2 { display: block; text-indent: -999em; overflow: hidden; }
 
 // Hide element from screenreaders and browsers
 .hidden { display: none !important; visibility: hidden; }
