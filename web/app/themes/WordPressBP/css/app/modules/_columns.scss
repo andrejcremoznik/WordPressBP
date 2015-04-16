@@ -54,14 +54,14 @@
   }
 
   &.fifths > .column {
-    width: pc(1/5);
+    width: pc(1,5);
     &.double { width: pc(2,5); }
     &.triple { width: pc(3,5); }
     &.quadra { width: pc(4,5); }
   }
 
   &.sixths > .column {
-    width: pc(1/6);
+    width: pc(1,6);
     &.double { width: pc(2,6); }
     &.triple { width: pc(3,6); }
     &.quadra { width: pc(4,6); }
