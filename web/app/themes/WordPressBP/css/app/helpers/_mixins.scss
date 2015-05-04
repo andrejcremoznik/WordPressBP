@@ -2,7 +2,7 @@
  * Convert PX units to EMs.
  * Ex: font-size: pem(16);
  */
-@function pem($pxval, $base: $default_font_size) {
+@function pem($pxval, $base: $default-font-size) {
   @return #{$pxval / $base}em;
 }
 
@@ -10,8 +10,8 @@
  * Convert PX units to REMs.
  * Ex: font-size: rem(16);
  */
-@function rem($pxval, $base: $default_font_size) {
-  @return #{$pxval / $base}rem;
+@function rem($pxval) {
+  @return #{$pxval / $default-font-size}rem;
 }
 
 /*

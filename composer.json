@@ -14,36 +14,19 @@
     {
       "type": "composer",
       "url": "http://wpackagist.org"
-    },
-    {
-      "type": "package",
-      "package": {
-        "name": "wordpress/wordpress",
-        "version": "4.1",
-        "type": "webroot",
-        "dist": {
-          "type": "zip",
-          "url": "https://wordpress.org/wordpress-4.1.zip"
-        },
-        "require" : {
-          "fancyguy/webroot-installer": "1.1.0"
-        }
-      }
     }
   ],
   "require": {
-    "php": ">=5.5.15",
-    "wordpress/wordpress": "4.1",
-    "fancyguy/webroot-installer": "1.1.0",
-    "composer/installers": "v1.0.19",
-    "vlucas/phpdotenv": "1.1.0"
+    "php": ">=5.5",
+    "composer/installers": "v1.0.21",
+    "vlucas/phpdotenv": "1.1.0",
+    "johnpbloch/wordpress": "4.1.1"
   },
   "extra": {
     "installer-paths": {
       "web/app/plugins/{$name}/": ["type:wordpress-plugin"],
       "web/app/themes/{$name}/": ["type:wordpress-theme"]
     },
-    "webroot-dir": "web/wp",
-    "webroot-package": "wordpress/wordpress"
+    "wordpress-install-dir": "web/wp"
   }
 }

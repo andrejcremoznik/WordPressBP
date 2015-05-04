@@ -19,5 +19,6 @@ wp db query "DELETE FROM wp_posts WHERE post_type = 'revision'"
 wp cache flush
 wp transient delete-all
 wp rewrite flush
+wp user create dev dev@dev.dev --user_pass=dev --role=administrator
 
 echo "Done."

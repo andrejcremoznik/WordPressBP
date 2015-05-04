@@ -3,19 +3,42 @@
  * - create new themes by copying this file and editing its varibles
  */
 
+/*
+ * Layout
+ */
+
+// Responsive breakpoints (max-width)
+$breakpoint-s: 767px;
+$breakpoint-m: 992px;
+$breakpoint-l: 1200px;
+
+// Grid gutter width
+$gutter-width: 30px;
+
+
+/*
+ * Typography
+ */
+
 // Font families
-$default_font_family: Arial, Helvetica, sans-serif;
+$default-font-family: Arial, Helvetica, sans-serif;
 
 // Font sizes
-$default_font_size: 16;    // px value
-$default_line_height: 1.5; // relative value
+$default-font-size: 16;    // px value
+$default-line-height: 1.5; // relative value
+
+$small-font-size: 12px; // absolute value
+$large-font-size: 20px; // absolute value
+
+$smaller-font-size: 80%; // relative value
+$larger-font-size: 120%; // relative value
 
 // Basic colors
-$default_text_color: #333;
-$default_background_color: #fff;
+$default-text-color: #333;
+$default-background-color: #fff;
 
-$content_link: #346994;
-$content_link_hover: #128ad3;
+$content-link: #346994;
+$content-link-hover: #128ad3;
 
 /* =============== */
 

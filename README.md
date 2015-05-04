@@ -82,6 +82,30 @@ A typical command would be:
 ```
 
 
+## Developing
+
+### Frontend
+
+Frontend dependecies are handled by Bower and will be installed in the `bower_modules` subfolder. Pull them in by referencing stylesheets from the Sass files and javascripts from the `concat` Grunt task configuration file.
+
+When developing use `grunt watch` to watch stylesheets and javascripts for changes and to compile on every change.
+
+`grunt` will compile stylesheets and javascripts, `grunt production` will also minify them.
+
+### Backend
+
+Develop your templates in the `web/app/themes/*`.
+
+If you're going to build custom plugins put them in `web/app/plugins` and prefix the folder name with you project's namespace as used in the setup script.
+
+Use **composer** to pull in 3rd-party plugins to your project from [WordPres Packagist](http://wpackagist.org/).
+
+
+## Deploying with Grunt
+
+TODO
+
+
 ### Recommended plugins
 
 **PLUGIN RULE #1: Do not use plugins if doing it by yourself is reasonable!**

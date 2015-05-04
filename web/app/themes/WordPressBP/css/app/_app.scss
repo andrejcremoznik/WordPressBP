@@ -1,26 +1,21 @@
 // Custom mixins
 @import "helpers/mixins";
 
-// 3rd party assets
-@import "../lib/normalize";
+// Helper classes
+@import "helpers/classes";
 
-// Modules
-@import "modules/typography";
+// Normalize (Bower dependency)
+@import "../../../../../../bower_modules/normalize-scss/_normalize.scss";
 
-
-// Regions
+// Apply default document colors
 body {
   color: $default_text_color;
   background: $default_background_color;
 }
 
-@import "regions/header";
-@import "regions/footer";
-@import "regions/main";
-@import "regions/aside";
-
-// Helper classes
-@import "helpers/classes";
+// Modules
+@import "modules/columns";
+@import "modules/typography";
 
 // Quick hacks
 @import "shame";

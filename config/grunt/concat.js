@@ -16,7 +16,7 @@ module.exports = {
     },
     files: {
       'web/app/themes/WordPressBP/assets/bottom.js': [
-        'web/app/themes/WordPressBP/js/lib/jquery/dist/jquery.min.js', // bower dependency
+        'bower_modules/jquery/dist/jquery.min.js', // bower dependency
         'web/app/themes/WordPressBP/js/bottom/module1.js',
         'web/app/themes/WordPressBP/js/bottom/main.js'
       ]

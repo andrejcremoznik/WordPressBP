@@ -17,16 +17,15 @@ web/app/plugins/*
 web/app/uploads/*
 !web/app/uploads/.gitkeep
 
-# Vendor (e.g. Composer)
+# Vendor (Composer modules)
 vendor/*
 !vendor/.gitkeep
 
-# Node Package Manager
+# Node modules
 node_modules
 
-# Bower components
-web/app/themes/WordPressBP/js/lib/*
-!web/app/themes/WordPressBP/js/lib/.gitkeep
+# Bower modules
+bower_modules
 
 # Compiled CSS
 web/app/themes/WordPressBP/assets/*.css

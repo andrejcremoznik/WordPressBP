@@ -3,7 +3,7 @@
 /**
  * Global variables
  */
-define('ASSET_VERSION', 'dev'); // Change during deploy with Grunt
+define('ASSET_VERSION', 'vDEV'); // Change during deploy with Grunt
 
 /**
  * Set up theme's defaults, register various features...
@@ -32,19 +32,19 @@ function WordPressBP_setup() {
    * Register navigation menus
    */
   register_nav_menus([
-    'primary' => __('Main menu', 'WordPressBP')
+    'primary_navigation' => __('Primary Navigation', 'WordPressBP')
   ]);
 
   /**
    * Enable support for certain theme features
    */
-  add_theme_support('post-thumbnails');
-  //add_theme_support('post-formats');
-  //add_theme_support('custom-background');
-  //add_theme_support('custom-header');
+  add_theme_support('title-tag');
   add_theme_support('automatic-feed-links');
   add_theme_support('html5', ['search-form', 'comment-form', 'comment-list', 'gallery', 'caption']);
-  add_theme_support('title-tag');
+  add_theme_support('post-thumbnails');
+  //add_theme_support('post-formats', ['aside', 'gallery', 'link', 'image', 'quote', 'video', 'audio']);
+  //add_theme_support('custom-header');
+  //add_theme_support('custom-background');
 
   /**
    * Custom thumbnail sizes
@@ -74,8 +74,8 @@ add_action('after_setup_theme', 'WordPressBP_setup');
  */
 function WordPressBP_widgets_init() {
   register_sidebar([
-    'name' => __('Sidebar 1', 'WordPressBP'),
-    'id'   => 'sidebar1'
+    'name' => __('Primary Sidebar', 'WordPressBP'),
+    'id'   => 'primary_sidebar'
   ]);
 }
 add_action('widgets_init', 'WordPressBP_widgets_init');
@@ -126,7 +126,7 @@ remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
 
 
 /**
- * Various filters
+ * Extra
  */
 /*
 function modify_excerpt_more($more) {
@@ -155,7 +155,7 @@ add_filter('previous_comments_link_attributes', 'nav_prev_link_attr');
 /*
 function modify_body_classes($classes) {
   global $post;
-  if(is_active_sidebar('sidebar1')) $classes[] = 'has-sidebar';
+  if(is_active_sidebar('primary_sidebar')) $classes[] = 'has-sidebar';
   return $classes;
 }
 add_filter('body_class', 'modify_body_classes');
@@ -176,3 +176,11 @@ function modify_comment_form_fields($fields) {
   return $fields;
 }
 add_filter('comment_form_default_fields', 'modify_comment_form_fields');
+
+
+/**
+ * Dev helpers
+ */
+function dd($data) {
+  die(var_dump($data));
+}
