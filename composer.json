@@ -19,8 +19,9 @@
   "require": {
     "php": ">=5.5",
     "composer/installers": "v1.0.21",
-    "vlucas/phpdotenv": "2.0.1",
-    "johnpbloch/wordpress": "4.2.2"
+    "vlucas/phpdotenv": "1.1.1",
+    "johnpbloch/wordpress": "4.2.2",
+    "wpackagist-plugin/disable-emojis": "1.5"
   },
   "extra": {
     "installer-paths": {
