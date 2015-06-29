@@ -19,8 +19,8 @@
   "require": {
     "php": ">=5.5",
     "composer/installers": "v1.0.21",
-    "vlucas/phpdotenv": "1.1.0",
-    "johnpbloch/wordpress": "4.1.1"
+    "vlucas/phpdotenv": "2.0.1",
+    "johnpbloch/wordpress": "4.2.2"
   },
   "extra": {
     "installer-paths": {
