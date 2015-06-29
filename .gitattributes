@@ -1,3 +1,4 @@
 * text=auto
 
 setup.sh export-ignore
+README.md export-ignore
