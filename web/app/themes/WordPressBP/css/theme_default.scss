@@ -15,6 +15,8 @@ $breakpoint-l: 1200px;
 // Grid gutter width
 $gutter-width: 30px;
 
+// Public asset uri (use with asset() function)
+$public-assets-uri: '/app/themes/WordPressBP/assets/default/';
 
 /*
  * Typography
@@ -24,14 +26,14 @@ $gutter-width: 30px;
 $default-font-family: Arial, Helvetica, sans-serif;
 
 // Font sizes
-$default-font-size: 16;    // px value
+$default-font-size: 16;    // absolute value
 $default-line-height: 1.5; // relative value
 
-$small-font-size: 12px; // absolute value
-$large-font-size: 20px; // absolute value
+$small-font-size: 12;      // absolute value
+$large-font-size: 20;      // absolute value
 
-$smaller-font-size: 80%; // relative value
-$larger-font-size: 120%; // relative value
+$smaller-font-size: 80%;   // relative value
+$larger-font-size: 120%;   // relative value
 
 // Basic colors
 $default-text-color: #333;
