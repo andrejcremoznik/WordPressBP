@@ -5,6 +5,13 @@ html {
   font: #{$default-font-size}px/#{$default-line-height} $default-font-family;
 }
 
+a {
+  color: $content-link;
+  &:hover {
+    color: $content-link-hover;
+  }
+}
+
 .text-left { text-align: left; }
 .text-right { text-align: right; }
 .text-center { text-align: center; }
@@ -20,8 +27,8 @@ html {
 .font-inherit { font: inherit; }
 .font-bold { font-weight: bold; }
 .font-italic { font-style: italic; }
-.font-small { font-size: $small-font-size; }
-.font-large { font-size: $large-font-size; }
+.font-small { font-size: rem($small-font-size); }
+.font-large { font-size: rem($large-font-size); }
 .font-smaller { font-size: $smaller-font-size; }
 .font-larger { font-size: $larger-font-size; }
 

@@ -1,7 +1,7 @@
-<?php if(post_password_required()) return ?>
+<?php if (post_password_required()) return ?>
 
 <section id="comments" class="comments-area">
-  <?php if(have_comments()): ?>
+  <?php if (have_comments()): ?>
 
     <h2 class="comments-title"><?php
       printf(
@@ -11,9 +11,9 @@
       );
     ?></h2>
 
-    <?php if(get_comment_pages_count() > 1 && get_option('page_comments')): ?>
+    <?php if (get_comment_pages_count() > 1 && get_option('page_comments')): ?>
       <nav id="comment-nav-above" class="comment-navigation" role="navigation">
-        <h4 class="visuallyhidden"><?php _e('Comment navigation', 'WordPressBP') ?></h1>
+        <h4 class="visuallyhidden"><?php _e('Comment navigation', 'WordPressBP') ?></h4>
         <?php previous_comments_link(__('&larr; Older Comments', 'WordPressBP')) ?>
         <?php next_comments_link(__('Newer Comments &rarr;', 'WordPressBP')) ?>
       </nav>
@@ -23,19 +23,19 @@
       wp_list_comments([
         'style'      => 'ol',
         'short_ping' => true,
-        'avatar_size'=> 34
+        'avatar_size'=> 64
       ]);
     ?></ol>
 
-    <?php if(get_comment_pages_count() > 1 && get_option('page_comments')): ?>
+    <?php if (get_comment_pages_count() > 1 && get_option('page_comments')): ?>
       <nav id="comment-nav-below" class="comment-navigation" role="navigation">
-        <h4 class="visuallyhidden"><?php _e('Comment navigation', 'WordPressBP') ?></h1>
+        <h4 class="visuallyhidden"><?php _e('Comment navigation', 'WordPressBP') ?></h4>
         <?php previous_comments_link(__('&larr; Older Comments', 'WordPressBP')) ?>
         <?php next_comments_link(__('Newer Comments &rarr;', 'WordPressBP')) ?>
       </nav>
     <?php endif ?>
 
-    <?php if(!comments_open()): ?>
+    <?php if (!comments_open()): ?>
       <p class="no-comments"><?php _e('Comments are closed.', 'WordPressBP') ?></p>
     <?php endif ?>
 

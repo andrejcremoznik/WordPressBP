@@ -18,6 +18,7 @@ module.exports = {
       'web/app/themes/WordPressBP/assets/bottom.js': [
         'bower_modules/jquery/dist/jquery.min.js', // bower dependency
         'web/app/themes/WordPressBP/js/bottom/module1.js',
+        'web/app/themes/WordPressBP/js/bottom/click-handler.js',
         'web/app/themes/WordPressBP/js/bottom/main.js'
       ]
     }

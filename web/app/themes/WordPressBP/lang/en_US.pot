@@ -18,7 +18,7 @@ msgstr ""
 msgid "Page %s"
 msgstr ""
 
-#: index.php
+#: loop-default.php
 msgid "Category"
 msgstr ""
 
@@ -28,6 +28,7 @@ msgstr ""
 msgid "Author"
 msgstr ""
 
+#: loop-empty.php
 msgid "Sorry, no posts matched your criteria."
 msgstr ""
 

@@ -21,3 +21,12 @@
 @function pc($target, $container) {
   @return ($target / $container) * 100%;
 }
+
+/*
+ * Asset public url helper
+ * Ex: asset('image.jpg')
+ * or: asset('shared_image.jpg', '/app/themes/WordPressBP/assets/')
+ */
+@function asset($file, $path: $public-assets-uri) {
+  @return url("#{$path + $file}");
+}

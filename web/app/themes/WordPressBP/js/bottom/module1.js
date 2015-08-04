@@ -17,7 +17,7 @@
 
   Module1.prototype = {
 
-    init: function() {
+    init: function () {
       console.log(this.options.print);
     }
 

@@ -114,11 +114,11 @@ add_action('wp_enqueue_scripts', 'WordPressBP_scripts_styles');
  */
 remove_action('wp_head', 'rsd_link');
 remove_action('wp_head', 'wp_generator');
-//remove_action('wp_head', 'feed_links',       2);
+//remove_action('wp_head', 'feed_links', 2);
 remove_action('wp_head', 'feed_links_extra', 3);
 remove_action('wp_head', 'index_rel_link');
 remove_action('wp_head', 'wlwmanifest_link');
-remove_action('wp_head', 'start_post_rel_link',  10, 0);
+remove_action('wp_head', 'start_post_rel_link', 10, 0);
 remove_action('wp_head', 'parent_post_rel_link', 10, 0);
 remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
 remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
@@ -155,13 +155,13 @@ add_filter('previous_comments_link_attributes', 'nav_prev_link_attr');
 /*
 function modify_body_classes($classes) {
   global $post;
-  if(is_active_sidebar('primary_sidebar')) $classes[] = 'has-sidebar';
+  if (is_active_sidebar('primary_sidebar')) $classes[] = 'has-sidebar';
   return $classes;
 }
 add_filter('body_class', 'modify_body_classes');
 
 function modify_post_classes($classes) {
-  if(!post_password_required() && has_post_thumbnail())
+  if (!post_password_required() && has_post_thumbnail())
     $classes[] = 'has-post-thumbnail';
 
   return $classes;
@@ -170,7 +170,7 @@ add_filter('post_class', 'modify_post_classes');
 */
 
 function modify_comment_form_fields($fields) {
-  if(isset($fields['url']))
+  if (isset($fields['url']))
     unset($fields['url']);
 
   return $fields;
