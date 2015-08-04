@@ -5,14 +5,14 @@
   "repository": "andrejcremoznik/WordPressBP",
   "devDependencies": {
     "grunt": "^0.4.5",
-    "grunt-autoprefixer": "^3.0.0",
+    "grunt-autoprefixer": "^3.0.3",
     "grunt-contrib-concat": "^0.5.1",
     "grunt-contrib-uglify": "^0.9.1",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-csso": "^0.7.1",
     "grunt-sass": "^1.0.0",
     "grunt-shell": "^1.1.2",
-    "grunt-ssh": "^0.12.2",
-    "load-grunt-config": "^0.17.1"
+    "grunt-ssh": "^0.12.6",
+    "load-grunt-config": "^0.17.2"
   }
 }
