@@ -3,9 +3,8 @@ $root_dir = dirname(__DIR__);
 $webroot_dir = $root_dir . '/web';
 
 // Use Dotenv to set required environment variables and load .env file in root
-if (file_exists($root_dir . '/.env')) {
+if (file_exists($root_dir . '/.env'))
   Dotenv::load($root_dir);
-}
 
 Dotenv::required(['DB_NAME', 'DB_USER', 'DB_PASSWORD', 'WP_HOME', 'WP_SITEURL']);
 
@@ -14,9 +13,8 @@ define('WP_ENV', getenv('WP_ENV') ? getenv('WP_ENV') : 'development');
 
 $env_config = __DIR__ . '/environments/' . WP_ENV . '.php';
 
-if (file_exists($env_config)) {
+if (file_exists($env_config))
   require_once $env_config;
-}
 
 // Custom Content Directory
 define('CONTENT_DIR',   '/app');
@@ -26,7 +24,7 @@ define('WP_CONTENT_URL', WP_HOME . CONTENT_DIR);
 // DB settings
 define('DB_CHARSET', 'utf8');
 define('DB_COLLATE', '');
-$table_prefix = getenv('DB_PREFIX') ? getenv('DB_PREFIX') : 'wp_';
+$table_prefix = 'wpbp_';
 
 // Authentication Unique Keys and Salts
 define('AUTH_KEY',         getenv('AUTH_KEY'));
@@ -49,7 +47,5 @@ define('AUTOSAVE_INTERVAL', 120);
 define('WP_POST_REVISIONS', 2);
 define('EMPTY_TRASH_DAYS',  3);
 
-// Bootstrap WordPress
-if (!defined('ABSPATH')) {
+if (!defined('ABSPATH'))
   define('ABSPATH', $webroot_dir . '/wp/');
-}
