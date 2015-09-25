@@ -8,6 +8,8 @@ module.exports = function(grunt) {
 
     // Use a unix timestamp for asset cache busting and deploy directory name
     version = Math.round(+new Date()/1000),
+    // Save long path to assets in a variable
+    assets = 'web/app/themes/WordPressBP/assets',
 
     /*
      * Get deploy environment from args passed to grunt on CLI
@@ -69,8 +71,11 @@ module.exports = function(grunt) {
     // Export repository contents to build dir
     'git archive --format=tar --prefix=build/ HEAD | (tar xf -)',
     // Copy generated static assets into the build dir
-    'cp web/app/themes/WordPressBP/assets/*.js build/web/app/themes/WordPressBP/assets/',
-    'cp web/app/themes/WordPressBP/assets/*.css build/web/app/themes/WordPressBP/assets/',
+    'cp ' + assets + '/*.js build/' + assets + '/',
+    'cp ' + assets + '/*.css build/' + assets + '/',
+    // Prepend license headers to JS and CSS files
+    'cat web/licenses/js-bottom-licenses.js build/' + assets + '/bottom.js > bottom.js && mv -f bottom.js build/' + assets + '/',
+    'cat web/licenses/css-licenses.css build/' + assets + '/theme_default.css > theme_default.css && mv -f theme_default.css build/' + assets + '/',
     // Replace version string (vDEV) in functions.php for cache busting
     'sed -i "s/vDEV/' + version + '/g" build/web/app/themes/WordPressBP/functions.php',
     // Uploads dir is not needed in build (will be symlinked into place on deploy)

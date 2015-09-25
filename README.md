@@ -117,15 +117,10 @@ Here are some developer-friendly and maintained plugins that you can use:
 
 * [Advanced Custom Fields](http://wordpress.org/plugins/advanced-custom-fields/) - custom fields for posts
 * [Polylang](http://wordpress.org/plugins/polylang/) - everything you need for multilingual sites
-* [WordPress SEO](http://wordpress.org/plugins/wordpress-seo/) - SEO metadata for posts, sitemap…
+* [Yoast SEO](http://wordpress.org/plugins/wordpress-seo/) - SEO metadata for posts, sitemap…
 * [WP-PageNavi](http://wordpress.org/plugins/wp-pagenavi/) - numbered pagination for archives
 * [Redirect Editor](http://wordpress.org/plugins/redirect-editor/) - need to 301 redirect a URL?
 * [Ninja Forms](http://wordpress.org/plugins/ninja-forms/) - works fairly well for forms
-
-
-## Attribution
-
-WordPressBP comes with [Normalize.css by Nicolas Gallagher](https://github.com/necolas/normalize.css).
 
 
 ### Contributors
@@ -135,6 +130,4 @@ WordPressBP comes with [Normalize.css by Nicolas Gallagher](https://github.com/n
 
 ## License
 
-WordPressBP is [CC0](http://creativecommons.org/publicdomain/zero/1.0/) except for any third party
-code distributed with it (currently: normalize.css) which keeps the original license. Contributions
-to this project should adhere to the CC0 license.
+WordPressBP is licensed under the MIT license. See LICENSE.md
