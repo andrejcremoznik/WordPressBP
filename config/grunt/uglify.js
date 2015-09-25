@@ -1,6 +1,7 @@
 module.exports = {
   options: {
-    preserveComments: false
+    preserveComments: false,
+    screwIE8: true
   },
   build: {
     expand:  true,

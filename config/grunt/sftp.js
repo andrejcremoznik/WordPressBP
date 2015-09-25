@@ -5,7 +5,8 @@ module.exports = {
     username:    '<%= deploy_ssh.username %>',
     agent:       process.env.SSH_AUTH_SOCK,
     path:        '/tmp/',
-    srcBasePath: 'build/'
+    srcBasePath: 'build/',
+    showProgress: true
   },
   upload: {
     files: { './': ['build/build.tar.gz'] }
