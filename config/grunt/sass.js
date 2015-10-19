@@ -1,6 +1,5 @@
 module.exports = {
   options: {
-    imagePath: '/app/themes/WordPressBP/assets',
     precision: 5
   },
   build: {
