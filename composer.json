@@ -2,12 +2,12 @@
   "name": "WordPressBP",
   "type": "project",
   "description": "WordPressBP WordPress website",
-  "homepage": "",
+  "homepage": "https://github.com/andrejcremoznik/WordPressBP",
   "authors": [
     {
-      "name": "",
-      "email": "",
-      "homepage": ""
+      "name": "Andrej Čremožnik",
+      "email": "andrej@cremoznik.si",
+      "homepage": "https://github.com/andrejcremoznik"
     }
   ],
   "repositories": [
@@ -18,10 +18,10 @@
   ],
   "require": {
     "php": ">=5.5",
-    "composer/installers": "v1.0.21",
-    "vlucas/phpdotenv": "2.0.1",
+    "composer/installers": "v1.0.22",
+    "vlucas/phpdotenv": "2.1.0",
     "johnpbloch/wordpress": "4.3.1",
-    "wpackagist-plugin/disable-emojis": "1.5"
+    "wpackagist-plugin/disable-emojis": "1.5.1"
   },
   "extra": {
     "installer-paths": {
