@@ -68,10 +68,10 @@ sed -i "s|{project_path}|${project_path}|g" ${project_repo}/etc/nginx.conf
 cp ${project_repo}/etc/nginx.conf ${project_path}/etc/
 ln -s ${project_repo}/etc/${namespace}.conf ${project_path}/etc/
 
-echo "\nDone. Next we will set up WordPress To continue you will need:"
+echo "Done. Next we will set up WordPress To continue you will need:"
 echo "1. MySQL user with CREATE DATABSE privileges OR a user with basic use privileges for an existing database"
 echo "2. \"npm\", \"bower\", \"grunt\", \"composer\" and \"wp\" (WP-CLI) available in your PATH"
-echo "If you are not sure about any of these, please read https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd\n"
+echo -e "If you are not sure about any of these, please read https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd\n"
 
 read -e -p "Do you wish to continue setting up WordPress? (y/n): " cont
 if [ $cont != "y" ]; then exit; fi
@@ -143,9 +143,9 @@ wp user create dev dev@dev.dev --user_pass=dev --role=administrator
 cd - 2>&1 >/dev/null
 
 
-echo "All done.\n"
+echo -e "All done.\n"
 echo "Check $project_path/etc/nginx.conf, make sure the file is included in /etc/nginx/nginx.conf and reload the server."
 echo "Map the correct IP to $namespace.dev in your hosts file."
-echo "Login at http://$namespace.dev/wp/wp-login.php\n"
+echo -e "Login at http://$namespace.dev/wp/wp-login.php\n"
 
 echo "Happy hacking!"
