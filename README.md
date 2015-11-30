@@ -17,51 +17,20 @@ WordPressBP is **meant for developers** developing a WordPress site **from strat
 
 ## System requirements
 
-* LEMP stack (Linux, Nginx, PHP, MySQL)
+* LEMP stack (Linux, Nginx, PHP 5.4+, MySQL)
 * NodeJS & Node Package Manager (npm)
-  * [Grunt CLI](http://gruntjs.com/getting-started#installing-the-cli) `sudo npm install -g grunt-cli`
-  * [Bower](http://bower.io/) `sudo npm install -g bower`
-* [Composer](https://getcomposer.org/) - installed as 'composer' in user's $PATH
-* [WP-CLI](http://wp-cli.org/) - installed as 'wp' in user's $PATH
+  * [Grunt CLI](http://gruntjs.com/getting-started#installing-the-cli)
+  * [Bower](http://bower.io/)
+* [Composer](https://getcomposer.org/)
+* [WP-CLI](http://wp-cli.org/)
 
-PHP 5.4 + required.
+Read [this Gist](https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd) on how to correctly setup these tools on your development environment.
 
 
 ## Quickstart guide
 
-1. Configure your web server (see details below)
-2. Run the `setup` script (see details below)
-  1. Example: `./setup.sh myproject /srv/http/myproject/repo`
-3. Edit the **.env** file - setup database access, environment and salts
-4. Check the settings in **config/application.php** and the files in the **environments** subdirectory
-5. Edit **composer.json** - fill in the required metadata then run `composer install`
-6. Run `npm install` to install Node build tools
-7. Run `bower install` to install Bower front-end assets
-8. Run `grunt` to compile all front-end assets
-9. Setup WordPress with WP-CLI
-  1. `wp db create`
-  2. `wp core install --url=<url> --title=<site-title> --admin_user=<username> --admin_password=<password> --admin_email=<email>`
-  3. `wp site empty --yes`
-  4. `wp theme activate <namespace>` - the same namespace as used in the setup script
-10. Make `web/app/uploads` directory writeable by the webserver
-11. Visit your new site eg. *http://mysite.dev*
-  1. Login is at *http://mysite.dev/wp/wp-login.php*
-
-
-### Web server setup example
-
-Directory structure:
-
-```
-/srv/http/mysite.dev ┬ etc ─ nginx.conf
-                     ├ log ┬ access.log
-                     │     └ error.log
-                     └ repo
-```
-
-* `nginx.conf` - Nginx configuration from my [conf](https://github.com/andrejcremoznik/conf/tree/master/nginx) repository. If you're using WordPressBP installed into the `repo` directory, then the `root` path for the server would be `/srv/http/mysite.dev/repo/web`.
-* `log` - Contains server logs - has to be writable by Nginx
-* `repo` - The directory you'd use for `project_path` when using the `setup` script.
+Once upon a time you had to do things manually. Nowadays the setup script will take care of (almost) everything.
+Make sure you meet the system requirements above.
 
 
 ### Setup script
@@ -69,20 +38,47 @@ Directory structure:
 ```
 $ ./setup.sh
 Usage:
- ./setup.sh <namespace> <project_path>
+ ./setup.sh <namespace> <project_path> [<branch>]
 
  <namespace>:    Alphanumeric name for your project. Used for namespacing functions, file and folder names etc.
  <project_path>: Path to where the plugins and themes directories will be set up.
+ <branch>:       Optional: checkout a specific branch (default: master)
 ```
 
 A typical command would be:
 
 ```
-./setup.sh myproject /srv/http/myproject/repo/
+./setup.sh mywebsite /srv/http/myproject.dev
 ```
+
+The script will create the directory at `project_path` if it doesn't exist. Make sure the parent directory (or `project_path` if exists) is **writeable** by the user running this script. **Do not run the setup script as root.** It won't do anything evil but you shouldn't take my word for it.
+
+Later on the setup script will use *composer*, *npm*, *bower*, *grunt* and *wp* (WP_CLI) to install dependecies and setup WordPress. Make sure these tools are installed as written in [here](https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd).
+
+If you don't have or don't want to use a root MySQL account, prepare a database and user beforehand.
+
+
+### Nginx
+
+Let's assume your `project_path` is `/srv/http/myproject.dev` and `namespace` is `mywebsite`.
+
+1. The main virtual host configuration file is `/srv/http/myproject.dev/etc/nginx.conf`. Look at the file if it requires any changes (you might need to change the fastcgi_pass). This file is specific to your system.
+2. At `/srv/http/myproject.dev/repo/etc/mywebsite.conf` is shared Nginx configuration. This file is included in your code repository and loaded by the main virtual host file. If you need specific Nginx configuration to be shared among all developers and production, this is the place.
+3. You need to include `/srv/http/myproject.dev/etc/nginx.conf` in your main Nginx config at `/etc/nginx/nginx.conf`. You might use a wildcard so you don't have to edit it for every new project. Inside `http { ... }` block put `include /srv/http/*/etc/nginx.conf;`.
+4. Restart Nginx to load the new configuration: `sudo systemctl restart nginx.service`
 
 
 ## Developing
+
+Go to your project at `<project_path>/repo` and initialize git or whatever versioning sistem you like. Note that `.gitignore` and `.gitattributes` are already present so you can quickstart by running:
+
+```
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin git@github.com:mygithubname/myproject.git
+git push -u origin master
+```
 
 ### Frontend
 
@@ -94,21 +90,23 @@ When developing use `grunt watch` to watch stylesheets and javascripts for chang
 
 ### Backend
 
-Develop your templates in the `web/app/themes/*`.
+Develop your template in the `web/app/themes/mywebsite`.
 
-If you're going to build custom plugins put them in `web/app/plugins` and prefix the folder name with you project's namespace as used in the setup script.
+If you're going to build custom plugins put them in `web/app/plugins` and prefix the folder name with you project's namespace as used in the setup script. This way they won't be ignored by `.gitignore` otherwise you'll have to modify that file.
 
 Use **composer** to pull in 3rd-party plugins to your project from [WordPres Packagist](http://wpackagist.org/).
 
 
-## Deploying with Grunt
+### Deploying with Grunt
 
-TODO
+WordPressBP includes a simple automated deployment script using Grunt. You can deploy your website by running `grunt deploy --env=production` but this requires some setup. All the configuration for deploys is in `Gruntfile.js` if you're feeling adventurous.
+
+TODO: Instructions how to prepare the server and configure `Gruntfile.js` for automated deploys.
 
 
 ### Recommended plugins
 
-**PLUGIN RULE #1: Do not use plugins if doing it by yourself is reasonable!**
+**PLUGIN RULE #1: Do not use a plugin if doing it by yourself is reasonable!**
 
 You don't need plugins for sliders, lightboxes, social widgets etc. and you certainly don't want plugins
 not being actively developed.
