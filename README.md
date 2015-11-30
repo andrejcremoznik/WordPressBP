@@ -80,6 +80,7 @@ git remote add origin git@github.com:mygithubname/myproject.git
 git push -u origin master
 ```
 
+
 ### Frontend
 
 Frontend dependecies are handled by Bower and will be installed in the `bower_modules` subfolder. Pull them in by referencing stylesheets from the Sass files and javascripts from the `concat` Grunt task configuration file.
@@ -88,6 +89,7 @@ When developing use `grunt watch` to watch stylesheets and javascripts for chang
 
 `grunt` will compile stylesheets and javascripts, `grunt production` will also minify them.
 
+
 ### Backend
 
 Develop your template in the `web/app/themes/mywebsite`.
@@ -95,6 +97,20 @@ Develop your template in the `web/app/themes/mywebsite`.
 If you're going to build custom plugins put them in `web/app/plugins` and prefix the folder name with you project's namespace as used in the setup script. This way they won't be ignored by `.gitignore` otherwise you'll have to modify that file.
 
 Use **composer** to pull in 3rd-party plugins to your project from [WordPres Packagist](http://wpackagist.org/).
+
+
+## Introducing new developers to your project
+
+Before you get your team to co-develop your project, you will want to set up a staging environment. When done:
+
+1. Have a look at the `sync.sh` script and set it up
+1. Make sure your team members have SSH access to staging
+2. Have them clone the code repository
+3. Everyone should set up a MySQL database
+4. Inside repo copy `.env.example` to `.env` and set it up with everyone's database settings
+5. Run the sync script to get the database
+
+So syncing the database only works downstream. Have some rules set up regarding configuration on staging and syncing. Make sure everyone sets up his changes on staging regularly and in small increments unless you figure out how to do migrations. Communicate changes to configurations to the entire team. Always keep everyone in the loop.
 
 
 ### Deploying with Grunt
