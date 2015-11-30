@@ -68,7 +68,7 @@ sed -i "s|{project_path}|${project_path}|g" ${project_repo}/etc/nginx.conf
 cp ${project_repo}/etc/nginx.conf ${project_path}/etc/
 ln -s ${project_repo}/etc/${namespace}.conf ${project_path}/etc/
 
-echo "Done. Next we will set up WordPress To continue you will need:"
+echo "Done. Next we will set up WordPress. To continue you will need:"
 echo "1. MySQL user with CREATE DATABSE privileges OR a user with basic use privileges for an existing database"
 echo "2. \"npm\", \"bower\", \"grunt\", \"composer\" and \"wp\" (WP-CLI) available in your PATH"
 echo -e "If you are not sure about any of these, please read https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd\n"
@@ -83,6 +83,8 @@ command -v npm >/dev/null 2>&1 || { echo >&2 "NPM not installed. Aborting..."; e
 command -v bower >/dev/null 2>&1 || { echo >&2 "Bower not installed. Aborting..."; exit 1; }
 command -v grunt >/dev/null 2>&1 || { echo >&2 "Grunt not installed. Aborting..."; exit 1; }
 command -v wp >/dev/null 2>&1 || { echo >&2 "WP-CLI not installed. Aborting..."; exit 1; }
+
+echo "All there."
 
 cd $project_repo
 
@@ -101,16 +103,16 @@ sed -i "s/localhost/${dbhost}/g" .env
 read -e -p "Database table prefix: " -i "wpdb_" dbprefix
 sed -i "s/db_prefix/${dbprefix}/g" .env
 
-echo "Running composer install..."
+echo -e "Running composer install...\n"
 composer install
 
-echo "Running NPM install..."
+echo -e "Running NPM install...\n"
 npm install
 
-echo "Running Bower install..."
+echo -e "Running Bower install...\n"
 bower install
 
-echo "Running Grunt..."
+echo -e "Running Grunt...\n"
 grunt
 
 read -e -p "Does user $dbuser have CREATE DATABASE privileges? (y/n): " dbperms
@@ -128,7 +130,7 @@ read -e -p "Admin password: " wp_pass
 read -e -p "Admin e-mail: " wp_email
 
 echo "Installing WordPress"
-wp core install --url=http://namespace.dev --title=${wp_title} --admin_user=${wp_user} --admin_password=${wp_pass} --admin_email=${wp_email}
+wp core install --url=http://namespace.dev --title="${wp_title}" --admin_user=${wp_user} --admin_password=${wp_pass} --admin_email=${wp_email}
 
 echo "Removing demo content"
 wp site empty --yes
