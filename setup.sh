@@ -64,14 +64,14 @@ find ${project_repo}/ -type f -print0 | xargs -0 sed -i "s/WordPressBP/${namespa
 # Set up Nginx vhost
 echo "Setting up Nginx configuration in $project_path/etc"
 
-sed -i "s/{project_path}/${project_path}/g" ${project_repo}/etc/nginx.conf
+sed -i "s|{project_path}|${project_path}|g" ${project_repo}/etc/nginx.conf
 cp ${project_repo}/etc/nginx.conf ${project_path}/etc/
 ln -s ${project_repo}/etc/${namespace}.conf ${project_path}/etc/
 
-echo "Done. Next we will set up WordPress To continue you will need:"
+echo "\nDone. Next we will set up WordPress To continue you will need:"
 echo "1. MySQL user with CREATE DATABSE privileges OR a user with basic use privileges for an existing database"
 echo "2. \"npm\", \"bower\", \"grunt\", \"composer\" and \"wp\" (WP-CLI) available in your PATH"
-echo "If you are not sure about any of these, please read https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd"
+echo "If you are not sure about any of these, please read https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd\n"
 
 read -e -p "Do you wish to continue setting up WordPress? (y/n): " cont
 if [ $cont != "y" ]; then exit; fi
