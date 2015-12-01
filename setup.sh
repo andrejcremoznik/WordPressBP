@@ -73,7 +73,10 @@ echo "2. \"npm\", \"bower\", \"grunt\", \"composer\" and \"wp\" (WP-CLI) availab
 echo -e "If you are not sure about any of these, please read https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd\n"
 
 read -e -p "Do you wish to continue setting up WordPress? (y/n): " cont
-if [ "$cont" != "y" ]; then exit; fi
+if [ "$cont" != "y" ]; then
+  echo "Edit $project_repo/.env with your database settings, run composer, npm, bower, grunt and install WordPress using WP-CLI or your browser. Bye!"
+  exit
+fi
 
 echo "Checking for required software…"
 
