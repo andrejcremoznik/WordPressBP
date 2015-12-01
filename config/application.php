@@ -7,7 +7,7 @@ $webroot_dir = $root_dir . '/web';
 $dotenv = new Dotenv\Dotenv($root_dir);
 if (file_exists($root_dir . '/.env')) {
   $dotenv->load();
-  $dotenv->required(['DB_NAME', 'DB_USER', 'DB_PASSWORD', 'WP_HOME', 'WP_SITEURL']);
+  $dotenv->required(['DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_PREFIX', 'WP_HOME', 'WP_SITEURL']);
 }
 
 // Set up our global environment constant and load its config first
@@ -34,7 +34,7 @@ define('DB_PASSWORD', getenv('DB_PASSWORD'));
 define('DB_HOST',     getenv('DB_HOST') ?: 'localhost');
 define('DB_CHARSET',  'utf8');
 define('DB_COLLATE',  '');
-$table_prefix = 'wpbp_';
+$table_prefix = getenv('DB_PREFIX');
 
 // Authentication Unique Keys and Salts
 define('AUTH_KEY',         getenv('AUTH_KEY'));
@@ -48,10 +48,16 @@ define('NONCE_SALT',       getenv('NONCE_SALT'));
 
 // Custom settings
 define('AUTOMATIC_UPDATER_DISABLED', true);
+// If you don't need scheduled posts, this can be set to true
 define('DISABLE_WP_CRON',            false);
-define('DISALLOW_FILE_EDIT',         true);
 
-define('WP_MEMORY_LIMIT',   '128M');
+// Disable WP file editor
+//define('DISALLOW_FILE_EDIT',         true);
+
+// Disable WP file editor and update checking
+define('DISALLOW_FILE_MODS',         true);
+
+define('WP_MEMORY_LIMIT',   '96M');
 define('AUTOSAVE_INTERVAL', 120);
 define('WP_POST_REVISIONS', 2);
 define('EMPTY_TRASH_DAYS',  3);

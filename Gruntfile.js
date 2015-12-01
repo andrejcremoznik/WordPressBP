@@ -6,7 +6,7 @@ module.exports = function(grunt) {
     path = require('path'),
     config = {},
 
-    // Use a unix timestamp for asset cache busting and deploy directory name
+    // Use a Unix timestamp for asset cache busting and deploy directory name
     version = Math.round(+new Date()/1000),
     // Save long path to assets in a variable
     assets = 'web/app/themes/WordPressBP/assets',
@@ -58,7 +58,7 @@ module.exports = function(grunt) {
     *
     * Basically we create a "build" directory and copy everything into that folder
     * including 3rd party dependencies like composer libs, bower assets and locally
-    * build assets (JS, CSS...).
+    * built assets (JS, CSS...).
     *
     * In the end we compress everything into a single tar archive (tarball).
     *

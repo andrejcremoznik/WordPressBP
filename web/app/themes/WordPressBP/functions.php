@@ -94,7 +94,7 @@ function WordPressBP_scripts_styles() {
 
   // Register scripts
   wp_register_script('top',    get_template_directory_uri() . '/assets/top.js',    [], ASSET_VERSION, false);
-  wp_register_script('bottom', get_template_directory_uri() . '/assets/bottom.js', [], ASSET_VERSION, true);
+  wp_register_script('bottom', get_template_directory_uri() . '/assets/bottom.js', ['jquery'], ASSET_VERSION, true);
 
   // Enqueue styles
   wp_enqueue_style('default');
