@@ -68,12 +68,12 @@ sed -i "s|{project_path}|${project_path}|g" ${project_repo}/config/nginx/nginx.c
 mv ${project_repo}/config/nginx/nginx.conf ${project_path}/etc/
 
 echo "Done. Next we will set up WordPress. To continue you will need:"
-echo "1. MySQL user with CREATE DATABSE privileges OR a user with basic use privileges for an existing database"
+echo "1. MySQL user with CREATE DATABASE privileges OR a user with basic use privileges for an existing database"
 echo "2. \"npm\", \"bower\", \"grunt\", \"composer\" and \"wp\" (WP-CLI) available in your PATH"
 echo -e "If you are not sure about any of these, please read https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd\n"
 
 read -e -p "Do you wish to continue setting up WordPress? (y/n): " cont
-if [ $cont != "y" ]; then exit; fi
+if [ "$cont" != "y" ]; then exit; fi
 
 echo "Checking for required software…"
 
@@ -115,7 +115,7 @@ echo -e "Running Grunt…\n"
 grunt
 
 read -e -p "Does user $dbuser have CREATE DATABASE privileges? Create database now? (y/n): " dbperms
-if [ $dbperms == "y" ]; then
+if [ "$dbperms" == "y" ]; then
   wp db create
 else
   read -p "Please create $dbname database manually and grant $dbuser all basic use privileges. Press [Enter] when done…"
