@@ -29,7 +29,7 @@ Read [this Gist](https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd) o
 
 ## Quickstart guide
 
-Once upon a time you had to do things manually. Nowadays the setup script will take care of (almost) everything.
+The setup script will take care of (almost) everything to get you started.
 Make sure you meet the system requirements above.
 
 
@@ -48,7 +48,7 @@ Usage:
 A typical command would be:
 
 ```
-./setup.sh mywebsite /srv/http/myproject.dev
+./setup.sh mywebsite /srv/http/mywebsite.dev
 ```
 
 The script will create the directory at `project_path` if it doesn't exist. Make sure the parent directory (or `project_path` if exists) is **writeable** by the user running this script. **Do not run the setup script as root.** It won't do anything evil but you shouldn't take my word for it.
@@ -60,12 +60,14 @@ If you don't have or don't want to use a root MySQL account, prepare a database 
 
 ### Nginx
 
-Let's assume your `project_path` is `/srv/http/myproject.dev` and `namespace` is `mywebsite`.
+Let's assume your `project_path` is `/srv/http/mywebsite.dev` and `namespace` is `mywebsite`.
 
-1. The main virtual host configuration file is `/srv/http/myproject.dev/etc/nginx.conf`. Look at the file if it requires any changes (you might need to change the fastcgi_pass). This file is specific to your system.
-2. At `/srv/http/myproject.dev/repo/etc/mywebsite.conf` is shared Nginx configuration. This file is included in your code repository and loaded by the main virtual host file. If you need specific Nginx configuration to be shared among all developers and production, this is the place.
-3. You need to include `/srv/http/myproject.dev/etc/nginx.conf` in your main Nginx config at `/etc/nginx/nginx.conf`. You might use a wildcard so you don't have to edit it for every new project. Inside `http { ... }` block put `include /srv/http/*/etc/nginx.conf;`.
+1. The main virtual host configuration file is `/srv/http/mywebsite.dev/etc/nginx.conf`. Look at the file if it requires any changes (you might need to change the fastcgi_pass). This file is specific to your system.
+2. At `/srv/http/mywebsite.dev/repo/etc/mywebsite.conf` is shared Nginx configuration. This file is included in your code repository and loaded by the main virtual host file. If you need specific Nginx configuration to be shared among all developers and production, this is the place.
+3. You need to include `/srv/http/mywebsite.dev/etc/nginx.conf` in your main Nginx config at `/etc/nginx/nginx.conf`. You might use a wildcard so you don't have to edit it for every new project. Inside `http { ... }` block put `include /srv/http/*/etc/nginx.conf;`.
 4. Restart Nginx to load the new configuration: `sudo systemctl restart nginx.service`
+
+By default your website will be accessible at `http://<namespace>.dev`. Map `mywebsite.dev` to the correct IP address in your `hosts` file.
 
 
 ## Developing
@@ -76,7 +78,7 @@ Go to your project at `<project_path>/repo` and initialize git or whatever versi
 git init
 git add .
 git commit -m "Initial commit"
-git remote add origin git@github.com:mygithubname/myproject.git
+git remote add origin git@github.com:mygithubname/mywebsite.git
 git push -u origin master
 ```
 
