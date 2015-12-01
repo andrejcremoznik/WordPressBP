@@ -48,10 +48,16 @@ define('NONCE_SALT',       getenv('NONCE_SALT'));
 
 // Custom settings
 define('AUTOMATIC_UPDATER_DISABLED', true);
+// If you don't need scheduled posts, this can be set to true
 define('DISABLE_WP_CRON',            false);
-define('DISALLOW_FILE_EDIT',         true);
 
-define('WP_MEMORY_LIMIT',   '128M');
+// Disable WP file editor
+//define('DISALLOW_FILE_EDIT',         true);
+
+// Disable WP file editor and update checking
+define('DISALLOW_FILE_MODS',         true);
+
+define('WP_MEMORY_LIMIT',   '96M');
 define('AUTOSAVE_INTERVAL', 120);
 define('WP_POST_REVISIONS', 2);
 define('EMPTY_TRASH_DAYS',  3);
