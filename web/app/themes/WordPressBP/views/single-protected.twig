@@ -1,0 +1,11 @@
+{% extends "base.twig" %}
+
+{% block content %}
+<form class="password-form" action="/wp-login.php?action=postpass" method="post">
+  <div>
+    <label for="pwbox-{{ post.ID }}">{{ i18n.password }}:</label>
+    <input type="password" name="post_password" id="pwbox-{{ post.ID }}" placeholder="{{ i18n.password }}" class="form-text">
+    <input type="submit" name="Submit" value="Submit" class="btn">
+  </div>
+</form>
+{% endblock %}

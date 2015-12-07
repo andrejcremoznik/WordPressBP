@@ -5,38 +5,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: functions.php
 msgid "Primary Navigation"
-msgstr ""
-
-msgid "New size label"
 msgstr ""
 
 msgid "Primary Sidebar"
 msgstr ""
 
-msgid "Page %s"
-msgstr ""
-
-#: loop-default.php
-msgid "Category"
-msgstr ""
-
-msgid "Tags"
-msgstr ""
-
 msgid "Author"
 msgstr ""
 
-#: loop-empty.php
-msgid "Sorry, no posts matched your criteria."
+msgid "Password"
 msgstr ""
 
-#: sidebar.php
-msgid "No active widgets"
+msgid "Sorry, no content."
 msgstr ""
 
-#: 404.php
 msgid "Missing page!"
 msgstr ""
 

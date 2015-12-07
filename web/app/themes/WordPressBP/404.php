@@ -1,11 +1,8 @@
-<?php get_header() ?>
-
-<main class="main p404" role="main">
-  <article class="hentry">
-    <h1><?php _e('Missing page!', 'WordPressBP') ?></h1>
-    <p><?php _e('We couldn’t find any content at this address.', 'WordPressBP') ?></p>
-  </article>
-</main>
-
 <?php
-  get_footer();
+
+$context = Timber::get_context();
+
+$context['i18n']['missing_title'] = __('Missing page!', 'WordPressBP');
+$context['i18n']['missing_description'] = __('We couldn’t find any content at this address.', 'WordPressBP');
+
+Timber::render('404.twig', $context);

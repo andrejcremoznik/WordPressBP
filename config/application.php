@@ -15,8 +15,9 @@ define('WP_ENV', getenv('WP_ENV') ?: 'development');
 
 $env_config = __DIR__ . '/environments/' . WP_ENV . '.php';
 
-if (file_exists($env_config))
+if (file_exists($env_config)) {
   require_once $env_config;
+}
 
 // URLs
 define('WP_HOME',     getenv('WP_HOME'));
@@ -55,5 +56,6 @@ define('WP_POST_REVISIONS', 2);
 define('EMPTY_TRASH_DAYS',  3);
 
 
-if (!defined('ABSPATH'))
+if (!defined('ABSPATH')) {
   define('ABSPATH', $webroot_dir . '/wp/');
+}
