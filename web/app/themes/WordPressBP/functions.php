@@ -35,10 +35,7 @@ class WordPressBP extends TimberSite {
     remove_action('wp_head', 'wp_generator');
     //remove_action('wp_head', 'feed_links', 2);
     remove_action('wp_head', 'feed_links_extra', 3);
-    remove_action('wp_head', 'index_rel_link');
     remove_action('wp_head', 'wlwmanifest_link');
-    remove_action('wp_head', 'start_post_rel_link', 10, 0);
-    remove_action('wp_head', 'parent_post_rel_link', 10, 0);
     remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
     remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
 
@@ -129,8 +126,12 @@ class WordPressBP extends TimberSite {
    */
   function widgets_init() {
     register_sidebar([
-      'name' => __('Primary Sidebar', 'WordPressBP'),
-      'id'   => 'primary_sidebar'
+      'name'          => __('Primary Sidebar', 'WordPressBP'),
+      'id'            => 'primary_sidebar',
+      'before_widget' => '<div id="%1$s" class="widget %2$s">',
+      'after_widget'  => '</div>',
+      'before_title'  => '<h3 class="widget-title">',
+      'after_title'   => '</h3>'
     ]);
   }
 
@@ -145,7 +146,7 @@ class WordPressBP extends TimberSite {
     wp_register_style('default', get_template_directory_uri() . '/assets/theme_default.css', [], ASSET_VERSION, 'all');
 
     // Register scripts
-    wp_register_script('top',    get_template_directory_uri() . '/assets/top.js',    [], ASSET_VERSION, false);
+    wp_register_script('top',    get_template_directory_uri() . '/assets/top.js',    [],         ASSET_VERSION, false);
     wp_register_script('bottom', get_template_directory_uri() . '/assets/bottom.js', ['jquery'], ASSET_VERSION, true);
 
     // Enqueue styles

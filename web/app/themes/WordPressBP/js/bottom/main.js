@@ -16,7 +16,7 @@
    * 2. Pass the data-action attribute's value from clicked element to ClickHandler
    * 3. In ClickHandler check data.action's value and run custom code
    */
-  $(document).on('click', '.js-click', function (e) {
+  $(document).on('click', '.js-click', function(e) {
 
     e.preventDefault();
 

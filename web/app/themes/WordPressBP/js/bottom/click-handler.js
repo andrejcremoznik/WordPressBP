@@ -1,7 +1,7 @@
 (function (App, $) {
   'use strict';
 
-  App.ClickHandler = function (data, $el) {
+  App.ClickHandler = function(data, $el) {
 
     switch (data.action) {
 

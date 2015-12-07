@@ -136,9 +136,10 @@ wp core install --url=http://namespace.dev --title="${wp_title}" --admin_user=${
 
 echo "Removing demo content"
 wp site empty --yes
+wp widget delete search-2 recent-posts-2 recent-comments-2 archives-2 categories-2 meta-2
 
 echo "Activating plugins"
-wp plugin activate --all
+wp plugin activate disable-emojis timber-library
 
 echo "Activating $namespace theme"
 wp theme activate ${namespace}

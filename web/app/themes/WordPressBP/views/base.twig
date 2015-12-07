@@ -9,8 +9,8 @@
   <body class="{{ body_class }}">
 
     <header class="header" role="banner">
-      {% block header %}
-      <div class="logo"><a href="/" title="{{ site.name }}" rel="home">{{ site.name }}</a></div>
+      {% set op_tag = (title) ? 'div' : 'h1' %}
+      <{{ op_tag }} class="logo"><a href="/" title="{{ site.name }}" rel="home">{{ site.name }}</a></{{ op_tag }}>
       <nav class="nav-primary" role="navigation">
         {% spaceless %}
         <ul class="nav">
@@ -31,21 +31,20 @@
         </ul>
         {% endspaceless %}
       </nav>
-      {% endblock %}
     </header>
 
     <div class="body">
 
       <main class="main" role="main">
-        {% if title %}<h1>{{ title }}</h1>{% endif %}
+        {% if title %}<h1 class="main-title">{{ title }}</h1>{% endif %}
         {% block content %}
         <p>{{ i18n.no_content }}</p>
         {% endblock %}
       </main>
 
-      {% if sidebar %}
+      {% if primary_sidebar %}
       <aside class="aside" role="complementary">
-        {{ sidebar }}
+        {{ primary_sidebar }}
       </aside>
       {% endif %}
 

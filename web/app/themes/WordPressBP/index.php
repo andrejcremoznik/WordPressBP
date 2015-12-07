@@ -7,7 +7,11 @@ if (!class_exists('Timber')) {
 
 $context = Timber::get_context();
 $context['posts'] = Timber::get_posts();
-$context['sidebar'] = Timber::get_widgets('primary_sidebar');
+
+if (is_active_sidebar('primary_sidebar')) {
+  $context['primary_sidebar'] = Timber::get_widgets('primary_sidebar');
+}
+
 $views = ['index.twig'];
 
 /*
