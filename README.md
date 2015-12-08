@@ -111,6 +111,7 @@ Before you get your team to co-develop your project, you will want to set up a s
 3. Everyone should set up a MySQL database
 4. Inside repo copy `.env.example` to `.env` and set it up with everyone's database settings
 5. Run the sync script to get the database
+6. In Nginx config at `<project_path>/etc/nginx.conf` uncomment and configure the block to rewrite URLs for file uploads. This way you don't have to sync the `uploads` folder from the server.
 
 So syncing the database only works downstream. Have some rules set up regarding configuration on staging and syncing. Make sure everyone sets up his changes on staging regularly and in small increments unless you figure out how to do migrations. Communicate changes to configurations to the entire team. Always keep everyone in the loop.
 
