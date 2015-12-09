@@ -1,7 +1,11 @@
 {% extends "base.twig" %}
 
 {% block content %}
-  {% for post in posts %}
-    {% include ['excerpt-'~post.post_type~'.twig', 'excerpt.twig'] %}
-  {% endfor %}
+  {% if posts %}
+    {% for post in posts %}
+      {% include ['excerpt-'~post.post_type~'.twig', 'excerpt.twig'] %}
+    {% endfor %}
+  {% else %}
+    <p>{{ i18n.no_content }}</p>
+  {% endif %}
 {% endblock %}
