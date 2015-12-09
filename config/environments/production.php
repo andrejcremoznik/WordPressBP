@@ -6,3 +6,6 @@ define('SCRIPT_DEBUG',     false);
 
 // Enable to use a caching plugin
 define('WP_CACHE',         false);
+
+// Disable WP file editor and update checking
+define('DISALLOW_FILE_MODS', true);

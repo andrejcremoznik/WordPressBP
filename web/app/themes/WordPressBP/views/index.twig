@@ -1,0 +1,7 @@
+{% extends "base.twig" %}
+
+{% block content %}
+  {% for post in posts %}
+    {% include ['excerpt-'~post.post_type~'.twig', 'excerpt.twig'] %}
+  {% endfor %}
+{% endblock %}

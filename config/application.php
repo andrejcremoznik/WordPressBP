@@ -15,8 +15,9 @@ define('WP_ENV', getenv('WP_ENV') ?: 'development');
 
 $env_config = __DIR__ . '/environments/' . WP_ENV . '.php';
 
-if (file_exists($env_config))
+if (file_exists($env_config)) {
   require_once $env_config;
+}
 
 // URLs
 define('WP_HOME',     getenv('WP_HOME'));
@@ -48,20 +49,13 @@ define('NONCE_SALT',       getenv('NONCE_SALT'));
 
 // Custom settings
 define('AUTOMATIC_UPDATER_DISABLED', true);
-// If you don't need scheduled posts, this can be set to true
-define('DISABLE_WP_CRON',            false);
-
-// Disable WP file editor
-//define('DISALLOW_FILE_EDIT',         true);
-
-// Disable WP file editor and update checking
-define('DISALLOW_FILE_MODS',         true);
-
+define('DISABLE_WP_CRON',   false); // If you don't need scheduled posts, this can be set to true
 define('WP_MEMORY_LIMIT',   '96M');
 define('AUTOSAVE_INTERVAL', 120);
 define('WP_POST_REVISIONS', 2);
 define('EMPTY_TRASH_DAYS',  3);
 
 
-if (!defined('ABSPATH'))
+if (!defined('ABSPATH')) {
   define('ABSPATH', $webroot_dir . '/wp/');
+}

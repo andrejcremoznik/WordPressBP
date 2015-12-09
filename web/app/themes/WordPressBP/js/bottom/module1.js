@@ -1,7 +1,7 @@
 (function(App, $) {
   'use strict';
 
-  if(!('Module1' in App))
+  if (!('Module1' in App))
     App.Module1 = {};
 
   function Module1(options) {
@@ -17,7 +17,7 @@
 
   Module1.prototype = {
 
-    init: function () {
+    init: function() {
       console.log(this.options.print);
     }
 

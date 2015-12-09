@@ -1,9 +1,9 @@
 {
   "name": "WordPressBP",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "WordPressBP WordPress website",
   "private": true,
   "dependencies": {
-    "normalize-scss": "~3.0.3"
+    "normalize-scss": "^3.0.3"
   }
 }

@@ -53,7 +53,7 @@ A typical command would be:
 
 The script will create the directory at `project_path` if it doesn't exist. Make sure the parent directory (or `project_path` if exists) is **writeable** by the user running this script. **Do not run the setup script as root.** It won't do anything evil but you shouldn't take my word for it.
 
-Later on the setup script will use *composer*, *npm*, *bower*, *grunt* and *wp* (WP_CLI) to install dependecies and setup WordPress. Make sure these tools are installed as written in [here](https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd).
+Later on the setup script will use *composer*, *npm*, *bower*, *grunt* and *wp* (WP-CLI) to install dependecies and setup WordPress. Make sure these tools are installed as written [here](https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd).
 
 If you don't have or don't want to use a root MySQL account, prepare a database and user beforehand.
 
@@ -63,7 +63,7 @@ If you don't have or don't want to use a root MySQL account, prepare a database 
 Let's assume your `project_path` is `/srv/http/mywebsite.dev` and `namespace` is `mywebsite`.
 
 1. The main virtual host configuration file is `/srv/http/mywebsite.dev/etc/nginx.conf`. Look at the file if it requires any changes (you might need to change the fastcgi_pass). This file is specific to your system.
-2. At `/srv/http/mywebsite.dev/repo/etc/mywebsite.conf` is shared Nginx configuration. This file is included in your code repository and loaded by the main virtual host file. If you need specific Nginx configuration to be shared among all developers and production, this is the place.
+2. At `/srv/http/mywebsite.dev/repo/config/nginx/mywebsite.conf` is shared Nginx configuration. This file is included in your code repository and loaded by the main virtual host file. If you need specific Nginx configuration to be shared among all developers and production, this is the place.
 3. You need to include `/srv/http/mywebsite.dev/etc/nginx.conf` in your main Nginx config at `/etc/nginx/nginx.conf`. You might use a wildcard so you don't have to edit it for every new project. Inside `http { ... }` block put `include /srv/http/*/etc/nginx.conf;`.
 4. Restart Nginx to load the new configuration: `sudo systemctl restart nginx.service`
 
@@ -111,6 +111,7 @@ Before you get your team to co-develop your project, you will want to set up a s
 3. Everyone should set up a MySQL database
 4. Inside repo copy `.env.example` to `.env` and set it up with everyone's database settings
 5. Run the sync script to get the database
+6. In Nginx config at `<project_path>/etc/nginx.conf` uncomment and configure the block to rewrite URLs for file uploads. This way you don't have to sync the `uploads` folder from the server.
 
 So syncing the database only works downstream. Have some rules set up regarding configuration on staging and syncing. Make sure everyone sets up his changes on staging regularly and in small increments unless you figure out how to do migrations. Communicate changes to configurations to the entire team. Always keep everyone in the loop.
 

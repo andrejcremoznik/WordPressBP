@@ -1,0 +1,7 @@
+<article class="excerpt excerpt-{{ post.post_type }}">
+  <h2 class="excerpt-title"><a href="{{ post.link }}">{{ post.title }}</a></h2>
+  <p>{{ post.get_preview }}</p>
+  {% if post.thumbnail %}
+    <img src="{{ post.thumbnail.src }}" alt="{{ post.thumbnail.alt }}">
+  {% endif %}
+</article>
