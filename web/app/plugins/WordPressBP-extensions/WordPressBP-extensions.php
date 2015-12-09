@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WordPressBP Extensions
-Description: Provides extensions for the WordPressBP website
+Description: Provides extensions for the WordPressBP website template
 Author:
 Author URI:
 Version: 1.0.0
