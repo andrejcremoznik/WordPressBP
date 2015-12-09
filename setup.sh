@@ -103,7 +103,7 @@ read -e -p "Database host: " -i "localhost" dbhost
 sed -i "s/localhost/${dbhost}/g" .env
 
 read -e -p "Database table prefix: " -i "wpdb_" dbprefix
-sed -i "s/db_prefix/${dbprefix}/g" .env
+sed -i "s/wpdb_/${dbprefix}/g" .env
 
 echo -e "Running composer install…\n"
 composer install
