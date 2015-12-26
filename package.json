@@ -10,8 +10,10 @@
     "browserify-shim": "latest",
     "csso": "latest",
     "node-sass": "latest",
+    "node-ssh": "latest",
     "parallelshell": "latest",
     "postcss-cli": "latest",
+    "shelljs": "latest",
     "uglify-js": "latest",
     "watch": "latest"
   },
@@ -32,6 +34,12 @@
     "js:watch": "watch 'npm run js:bundle' web/app/themes/WordPressBP/js/",
 
     "build": "npm run css:sass && npm run css:csso && npm run css:prefix && npm run js:bundle && npm run js:uglify",
-    "build:watch": "parallelshell 'npm run css:watch' 'npm run js:watch'"
+    "build:watch": "parallelshell 'npm run css:watch' 'npm run js:watch'",
+
+    "predeploy": "npm run build && shjs config/deploy/build.js",
+    "deploy": "node config/deploy/deploy.js",
+    "postdeploy": "rm -fr build",
+    "deploy:revert": "node config/deploy/revert.js",
+    "deploy:init": "node config/deploy/init.js"
   }
 }
