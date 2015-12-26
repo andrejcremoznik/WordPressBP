@@ -1,4 +1,4 @@
-modules.export = {
+module.exports = {
   deployEnvSSH: {
     staging: {
       host:     'hostname',

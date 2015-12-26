@@ -15,4 +15,4 @@ var clickHandler = function(data, $el) {
 
 }
 
-modules.export = clickHandler;
+module.exports = clickHandler;

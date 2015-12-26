@@ -20,4 +20,4 @@ Module1.prototype = {
 
 }
 
-modules.export = Module1;
+module.exports = Module1;
