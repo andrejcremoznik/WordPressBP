@@ -114,6 +114,9 @@ npm install
 echo -e "==> Running Bower install…\n"
 bower install
 
+echo -e "==> Building frontend assets…\n"
+npm run build
+
 read -e -p "Does user $dbuser have CREATE DATABASE privileges? Create database now? (y/n): " dbperms
 if [ "$dbperms" == "y" ]; then
   wp db create
