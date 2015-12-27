@@ -1,11 +1,8 @@
-var $ = require('jQuery');
+var $ = require('jQuery')
 
-var Module1 = function() {
-
-  this.options = $.extend({}, Module1.DEFAULTS, options);
-
-  this.init();
-
+var Module1 = function (options) {
+  this.options = $.extend({}, Module1.DEFAULTS, options)
+  //this.init()
 }
 
 Module1.DEFAULTS = {
@@ -13,11 +10,9 @@ Module1.DEFAULTS = {
 }
 
 Module1.prototype = {
-
-  init: function() {
-    console.log(this.options.msg);
+  init: function () {
+    console.log(this.options.msg)
   }
-
 }
 
-module.exports = Module1;
+module.exports = Module1

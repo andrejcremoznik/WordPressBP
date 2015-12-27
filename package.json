@@ -14,11 +14,14 @@
     "parallelshell": "latest",
     "postcss-cli": "latest",
     "shelljs": "latest",
+    "standard": "latest",
     "uglify-js": "latest",
     "watch": "latest"
   },
   "browserify": {
-    "transform": [ "browserify-shim" ]
+    "transform": [
+      "browserify-shim"
+    ]
   },
   "browserify-shim": {
     "jQuery": "global:jQuery"
@@ -35,6 +38,8 @@
 
     "build": "npm run css:sass && npm run css:csso && npm run css:prefix && npm run js:bundle && npm run js:uglify",
     "build:watch": "parallelshell 'npm run css:watch' 'npm run js:watch'",
+
+    "lint:js": "standard web/app/themes/WordPressBP/**/*.js",
 
     "predeploy": "npm run build && shjs config/deploy/build.js",
     "deploy": "node config/deploy/deploy.js",

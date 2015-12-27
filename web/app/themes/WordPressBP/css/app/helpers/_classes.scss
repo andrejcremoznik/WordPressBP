@@ -4,12 +4,19 @@
 
 // Micro clearfix
 .cf {
-  &::before, &::after { content: ""; display: table; }
+  &::before,
+  &::after {
+    content: "";
+    display: table;
+  }
   &::after { clear: both; }
 }
 
 // Hide element from screenreaders and browsers
-.hidden { display: none !important; visibility: hidden; }
+.hidden {
+  display: none !important;
+  visibility: hidden;
+}
 
 // Hide element visually, but have it available for screenreaders
 .visuallyhidden {

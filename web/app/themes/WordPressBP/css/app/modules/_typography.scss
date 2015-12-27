@@ -6,14 +6,14 @@ html {
 }
 
 body {
-  color: $default-text-color;
-  background: $default-background-color;
+  color: $default-tx-color;
+  background: $default-bg-color;
 }
 
 a {
-  color: $content-link;
+  color: $content-link-color;
   &:hover {
-    color: $content-link-hover;
+    color: $content-link-hover-color;
   }
 }
 
@@ -32,9 +32,9 @@ a {
 .font-inherit { font: inherit; }
 .font-bold { font-weight: bold; }
 .font-italic { font-style: italic; }
-.font-small { font-size: rem($small-font-size); }
-.font-large { font-size: rem($large-font-size); }
-.font-smaller { font-size: $smaller-font-size; }
-.font-larger { font-size: $larger-font-size; }
+.font-s { font-size: rem($font-size-s); }
+.font-l { font-size: rem($font-size-l); }
+.font-lt { font-size: $font-size-lt; }
+.font-gt { font-size: $font-size-gt; }
 
 .color-inherit { color: inherit; }

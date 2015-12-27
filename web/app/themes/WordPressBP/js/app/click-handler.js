@@ -1,18 +1,16 @@
-var clickHandler = function(data, $el) {
-
+var clickHandler = function (data, $el) {
   switch (data.action) {
 
     case 'triggerClickHandler':
-      alert('Click handler triggered!');
-      break;
+      console.log('Click handler triggered!')
+      break
 
     default:
-      console.warn('Unrecognized action.');
+      console.warn('Unrecognized action.')
 
   }
 
-  return false;
-
+  return false
 }
 
-module.exports = clickHandler;
+module.exports = clickHandler
