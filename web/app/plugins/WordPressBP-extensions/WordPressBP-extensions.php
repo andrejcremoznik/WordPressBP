@@ -4,15 +4,14 @@ Plugin Name: WordPressBP Extensions
 Description: Provides extensions for the WordPressBP website template
 Author:
 Author URI:
+Text Domain: WordPressBP-extensions
+Domain Path: /lang
 Version: 1.0.0
 */
 
-// If this file is called directly, abort.
 if (!defined('WPINC')) die();
 
 class WordPressBP_extensions {
-
-  protected $plugin_slug = 'WordPressBP-extensions';
 
   protected static $instance = null;
 
@@ -95,9 +94,9 @@ class WordPressBP_extensions {
    */
   public function plugin_textdomain() {
     load_plugin_textdomain(
-      $this->plugin_slug,
+      'WordPressBP-extensions',
       false,
-      plugin_basename(dirname(__FILE__)) . '/lang'
+      plugin_basename(dirname(__FILE__)) . '/lang/'
     );
   }
 
@@ -117,12 +116,10 @@ class WordPressBP_extensions {
    */
   /*
   public function taxonomies() {
-    $domain = $this->plugin_slug;
-
     register_taxonomy('slug', ['post-type'], [
       'labels'          => [
-        'name'          => __('Names', $domain),
-        'singular_name' => __('Name', $domain)
+        'name'          => __('Names', 'WordPressBP-extensions'),
+        'singular_name' => __('Name', 'WordPressBP-extensions')
       ],
       'hierarchical'    => true,
       //'update_count_callback' => '_update_post_term_count', // uncomment if hierarchical == false
@@ -137,19 +134,17 @@ class WordPressBP_extensions {
    */
   /*
   public function post_types() {
-    $domain = $this->plugin_slug;
-
     register_post_type('slug', [
       'labels'              => [
-        'name'              => __('Names', $domain),
-        'singular_name'     => __('Name', $domain)
+        'name'              => __('Names', 'WordPressBP-extensions'),
+        'singular_name'     => __('Name', 'WordPressBP-extensions')
       ],
       'supports'            => ['title', 'editor', 'author', 'thumbnail', 'comments', 'revisions'],
       'taxonomies'          => ['category', 'post_tag']
       'public'              => true,
       'exclude_from_search' => true,
       'has_archive'         => true,
-      'rewrite'             => ['slug' => __('slug', $domain)]
+      'rewrite'             => ['slug' => __('slug', 'WordPressBP-extensions')]
     ]);
   }
   */

@@ -5,6 +5,6 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "normalize-scss": "^3.0.3"
+    "normalize-css": "latest"
   }
 }

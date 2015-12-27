@@ -5,6 +5,11 @@ html {
   font: #{$default-font-size}px/#{$default-line-height} $default-font-family;
 }
 
+body {
+  color: $default-text-color;
+  background: $default-background-color;
+}
+
 a {
   color: $content-link;
   &:hover {

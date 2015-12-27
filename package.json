@@ -25,13 +25,13 @@
   },
   "scripts": {
     "css:sass": "node-sass --output-style compressed --source-map true --output web/app/themes/WordPressBP/assets web/app/themes/WordPressBP/css",
-    "css:prefix": "postcss --use autoprefixer --autoprefixer.bowsers 'last 2 versions' web/app/themes/WordPressBP/assets/*.css -r",
+    "css:prefix": "postcss -r --use autoprefixer --autoprefixer.browsers 'last 2 versions' web/app/themes/WordPressBP/assets/*.css",
     "css:csso": "for f in web/app/themes/WordPressBP/assets/*.css; do csso $f $f; done",
-    "css:watch": "watch 'npm run css:sass && npm run css:prefix'  web/app/themes/WordPressBP/css/",
+    "css:watch": "watch 'npm run css:sass && npm run css:prefix'  web/app/themes/WordPressBP/css/ --wait 2",
 
     "js:bundle": "browserify web/app/themes/WordPressBP/js/main.js -o web/app/themes/WordPressBP/assets/app.js",
     "js:uglify": "for f in web/app/themes/WordPressBP/assets/*.js; do uglifyjs $f --screw-ie8 -o $f; done",
-    "js:watch": "watch 'npm run js:bundle' web/app/themes/WordPressBP/js/",
+    "js:watch": "watch 'npm run js:bundle' web/app/themes/WordPressBP/js/ --wait 2",
 
     "build": "npm run css:sass && npm run css:csso && npm run css:prefix && npm run js:bundle && npm run js:uglify",
     "build:watch": "parallelshell 'npm run css:watch' 'npm run js:watch'",
