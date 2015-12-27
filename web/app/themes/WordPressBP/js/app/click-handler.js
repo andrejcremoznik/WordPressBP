@@ -1,8 +1,8 @@
 var clickHandler = function (data, $el) {
   switch (data.action) {
 
-    case 'triggerClickHandler':
-      console.log('Click handler triggered!')
+    case 'exampleAction':
+      window.alert('Click handler triggered!')
       break
 
     default:

@@ -9,6 +9,7 @@
     "browserify": "latest",
     "browserify-shim": "latest",
     "csso": "latest",
+    "exorcist": "latest",
     "node-sass": "latest",
     "node-ssh": "latest",
     "parallelshell": "latest",
@@ -32,18 +33,20 @@
     "css:csso": "for f in web/app/themes/WordPressBP/assets/*.css; do csso $f $f; done",
     "css:watch": "watch 'npm run css:sass && npm run css:prefix'  web/app/themes/WordPressBP/css/ --wait 2",
 
-    "js:bundle": "browserify web/app/themes/WordPressBP/js/main.js -o web/app/themes/WordPressBP/assets/app.js",
+    "js:bundle": "browserify web/app/themes/WordPressBP/js/main.js -d | exorcist web/app/themes/WordPressBP/assets/app.js.map > web/app/themes/WordPressBP/assets/app.js",
     "js:uglify": "for f in web/app/themes/WordPressBP/assets/*.js; do uglifyjs $f --screw-ie8 -o $f; done",
     "js:watch": "watch 'npm run js:bundle' web/app/themes/WordPressBP/js/ --wait 2",
 
     "build": "npm run css:sass && npm run css:csso && npm run css:prefix && npm run js:bundle && npm run js:uglify",
     "build:watch": "parallelshell 'npm run css:watch' 'npm run js:watch'",
+    "build:clean": "if [ -d build ]; then rm -fr build; fi",
 
     "lint:js": "standard web/app/themes/WordPressBP/**/*.js",
+    "lint:configs": "standard config/**/*.js",
 
-    "predeploy": "npm run build && shjs config/deploy/build.js",
+    "predeploy": "npm run build:clean && npm run build && shjs config/deploy/build.js",
     "deploy": "node config/deploy/deploy.js",
-    "postdeploy": "rm -fr build",
+    "postdeploy": "npm run build:clean",
     "deploy:revert": "node config/deploy/revert.js",
     "deploy:init": "node config/deploy/init.js"
   }
