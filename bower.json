@@ -2,8 +2,9 @@
   "name": "WordPressBP",
   "version": "1.0.0",
   "description": "WordPressBP WordPress website",
+  "license": "MIT",
   "private": true,
   "dependencies": {
-    "normalize-scss": "^3.0.3"
+    "normalize-css": "latest"
   }
 }

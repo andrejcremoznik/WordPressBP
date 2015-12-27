@@ -17,9 +17,8 @@ WordPressBP is **meant for developers** developing a WordPress site **from strat
 
 ## System requirements
 
-* LEMP stack (Linux, Nginx, PHP 5.4+, MySQL)
+* LEMP stack (Linux, Nginx, PHP 5.5+, MySQL)
 * NodeJS & Node Package Manager (npm)
-  * [Grunt CLI](http://gruntjs.com/getting-started#installing-the-cli)
   * [Bower](http://bower.io/)
 * [Composer](https://getcomposer.org/)
 * [WP-CLI](http://wp-cli.org/)
@@ -40,7 +39,7 @@ $ ./setup.sh
 Usage:
  ./setup.sh <namespace> <project_path> [<branch>]
 
- <namespace>:    Alphanumeric name for your project. Used for namespacing functions, file and folder names etc.
+ <namespace>:    Lowercase alphanumeric name for your project. Must not start with a number.
  <project_path>: Path to where the plugins and themes directories will be set up.
  <branch>:       Optional: checkout a specific branch (default: master)
 ```
@@ -53,7 +52,7 @@ A typical command would be:
 
 The script will create the directory at `project_path` if it doesn't exist. Make sure the parent directory (or `project_path` if exists) is **writeable** by the user running this script. **Do not run the setup script as root.** It won't do anything evil but you shouldn't take my word for it.
 
-Later on the setup script will use *composer*, *npm*, *bower*, *grunt* and *wp* (WP-CLI) to install dependecies and setup WordPress. Make sure these tools are installed as written [here](https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd).
+Later on the setup script will use *composer*, *npm*, *bower* and *wp* (WP-CLI) to install dependecies and setup WordPress. Make sure these tools are installed as written [here](https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd).
 
 If you don't have or don't want to use a root MySQL account, prepare a database and user beforehand.
 
@@ -85,11 +84,13 @@ git push -u origin master
 
 ### Frontend
 
-Frontend dependecies are handled by Bower and will be installed in the `bower_modules` subfolder. Pull them in by referencing stylesheets from the Sass files and javascripts from the `concat` Grunt task configuration file.
+Frontend dependecies are handled by Bower and will be installed in the `bower_modules` subfolder. Pull them in by referencing stylesheets from the Sass files and javascripts from the `browserify` configuration.
 
-When developing use `grunt watch` to watch stylesheets and javascripts for changes and to compile on every change.
+When developing use `npm run build:watch` to watch stylesheets and javascripts for changes and to compile on every change.
 
-`grunt` will compile stylesheets and javascripts, `grunt production` will also minify them.
+`npm run build` will compile all assets and minify them.
+
+Run `npm run` to list all available tasks as configured in `package.json`.
 
 
 ### Backend
@@ -113,14 +114,14 @@ Before you get your team to co-develop your project, you will want to set up a s
 5. Run the sync script to get the database
 6. In Nginx config at `<project_path>/etc/nginx.conf` uncomment and configure the block to rewrite URLs for file uploads. This way you don't have to sync the `uploads` folder from the server.
 
-So syncing the database only works downstream. Have some rules set up regarding configuration on staging and syncing. Make sure everyone sets up his changes on staging regularly and in small increments unless you figure out how to do migrations. Communicate changes to configurations to the entire team. Always keep everyone in the loop.
+Syncing the database only works downstream. Have some rules set up regarding configuration on staging and syncing. Make sure everyone sets up his changes on staging regularly and in small increments unless you figure out how to do migrations. Communicate configuration changes to the entire team. Always keep everyone in the loop.
 
 
-### Deploying with Grunt
+### Deploying
 
-WordPressBP includes a simple automated deployment script using Grunt. You can deploy your website by running `grunt deploy --env=production` but this requires some setup. All the configuration for deploys is in `Gruntfile.js` if you're feeling adventurous.
+WordPressBP includes a simple automated deployment script using Node Shell and SSH modules. You can deploy your website by running `npm run deploy -- production` but this requires some setup. All the configuration for deploys is in `config/deploy` directory if you're feeling adventurous.
 
-TODO: Instructions how to prepare the server and configure `Gruntfile.js` for automated deploys.
+TODO: Instructions how to prepare the server and configure automated deployments.
 
 
 ### Recommended plugins

@@ -5,15 +5,49 @@
   "repository": "andrejcremoznik/WordPressBP",
   "license": "MIT",
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-autoprefixer": "^3.0.3",
-    "grunt-contrib-concat": "^0.5.1",
-    "grunt-contrib-uglify": "^0.11.0",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-csso": "^0.8.0",
-    "grunt-sass": "^1.1.0",
-    "grunt-shell": "^1.1.2",
-    "grunt-ssh": "^0.12.8",
-    "load-grunt-config": "^0.19.1"
+    "autoprefixer": "latest",
+    "browserify": "latest",
+    "browserify-shim": "latest",
+    "csso": "latest",
+    "exorcist": "latest",
+    "node-sass": "latest",
+    "node-ssh": "latest",
+    "parallelshell": "latest",
+    "postcss-cli": "latest",
+    "shelljs": "latest",
+    "standard": "latest",
+    "uglify-js": "latest",
+    "watch": "latest"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browserify-shim": {
+    "jQuery": "global:jQuery"
+  },
+  "scripts": {
+    "css:sass": "node-sass --output-style compressed --source-map true --output web/app/themes/WordPressBP/assets web/app/themes/WordPressBP/css",
+    "css:prefix": "postcss -r --use autoprefixer --autoprefixer.browsers 'last 2 versions' web/app/themes/WordPressBP/assets/*.css",
+    "css:csso": "for f in web/app/themes/WordPressBP/assets/*.css; do csso $f $f; done",
+    "css:watch": "watch 'npm run css:sass && npm run css:prefix'  web/app/themes/WordPressBP/css/ --wait 2",
+
+    "js:bundle": "browserify web/app/themes/WordPressBP/js/main.js -d | exorcist web/app/themes/WordPressBP/assets/app.js.map > web/app/themes/WordPressBP/assets/app.js",
+    "js:uglify": "for f in web/app/themes/WordPressBP/assets/*.js; do uglifyjs $f --screw-ie8 -o $f; done",
+    "js:watch": "watch 'npm run js:bundle' web/app/themes/WordPressBP/js/ --wait 2",
+
+    "build": "npm run css:sass && npm run css:csso && npm run css:prefix && npm run js:bundle && npm run js:uglify",
+    "build:watch": "parallelshell 'npm run css:watch' 'npm run js:watch'",
+    "build:clean": "if [ -d build ]; then rm -fr build; fi",
+
+    "lint:js": "standard web/app/themes/WordPressBP/**/*.js",
+    "lint:configs": "standard config/**/*.js",
+
+    "predeploy": "npm run build:clean && npm run build && shjs config/deploy/build.js",
+    "deploy": "node config/deploy/deploy.js",
+    "postdeploy": "npm run build:clean",
+    "deploy:revert": "node config/deploy/revert.js",
+    "deploy:init": "node config/deploy/init.js"
   }
 }

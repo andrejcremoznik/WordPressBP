@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js" {{ site.language_attributes }}>
+<html {{ site.language_attributes }}>
   <head>
     <meta charset="{{ site.charset }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -52,6 +52,7 @@
 
     <footer class="footer" role="contentinfo">
       {% block footer %}{% endblock %}
+      <p>Click handler example: <a href="https://google.com" class="js-click" data-action="exampleAction">CLICK ME</a></p>
     </footer>
 
     {{ function('wp_footer') }}

@@ -38,3 +38,6 @@ web/app/themes/WordPressBP/assets/*.map
 
 # Build dir
 build
+
+# Other
+*.log

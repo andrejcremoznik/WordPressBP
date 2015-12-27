@@ -1,21 +1,14 @@
-// Normalize (Bower dependency)
-@import "../../../../../../bower_modules/normalize-scss/_normalize.scss";
+// External dependencies
+@import "../../../../../../bower_modules/normalize-css/normalize";
 
 // Custom mixins
 @import "helpers/mixins";
 
+// Modules
+@import "modules/typography";
+
 // Helper classes
 @import "helpers/classes";
-
-// Apply default document colors
-body {
-  color: $default_text_color;
-  background: $default_background_color;
-}
-
-// Modules
-@import "modules/columns";
-@import "modules/typography";
 
 // Quick hacks
 @import "shame";

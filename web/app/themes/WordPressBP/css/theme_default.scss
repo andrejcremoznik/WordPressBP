@@ -1,26 +1,7 @@
-/*
- * Theme variables
- * - create new themes by copying this file and editing its varibles
- */
-
-/*
- * Layout
- */
-
-// Responsive breakpoints (max-width)
-$breakpoint-s: 767px;
-$breakpoint-m: 992px;
-$breakpoint-l: 1200px;
-
-// Grid gutter width
-$gutter-width: 30px;
+/*! WordPressBP default theme | MIT License | github.com/andrejcremoznik/WordPressBP/ */
 
 // Public asset uri (use with asset() function)
 $public-assets-uri: '/app/themes/WordPressBP/assets/default/';
-
-/*
- * Typography
- */
 
 // Font families
 $default-font-family: Arial, Helvetica, sans-serif;
@@ -29,18 +10,18 @@ $default-font-family: Arial, Helvetica, sans-serif;
 $default-font-size: 16;    // absolute value
 $default-line-height: 1.5; // relative value
 
-$small-font-size: 12;      // absolute value
-$large-font-size: 20;      // absolute value
+$font-size-s: 12; // small: absolute value
+$font-size-l: 20; // large: absolute value
 
-$smaller-font-size: 80%;   // relative value
-$larger-font-size: 120%;   // relative value
+$font-size-lt: 80%;  // smaller: relative value
+$font-size-gt: 120%; // larger:  relative value
 
 // Basic colors
-$default-text-color: #333;
-$default-background-color: #fff;
+$default-tx-color: #333;
+$default-bg-color: #fff;
 
-$content-link: #346994;
-$content-link-hover: #128ad3;
+$content-link-color: #346994;
+$content-link-hover-color: lighten($content-link-color, 30%);
 
 /* =============== */
 
