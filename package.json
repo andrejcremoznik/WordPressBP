@@ -4,6 +4,7 @@
   "description": "WordPressBP WordPress website",
   "repository": "andrejcremoznik/WordPressBP",
   "license": "MIT",
+  "private": true,
   "devDependencies": {
     "autoprefixer": "latest",
     "browserify": "latest",

@@ -161,7 +161,7 @@ class WordPressBP extends TimberSite {
     wp_enqueue_script('app');
   }
 
-  /*
+  /**
    * Remove URL field from comment form
    */
   function modify_comment_form_fields($fields) {
