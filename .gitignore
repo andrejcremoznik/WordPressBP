@@ -1,3 +1,8 @@
+# Extensions
+*.log
+*.old
+*.bkp
+
 # WordPress
 web/wp
 
