@@ -1,10 +1,7 @@
-# Extensions
+# General extensions
 *.log
 *.old
 *.bkp
-
-# WordPress
-web/wp
 
 # WP-CLI
 db-sync
@@ -16,33 +13,23 @@ sql-dump-*.sql
 !.env.example
 
 # Application
+web/wp
 web/app/plugins/*
-!web/app/plugins/.gitkeep
 !web/app/plugins/WordPressBP*
 web/app/uploads/*
-!web/app/uploads/.gitkeep
 
-# Vendor (Composer modules)
-vendor/*
-!vendor/.gitkeep
-
-# Node modules
+# 3rd party dependencies
+vendor
 node_modules
-
-# Bower modules
 bower_modules
 
-# Compiled CSS
+# Compiled assets
 web/app/themes/WordPressBP/assets/*.css
-
-# Compiled JS
 web/app/themes/WordPressBP/assets/*.js
-
-# Compiled MAPS
 web/app/themes/WordPressBP/assets/*.map
 
-# Build dir
+# Build directory
 build
 
-# Other
-*.log
+# Keep folders with .gitkeep even when ignore rules match
+!.gitkeep
