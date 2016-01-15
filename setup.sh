@@ -104,6 +104,7 @@ sed -i "s/localhost/${dbhost}/g" .env
 
 read -e -p "Database table prefix: " -i "wpdb_" dbprefix
 sed -i "s/wpdb_/${dbprefix}/g" .env
+sed -i "s/wpdb_/${dbprefix}/g" sync.sh
 
 echo -e "==> Running composer install…\n"
 composer install
