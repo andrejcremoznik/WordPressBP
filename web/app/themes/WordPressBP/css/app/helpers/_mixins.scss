@@ -1,4 +1,4 @@
-/*
+/**
  * Convert PX units to EMs.
  * Ex: font-size: pem(16);
  */
@@ -6,7 +6,7 @@
   @return #{$pxval / $base}em;
 }
 
-/*
+/**
  * Convert PX units to REMs.
  * Ex: font-size: rem(16);
  */
@@ -14,7 +14,7 @@
   @return #{$pxval / $default-font-size}rem;
 }
 
-/*
+/**
  * Per-cent calculation
  * Ex: width: pc(600,960);
  */
@@ -22,7 +22,7 @@
   @return ($target / $container) * 100%;
 }
 
-/*
+/**
  * Asset public url helper
  * Ex: asset('image.jpg')
  * or: asset('shared_image.jpg', '/app/themes/WordPressBP/assets/')

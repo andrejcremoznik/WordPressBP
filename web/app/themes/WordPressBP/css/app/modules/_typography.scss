@@ -1,9 +1,5 @@
-/*
- * Typography
- */
-html {
-  font: #{$default-font-size}px/#{$default-line-height} $default-font-family;
-}
+// Typography
+html { font: #{$default-font-size}px/#{$default-line-height} $default-font-family; }
 
 body {
   color: $default-tx-color;
@@ -32,6 +28,11 @@ a {
 .font-inherit { font: inherit; }
 .font-bold { font-weight: bold; }
 .font-italic { font-style: italic; }
+.font-normal {
+  font-weight: normal;
+  font-style: normal;
+}
+
 .font-s { font-size: rem($font-size-s); }
 .font-l { font-size: rem($font-size-l); }
 .font-lt { font-size: $font-size-lt; }
