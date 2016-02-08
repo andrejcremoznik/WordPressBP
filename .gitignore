@@ -14,14 +14,13 @@ sql-dump-*.sql
 
 # Application
 web/wp
-web/app/plugins/*
+web/app/plugins
 !web/app/plugins/WordPressBP*
-web/app/uploads/*
+web/app/uploads
 
 # 3rd party dependencies
 vendor
 node_modules
-bower_modules
 
 # Compiled assets
 web/app/themes/WordPressBP/assets/*.css

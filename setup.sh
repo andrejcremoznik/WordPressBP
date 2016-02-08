@@ -70,12 +70,12 @@ mv ${project_repo}/config/nginx/nginx.conf ${project_path}/etc/
 echo -e "==> Done.\n"
 echo "==> Next we will set up WordPress. To continue you will need:"
 echo "1. MySQL user with CREATE DATABASE privileges OR a user with basic use privileges for an existing database"
-echo "2. \"npm\", \"bower\", \"composer\" and \"wp\" (WP-CLI) available globally in your PATH"
+echo "2. \"npm\", \"composer\" and \"wp\" (WP-CLI) available globally in your PATH"
 echo -e "If you are not sure about any of these, please read https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd\n"
 
 read -e -p "Do you wish to continue setting up WordPress? (y/n): " cont
 if [ "$cont" != "y" ]; then
-  echo "Edit $project_repo/.env with your database settings, run composer, npm, bower and install WordPress using WP-CLI or your browser. Bye!"
+  echo "Edit $project_repo/.env with your database settings, run composer, npm and install WordPress using WP-CLI or your browser. Bye!"
   exit
 fi
 
@@ -83,7 +83,6 @@ echo "==> Checking for required software…"
 
 command -v composer >/dev/null 2>&1 || { echo >&2 "Composer not installed. Aborting…"; exit 1; }
 command -v npm >/dev/null 2>&1 || { echo >&2 "NPM not installed. Aborting…"; exit 1; }
-command -v bower >/dev/null 2>&1 || { echo >&2 "Bower not installed. Aborting…"; exit 1; }
 command -v wp >/dev/null 2>&1 || { echo >&2 "WP-CLI not installed. Aborting…"; exit 1; }
 
 echo "==> All there."
@@ -111,9 +110,6 @@ composer install
 
 echo -e "==> Running NPM install…\n"
 npm install
-
-echo -e "==> Running Bower install…\n"
-bower install
 
 echo -e "==> Building frontend assets…\n"
 npm run build

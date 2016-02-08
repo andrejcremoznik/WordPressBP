@@ -19,14 +19,13 @@ WordPressBP is **meant for developers** developing a WordPress site **from strat
 
 * LEMP stack (Linux, Nginx, PHP 5.5+, MySQL)
 * NodeJS & Node Package Manager (npm)
-  * [Bower](http://bower.io/)
 * [Composer](https://getcomposer.org/)
 * [WP-CLI](http://wp-cli.org/)
 
 Read [this Gist](https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd) on how to correctly setup these tools on your development environment.
 
 
-## Quickstart guide
+## Quick-start guide
 
 The setup script will take care of (almost) everything to get you started.
 Make sure you meet the system requirements above.
@@ -52,7 +51,7 @@ A typical command would be:
 
 The script will create the directory at `project_path` if it doesn't exist. Make sure the parent directory (or `project_path` if exists) is **writeable** by the user running this script. **Do not run the setup script as root.** It won't do anything evil but you shouldn't take my word for it.
 
-Later on the setup script will use *composer*, *npm*, *bower* and *wp* (WP-CLI) to install dependecies and setup WordPress. Make sure these tools are installed as written [here](https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd).
+Later on the setup script will use *composer*, *npm* and *wp* (WP-CLI) to install dependencies and setup WordPress. Make sure these tools are installed as written [here](https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd).
 
 If you don't have or don't want to use a root MySQL account, prepare a database and user beforehand.
 
@@ -84,7 +83,7 @@ git push -u origin master
 
 ### Frontend
 
-Frontend dependecies are handled by Bower and will be installed in the `bower_modules` subfolder. Pull them in by referencing stylesheets from the Sass files and javascripts from the `browserify` configuration.
+Frontend dependencies are handled by NPM and will be installed in the `node_modules` subfolder. Pull them in by referencing stylesheets from the Sass files and javascripts from the `browserify` configuration.
 
 When developing use `npm run build:watch` to watch stylesheets and javascripts for changes and to compile on every change.
 
@@ -97,7 +96,7 @@ Run `npm run` to list all available tasks as configured in `package.json`.
 
 Develop your template in the `web/app/themes/mywebsite`.
 
-If you're going to build custom plugins put them in `web/app/plugins` and prefix the folder name with you project's namespace as used in the setup script. This way they won't be ignored by `.gitignore` otherwise you'll have to modify that file.
+If you're going to build custom plugins put them in `web/app/plugins` and prefix the folder name with you project's namespace as used in the setup script. This way they won't be ignored by `.gitignore` otherwise you'll have to modify its rules.
 
 Use **composer** to pull in 3rd-party plugins to your project from [WordPres Packagist](http://wpackagist.org/).
 
@@ -128,8 +127,7 @@ TODO: Instructions how to prepare the server and configure automated deployments
 
 **PLUGIN RULE #1: Do not use a plugin if doing it by yourself is reasonable!**
 
-You don't need plugins for sliders, lightboxes, social widgets etc. and you certainly don't want plugins
-not being actively developed.
+You don't need plugins for sliders, lightboxes, social widgets etc. and you certainly don't want plugins not being actively developed.
 
 Here are some developer-friendly and maintained plugins that you can use:
 
