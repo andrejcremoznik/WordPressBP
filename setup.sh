@@ -20,7 +20,12 @@ if [ ! -d $project_path ]; then
     echo "==> Cannot create $project_path. Check write permissions. Exiting…"
   fi
 else
-  echo "==> The directory $project_path exist. Emptying…"
+  echo "==> The directory $project_path exist."
+  read -e -p "Delete everything inside $project_path? (y/n): " cont
+  if [ "$cont" != "y" ]; then
+    echo "Exiting…"
+    exit
+  fi
   if [ -w $project_path ] ; then
     cd $project_path
     rm -f .[^.] .??*
