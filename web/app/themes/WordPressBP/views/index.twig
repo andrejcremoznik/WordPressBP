@@ -6,6 +6,19 @@
       {% include ['excerpt-'~post.post_type~'.twig', 'excerpt.twig'] %}
     {% endfor %}
   {% else %}
-    <p>{{ i18n.no_content }}</p>
+    <article class="post post_empty">
+      <p>{{ i18n.no_content }}</p>
+    </article>
+  {% endif %}
+  {% if pagination.pages %}
+  <div class="pagination">
+    {% for page in pagination.pages %}
+      {% if page.link %}
+        <a href="{{ page.link }}" class="pagination__link">{{ page.title }}</a>
+      {% else %}
+        <span class="pagination__current">{{ page.title }}</span>
+      {% endif %}
+    {% endfor %}
+  </div>
   {% endif %}
 {% endblock %}

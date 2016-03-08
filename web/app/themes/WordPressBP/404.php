@@ -1,8 +1,10 @@
 <?php
 
-$context = Timber::get_context();
+if (!class_exists('Timber')) {
+  echo 'Timber not activated. Make sure you activate the plugin.';
+  return;
+}
 
-$context['i18n']['missing_title'] = __('Missing page!', 'WordPressBP');
-$context['i18n']['missing_description'] = __('We couldn’t find any content at this address.', 'WordPressBP');
+$context = Timber::get_context();
 
 Timber::render('404.twig', $context);

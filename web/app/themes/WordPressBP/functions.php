@@ -2,8 +2,11 @@
 
 if (!class_exists('Timber')) {
   add_action('admin_notices', function() {
-    echo '<div class="error"><p>Timber not activated. Make sure you activate the plugin in <a href="' . esc_url(admin_url('plugins.php#timber')) . '">' . esc_url(admin_url('plugins.php')) . '</a></p></div>';
-    });
+    printf(
+      '<div class="error"><p>Timber not activated. Make sure you activate the plugin: <a href="%1$s#timber">%1$s</a></p></div>',
+      esc_url(admin_url('plugins.php'))
+    );
+  });
   return;
 }
 
@@ -12,19 +15,19 @@ Timber::$dirname = ['views'];
 /**
  * Global variables
  */
-define('ASSET_VERSION', 'vDEV'); // Change during deploy with Grunt
+define('ASSET_VERSION', 'vDEV'); // Change string during deploy
 
 class WordPressBP extends TimberSite {
 
   function __construct() {
 
-    add_action('after_setup_theme',  [$this, 'setup']);
-    add_action('widgets_init',       [$this, 'widgets_init']);
-    add_action('wp_enqueue_scripts', [$this, 'scripts_styles']);
+    add_action('after_setup_theme',           [$this, 'setup']);
+    add_action('widgets_init',                [$this, 'widgets_init']);
+    add_action('wp_enqueue_scripts',          [$this, 'scripts_styles']);
 
     add_filter('comment_form_default_fields', [$this, 'modify_comment_form_fields']);
-    add_filter('timber_context',     [$this, 'timber_context']);
-    //add_filter('get_twig',           [$this, 'timber_twig']);
+    add_filter('timber_context',              [$this, 'timber_context']);
+    //add_filter('get_twig',                  [$this, 'timber_twig']);
 
     /**
      * Clean up wp_head()
@@ -52,8 +55,14 @@ class WordPressBP extends TimberSite {
     $context['primary_navigation'] = new TimberMenu('primary_navigation');
     $context['env'] = WP_ENV;
     $context['site'] = $this;
+    $context['wp_url'] = WP_SITEURL;
     $context['i18n'] = [
-      'no_content' => __('Sorry, no content.', 'WordPressBP')
+      'no_content'          => __('Sorry, no content.', 'WordPressBP'),
+      'missing_title'       => __('Missing page!', 'WordPressBP'),
+      'missing_description' => __('We couldn’t find any content at this address.', 'WordPressBP'),
+      'author'              => __('Author', 'WordPressBP'),
+      'password'            => __('Password', 'WordPressBP'),
+      'submit'              => __('Submit', 'WordPressBP')
     ];
     return $context;
   }
@@ -61,11 +70,13 @@ class WordPressBP extends TimberSite {
   /**
    * Add custom functions to Twig
    */
+  /*
   function timber_twig($twig) {
     $twig->addExtension(new Twig_Extension_StringLoader());
     $twig->addFilter('myfoo', new Twig_Filter_Function('myfoo'));
     return $twig;
   }
+  */
 
   /**
    * Set up theme's defaults, register various features
@@ -178,7 +189,9 @@ new WordPressBP();
 /**
  * Custom Twig functions
  */
+/*
 function myfoo($text) {
   $text .= ' bar!';
   return $text;
 }
+*/

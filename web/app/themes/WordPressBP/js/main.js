@@ -1,6 +1,4 @@
-var clickHandler = require('./app/click-handler')
-var Module1 = require('./app/module1')
-var $ = require('jQuery')
+var $ = window.jQuery
 
 /**
  * Example event delegation helper
@@ -9,6 +7,7 @@ var $ = require('jQuery')
  * 2. Pass the data-action attribute's value from clicked element to clickHandler
  * 3. In clickHandler check data.action's value and run custom code
  */
+var clickHandler = require('./app/click-handler')
 $(document).on('click', '.js-click', function (e) {
   e.preventDefault()
 
@@ -16,12 +15,12 @@ $(document).on('click', '.js-click', function (e) {
   var data = $el.data()
 
   if (('action' in data) && data.action) {
-    clickHandler(data, $el)
+    data.action.split(',').forEach(function (act) {
+      clickHandler(act, data, $el)
+    })
   }
 })
 
 // Example module
-var m1 = new Module1({
-  msg: 'App loaded.'
-})
-m1.init()
+var Module1 = require('./app/module1')
+Module1.init({ msg: 'App loaded.' })

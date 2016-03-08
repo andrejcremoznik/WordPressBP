@@ -1,18 +1,10 @@
-var $ = require('jQuery')
+var $ = window.jQuery
 
-var Module1 = function (options) {
-  this.options = $.extend({}, Module1.DEFAULTS, options)
-  //this.init()
-}
-
-Module1.DEFAULTS = {
-  msg: 'Module1 loaded.'
-}
-
-Module1.prototype = {
-  init: function () {
-    console.log(this.options.msg)
+module.exports = {
+  init: function (opts) {
+    var options = $.extend({}, {
+      msg: 'Module1 loaded.'
+    }, opts)
+    console.log(options.msg)
   }
 }
-
-module.exports = Module1
