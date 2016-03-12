@@ -20,7 +20,7 @@ ssh_connection="user@host"
 remote_wordpress="/srv/http/WordPressBP.dev/releases/current/web/wp"
 
 function findWPCLI {
-  command -v wp >/dev/null 2>&1 || { echo >&2 "==> WP-CLI needs to be available as 'wp' command in your PATH $1"; exit 1; }
+  command -v wp > /dev/null 2>&1 || { echo >&2 "==> WP-CLI needs to be available as 'wp' command in your PATH $1"; exit 1; }
 }
 findWPCLI locally
 ssh $ssh_connection "$(typeset -f); findWPCLI 'on server'" || exit 1;

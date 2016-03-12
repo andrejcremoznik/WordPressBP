@@ -1,5 +1,5 @@
-module.exports = function (data, $el) {
-  switch (data.action) {
+module.exports = function (action, data, $el) {
+  switch (action) {
     case 'exampleAction':
       window.alert('Click handler triggered!')
       break

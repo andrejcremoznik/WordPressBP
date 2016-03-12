@@ -3,33 +3,32 @@
 <head>
   <meta charset="{{ site.charset }}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  {{ function('wp_head') }}
+  {{ wp_head }}
   {% block head %}{% endblock %}
 </head>
 <body class="{{ body_class }}">
 
   <header class="header" role="banner">
-    {% set op_tag = (title) ? 'div' : 'h1' %}
-    <{{ op_tag }} class="header__logo"><a href="/" title="{{ site.name }}" rel="home">{{ site.name }}</a></{{ op_tag }}>
+    <a class="header__logo" href="/" title="{{ site.name }}" rel="home">{{ site.name }}</a>
     <nav class="nav-primary" role="navigation">
-      {% spaceless %}
+    {% spaceless %}
       <ul class="nav">
-        {% for item in primary_navigation.get_items %}
-        <li class="nav-primary__item {{ item.classes | join(' ') }}">
+      {% for item in primary_navigation.get_items %}
+        <li class="nav-primary__item {{ item.classes|join(' ') }}">
           <a class="nav-primary__link" href="{{ item.get_link }}">{{ item.title }}</a>
           {% if item.get_children %}
-          <ul class="nav nav-primary__drop">
+            <ul class="nav nav-primary__drop">
             {% for child in item.get_children %}
-            <li class="nav-primary__drop-item">
-              <a class="nav-primary__drop-link" href="{{ child.get_link }}">{{ child.title }}</a>
-            </li>
+              <li class="nav-primary__drop-item">
+                <a class="nav-primary__drop-link" href="{{ child.get_link }}">{{ child.title }}</a>
+              </li>
             {% endfor %}
-          </ul>
+            </ul>
           {% endif %}
         </li>
-        {% endfor %}
+      {% endfor %}
       </ul>
-      {% endspaceless %}
+    {% endspaceless %}
     </nav>
   </header>
 
@@ -41,7 +40,7 @@
         </article>
       {% endblock %}
     </main>
-    {% if primary_sidebar %}
+    {% if primary_sidebar is defined and primary_sidebar %}
       <aside class="aside" role="complementary">
         {{ primary_sidebar }}
       </aside>
@@ -53,6 +52,6 @@
     <p>Click handler example: <a href="https://google.com" class="js-click" data-action="exampleAction">CLICK ME</a></p>
   </footer>
 
-  {{ function('wp_footer') }}
+  {{ wp_footer }}
 </body>
 </html>

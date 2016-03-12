@@ -1,13 +1,13 @@
 {% extends "base.twig" %}
 
 {% block content %}
-<article class="post post-{{ post.post_type }}">
+<article class="post post_{{ post.post_type }}">
 
   <header class="post__header">
     <h1 class="post__title">{{ post.title }}</h1>
     <p class="post__meta">
       <span class="post__date"><time datetime="{{ post.post_date|date('c') }}" pubdate>{{ post.post_date|date }}</time></span>
-      <span class="post__author">{{ i18n.author }}: <a href="{{ post.author.path }}"> {{ post.author.name }}</a></span>
+      <span class="post__author">{{ i18n.author }}: <a href="{{ post.author.path }}">{{ post.author.name }}</a></span>
     </p>
   </header>
 
@@ -15,21 +15,21 @@
     {{ post.content }}
   </section>
 
-  {% if post.comments %}
-  <section class="comments">
-    <h3 class="comments__title">Comments</h3>
-    {% if comment_form is defined %}{{ comment_form }}{% endif %}
-    {% spaceless %}
-    <div class="comments__list">
-      {% for comment in post.comments %}
-      <div class="comment comment_{{ comment.comment_type }}">
-        <p class="comment__author">{{ comment.author.name }} says</p>
-        <div class="comment__content">{{ comment.comment_content|wpautop }}</div>
-      </div>
-      {% endfor %}
-    </div>
-    {% endspaceless %}
-  </section>
+  {% if post.comments or post.comment_status == 'open' %}
+    <section class="comments">
+      <h3 class="comments__title">{{ i18n.comments }}</h3>
+      {% if comment_form is defined %}{{ comment_form }}{% endif %}
+      {% if post.comments %}
+        <div class="comments__list">
+        {% for comment in post.comments %}
+          <div class="comment comment_{{ comment.comment_type }}">
+            <p class="comment__author">{{ comment.author.name }} {{ i18n.says }}</p>
+            <div class="comment__content">{{ comment.comment_content|wpautop }}</div>
+          </div>
+        {% endfor %}
+        </div>
+      {% endif %}
+    </section>
   {% endif %}
 
 </article>

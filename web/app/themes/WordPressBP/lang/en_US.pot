@@ -26,6 +26,12 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
+msgid "Comments"
+msgstr ""
+
+msgid "says"
+msgstr ""
+
 msgid "Primary Navigation"
 msgstr ""
 

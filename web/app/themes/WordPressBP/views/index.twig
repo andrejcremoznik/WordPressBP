@@ -10,15 +10,15 @@
       <p>{{ i18n.no_content }}</p>
     </article>
   {% endif %}
-  {% if pagination.pages %}
-  <div class="pagination">
+  {% if pagination.pages is defined and pagination.pages %}
+    <div class="pagination">
     {% for page in pagination.pages %}
-      {% if page.link %}
-        <a href="{{ page.link }}" class="pagination__link">{{ page.title }}</a>
+      {% if page.link is defined and page.link %}
+        <a href="{{ page.link }}" class="pagination__item pagination__item_active">{{ page.title }}</a>
       {% else %}
-        <span class="pagination__current">{{ page.title }}</span>
+        <span class="pagination__item pagination__item_inactive{% if page.current is defined and page.current %} pagination__item_current{% endif %}">{{ page.title }}</span>
       {% endif %}
     {% endfor %}
-  </div>
+    </div>
   {% endif %}
 {% endblock %}
