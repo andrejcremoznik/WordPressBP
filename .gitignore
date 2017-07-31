@@ -13,14 +13,14 @@ sql-dump-*.sql
 !.env.example
 
 # Application
-web/wp
-web/app/plugins
+web/wp/
+web/app/plugins/*
 !web/app/plugins/WordPressBP*
-web/app/uploads
+web/app/uploads/*
 
 # 3rd party dependencies
-vendor
-node_modules
+vendor/
+node_modules/
 
 # Compiled assets
 web/app/themes/WordPressBP/assets/*.css
@@ -28,7 +28,7 @@ web/app/themes/WordPressBP/assets/*.js
 web/app/themes/WordPressBP/assets/*.map
 
 # Build directory
-build
+build/
 
 # Keep folders with .gitkeep even when ignore rules match
 !.gitkeep

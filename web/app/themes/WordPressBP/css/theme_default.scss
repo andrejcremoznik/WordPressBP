@@ -8,13 +8,13 @@ $default-font-family: Arial, Helvetica, sans-serif;
 
 // Font sizes
 $default-font-size: 16;    // absolute value
-$default-line-height: 1.5; // relative value
+$default-line-height: 1.5; // relative value without unit
 
 $font-size-s: 12; // small: absolute value
 $font-size-l: 20; // large: absolute value
 
-$font-size-lt: 80%;  // smaller: relative value
-$font-size-gt: 120%; // larger:  relative value
+$font-size-lt: 80%;  // smaller: relative value with unit
+$font-size-gt: 120%; // larger:  relative value with unit
 
 // Basic colors
 $default-tx-color: #333;

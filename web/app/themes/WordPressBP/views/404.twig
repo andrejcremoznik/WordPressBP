@@ -1,8 +1,10 @@
 {% extends "base.twig" %}
 
 {% block content %}
-<article class="post post-404">
-  <h1>{{ i18n.missing_title }}</h1>
-  <p>{{ i18n.missing_description }}</p>
+<article class="post post_404">
+  <h1 class="post__title">{{ i18n.missing_title }}</h1>
+  <section class="post__content">
+    <p>{{ i18n.missing_description }}</p>
+  </section>
 </article>
 {% endblock %}

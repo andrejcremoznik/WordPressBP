@@ -1,11 +1,11 @@
 {% extends "base.twig" %}
 
 {% block content %}
-<form class="password-form" action="/wp-login.php?action=postpass" method="post">
+<form class="password-form" action="{{ wp_url }}/wp-login.php?action=postpass" method="POST">
   <div>
-    <label for="pwbox-{{ post.ID }}">{{ i18n.password }}:</label>
-    <input type="password" name="post_password" id="pwbox-{{ post.ID }}" placeholder="{{ i18n.password }}" class="form-text">
-    <input type="submit" name="Submit" value="Submit" class="btn">
+    <label class="password-form__label" for="pwbox-{{ post.ID }}">{{ i18n.password }}:</label>
+    <input class="password-form__field" type="password" name="post_password" id="pwbox-{{ post.ID }}" placeholder="{{ i18n.password|escape('html_attr') }}">
+    <input class="password-form__submit btn" type="submit" name="Submit" value="{{ i18n.submit|escape('html_attr') }}">
   </div>
 </form>
 {% endblock %}

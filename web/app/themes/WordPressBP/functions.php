@@ -2,29 +2,32 @@
 
 if (!class_exists('Timber')) {
   add_action('admin_notices', function() {
-    echo '<div class="error"><p>Timber not activated. Make sure you activate the plugin in <a href="' . esc_url(admin_url('plugins.php#timber')) . '">' . esc_url(admin_url('plugins.php')) . '</a></p></div>';
-    });
+    printf(
+      '<div class="error"><p>Timber not activated. Make sure you activate the plugin: <a href="%1$s#timber">%1$s</a></p></div>',
+      esc_url(admin_url('plugins.php'))
+    );
+  });
   return;
 }
 
 Timber::$dirname = ['views'];
 
-/**
- * Global variables
- */
-define('ASSET_VERSION', 'vDEV'); // Change during deploy with Grunt
+define('ASSET_VERSION', 'vDEV'); // Change during deploy
 
 class WordPressBP extends TimberSite {
 
   function __construct() {
 
-    add_action('after_setup_theme',  [$this, 'setup']);
-    add_action('widgets_init',       [$this, 'widgets_init']);
-    add_action('wp_enqueue_scripts', [$this, 'scripts_styles']);
+    add_action('after_setup_theme',           [$this, 'setup']);
+    add_action('widgets_init',                [$this, 'widgets_init']);
+    add_action('wp_enqueue_scripts',          [$this, 'scripts_styles']);
+    add_action('wp_default_scripts',          [$this, 'remove_jquery_migrate']);
+    add_action('save_post',                   [$this, 'flush_theme_cache']);
+    add_action('deleted_post',                [$this, 'flush_theme_cache']);
 
     add_filter('comment_form_default_fields', [$this, 'modify_comment_form_fields']);
-    add_filter('timber_context',     [$this, 'timber_context']);
-    //add_filter('get_twig',           [$this, 'timber_twig']);
+    add_filter('timber/context',              [$this, 'timber_context']);
+    add_filter('timber/twig',                 [$this, 'timber_twig']);
 
     /**
      * Clean up wp_head()
@@ -49,11 +52,19 @@ class WordPressBP extends TimberSite {
    * Add custom values global context
    */
   function timber_context($context) {
-    $context['primary_navigation'] = new TimberMenu('primary_navigation');
     $context['env'] = WP_ENV;
     $context['site'] = $this;
+    $context['wp_url'] = WP_SITEURL;
+    $context['primary_navigation'] = new TimberMenu('primary_navigation');
     $context['i18n'] = [
-      'no_content' => __('Sorry, no content.', 'WordPressBP')
+      'no_content'          => __('Sorry, no content.', 'WordPressBP'),
+      'missing_title'       => __('Missing page!', 'WordPressBP'),
+      'missing_description' => __('We couldn’t find any content at this address.', 'WordPressBP'),
+      'author'              => __('Author', 'WordPressBP'),
+      'password'            => __('Password', 'WordPressBP'),
+      'submit'              => __('Submit', 'WordPressBP'),
+      'comments'            => __('Comments', 'WordPressBP'),
+      'says'                => __('says', 'WordPressBP')
     ];
     return $context;
   }
@@ -62,8 +73,7 @@ class WordPressBP extends TimberSite {
    * Add custom functions to Twig
    */
   function timber_twig($twig) {
-    $twig->addExtension(new Twig_Extension_StringLoader());
-    $twig->addFilter('myfoo', new Twig_Filter_Function('myfoo'));
+    $twig->enableStrictVariables();
     return $twig;
   }
 
@@ -118,11 +128,12 @@ class WordPressBP extends TimberSite {
     //add_filter('image_size_names_choose', [$this, 'image_sizes']);
 
   }
-
+  /*
   function image_sizes($sizes) {
     $sizes['size_name'] = __('New size label', 'WordPressBP');
     return $sizes;
   }
+  */
 
   /**
    * Set up theme's sidebars
@@ -133,7 +144,7 @@ class WordPressBP extends TimberSite {
       'id'            => 'primary_sidebar',
       'before_widget' => '<div id="%1$s" class="widget %2$s">',
       'after_widget'  => '</div>',
-      'before_title'  => '<h3 class="widget-title">',
+      'before_title'  => '<h3 class="widget__title">',
       'after_title'   => '</h3>'
     ]);
   }
@@ -160,6 +171,13 @@ class WordPressBP extends TimberSite {
     // Enqueue scripts
     wp_enqueue_script('app');
   }
+  // Some plugins enqueue 'jquery' which wants migrate. Screw migrate.
+  function remove_jquery_migrate(&$scripts) {
+    if (!is_admin()) {
+      $scripts->remove('jquery');
+      $scripts->add('jquery', false, ['jquery-core']);
+    }
+	}
 
   /**
    * Remove URL field from comment form
@@ -170,15 +188,42 @@ class WordPressBP extends TimberSite {
     }
     return $fields;
   }
+
+  /**
+   * Helper to invalidate theme's caches by
+   * increasing the theme cache iterator
+   *
+   * - see below for an example function how to correctly use the cache
+   */
+  function flush_theme_cache() {
+    wp_cache_incr('theme_cache_itr');
+  }
+
+  /**
+   * Example how to use cahing for expensive
+   * operations done by the theme.
+   */
+  /*
+  function do_something_expensive() {
+    // Get the cache iterator integer
+    $cache_itr = wp_cache_get('theme_cache_itr');
+    if ($cache_itr === false) {
+      $cache_itr = 1;
+      wp_cache_set('theme_cache_itr', $cache_itr);
+    }
+    // Name the cache key for this result and append the cache iterator
+    $cache_key = 'expensive_operation_' . $cache_ns;
+    // Get result from cache if it exists otherwise create new result
+    $expensive_operation = wp_cache_get($cache_key, 'theme');
+    if ($expensive_operation === false) {
+      // Do your thing here
+      $expensive_operation = 'The result of something you do not want to run on every load.';
+      // Cache it
+      wp_cache_set($cache_key, $expensive_operation, 'theme');
+    }
+    return $expensive_operation;
+  }
+  */
 }
 
 new WordPressBP();
-
-
-/**
- * Custom Twig functions
- */
-function myfoo($text) {
-  $text .= ' bar!';
-  return $text;
-}

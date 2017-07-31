@@ -1,35 +1,35 @@
 {% extends "base.twig" %}
 
 {% block content %}
-<article class="post post-{{ post.post_type }}">
+<article class="post post_{{ post.post_type }}">
 
-  <header class="article-content">
-    <h1 class="post-title">{{ post.title }}</h1>
-    <p class="post-meta">
-      <span class="date"><time datetime="{{ post.post_date|date('c') }}" pubdate>{{ post.post_date|date }}</time></span>
-      <span class="author">{{ i18n.author }}: <a href="{{ post.author.path }}"> {{ post.author.name }}</a></span>
+  <header class="post__header">
+    <h1 class="post__title">{{ post.title }}</h1>
+    <p class="post__meta">
+      <span class="post__date"><time datetime="{{ post.post_date|date('c') }}" pubdate>{{ post.post_date|date }}</time></span>
+      <span class="post__author">{{ i18n.author }}: <a href="{{ post.author.path }}">{{ post.author.name }}</a></span>
     </p>
   </header>
 
-  <section class="post-content">
+  <section class="post__content">
     {{ post.content }}
   </section>
 
-  {% if post.comments %}
-  <section class="post-comments">
-    <h3 class="post-subsection-title">Comments</h3>
-    {{ comment_form }}
-    {% spaceless %}
-    <div class="comment-list">
-      {% for comment in post.comments %}
-      <div class="comment comment-{{ comment.comment_type }}">
-        <p class="comment-author">{{ comment.author.name }} says</p>
-        <div class="comment-content">{{ comment.comment_content|wpautop }}</div>
-      </div>
-      {% endfor %}
-    </div>
-    {% endspaceless %}
-  </section>
+  {% if post.comments or post.comment_status == 'open' %}
+    <section class="comments">
+      <h3 class="comments__title">{{ i18n.comments }}</h3>
+      {% if comment_form is defined %}{{ comment_form }}{% endif %}
+      {% if post.comments %}
+        <div class="comments__list">
+        {% for comment in post.comments %}
+          <div class="comment comment_{{ comment.comment_type }}">
+            <p class="comment__author">{{ comment.author.name }} {{ i18n.says }}</p>
+            <div class="comment__content">{{ comment.comment_content|wpautop }}</div>
+          </div>
+        {% endfor %}
+        </div>
+      {% endif %}
+    </section>
   {% endif %}
 
 </article>

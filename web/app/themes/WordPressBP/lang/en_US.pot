@@ -8,10 +8,13 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 # http://localization-guide.readthedocs.org/en/latest/l10n/pluralforms.html
 
-msgid "Primary Navigation"
+msgid "Sorry, no content."
 msgstr ""
 
-msgid "Primary Sidebar"
+msgid "Missing page!"
+msgstr ""
+
+msgid "We couldn’t find any content at this address."
 msgstr ""
 
 msgid "Author"
@@ -20,11 +23,17 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-msgid "Sorry, no content."
+msgid "Submit"
 msgstr ""
 
-msgid "Missing page!"
+msgid "Comments"
 msgstr ""
 
-msgid "We couldn’t find any content at this address."
+msgid "says"
+msgstr ""
+
+msgid "Primary Navigation"
+msgstr ""
+
+msgid "Primary Sidebar"
 msgstr ""

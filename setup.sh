@@ -20,7 +20,12 @@ if [ ! -d $project_path ]; then
     echo "==> Cannot create $project_path. Check write permissions. Exiting…"
   fi
 else
-  echo "==> The directory $project_path exist. Emptying…"
+  echo "==> The directory $project_path exist."
+  read -e -p "Delete everything inside $project_path? (y/n): " cont
+  if [ "$cont" != "y" ]; then
+    echo "Exiting…"
+    exit
+  fi
   if [ -w $project_path ] ; then
     cd $project_path
     rm -f .[^.] .??*
@@ -128,17 +133,17 @@ read -e -p "Admin username: " -i "${namespace}admin" wp_user
 read -e -p "Admin password: " wp_pass
 read -e -p "Admin e-mail: " wp_email
 
-echo "==> Installing WordPress"
-wp core install --url=http://namespace.dev --title="${wp_title}" --admin_user=${wp_user} --admin_password=${wp_pass} --admin_email=${wp_email}
+echo "==> Installing WordPress…"
+wp core install --url=http://${namespace}.dev --title="${wp_title}" --admin_user=${wp_user} --admin_password=${wp_pass} --admin_email=${wp_email}
 
-echo "==> Removing demo content"
+echo "==> Removing demo content…"
 wp site empty --yes
 wp widget delete search-2 recent-posts-2 recent-comments-2 archives-2 categories-2 meta-2
 
-echo "==> Activating plugins"
+echo "==> Activating plugins…"
 wp plugin activate disable-emojis timber-library
 
-echo "==> Activating $namespace theme"
+echo "==> Activating $namespace theme…"
 wp theme activate ${namespace}
 
 echo "==> Creating developer admin account (login: dev / dev)"
