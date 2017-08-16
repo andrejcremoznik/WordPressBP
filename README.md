@@ -5,7 +5,7 @@ based web project. It provides all the files and most common code patterns — t
 to get down and dirty quickly without wasting time setting up directory and file structure, importing
 CSS resets, setting up the `functions.php` file etc.
 
-WordPressBP is **meant for developers** developing a WordPress site **from stratch** using
+WordPressBP is **meant for developers** developing a WordPress site **from scratch** using
 **Sass** CSS pre-processor.
 
 **It is not:**
@@ -17,12 +17,12 @@ WordPressBP is **meant for developers** developing a WordPress site **from strat
 
 ## System requirements
 
-* LEMP stack (Linux, Nginx, PHP 5.5+, MySQL)
-* NodeJS & Node Package Manager (npm)
+* LEMP stack (Linux, Nginx, PHP 5.6+, MySQL)
+* NodeJS (`node`, `npm`)
 * [Composer](https://getcomposer.org/)
 * [WP-CLI](http://wp-cli.org/)
 
-Read [this Gist](https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd) on how to correctly setup these tools on your development environment.
+Read [this Gist](https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd) on how to correctly set these tools up on your development environment.
 
 
 ## Quick-start guide
@@ -49,7 +49,7 @@ A typical command would be:
 ./setup.sh mywebsite /srv/http/mywebsite.dev
 ```
 
-The script will create the directory at `project_path` if it doesn't exist. Make sure the parent directory (or `project_path` if exists) is **writeable** by the user running this script. **Do not run the setup script as root.** It won't do anything evil but you shouldn't take my word for it.
+The script will create the directory at `project_path` if it doesn't exist. Make sure the parent directory (or `project_path` if exists) is **writable** by the user running this script. **Do not run the setup script as root.** It won't do anything evil but you shouldn't take my word for it.
 
 Later on the setup script will use *composer*, *npm* and *wp* (WP-CLI) to install dependencies and setup WordPress. Make sure these tools are installed as written [here](https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd).
 
@@ -70,7 +70,7 @@ By default your website will be accessible at `http://<namespace>.dev`. Map `myw
 
 ## Developing
 
-Go to your project at `<project_path>/repo` and initialize git or whatever versioning sistem you like. Note that `.gitignore` and `.gitattributes` are already present so you can quickstart by running:
+Go to your project at `<project_path>/repo` and initialize git or whatever versioning system you like. Note that `.gitignore` and `.gitattributes` are already present so you can quick-start by running:
 
 ```
 git init
@@ -81,24 +81,24 @@ git push -u origin master
 ```
 
 
-### Frontend
+### Front-end
 
-Frontend dependencies are handled by NPM and will be installed in the `node_modules` subfolder. Pull them in by referencing stylesheets from the Sass files and javascripts from the `browserify` configuration.
+Front-end dependencies are handled by NPM and will be installed in the `node_modules` sub-folder.
 
-When developing use `npm run build:watch` to watch stylesheets and javascripts for changes and to compile on every change.
+When developing use `npm run watch` to watch stylesheets and javascripts for changes and to compile on every change.
 
 `npm run build` will compile all assets and minify them.
 
 Run `npm run` to list all available tasks as configured in `package.json`.
 
 
-### Backend
+### Back-end
 
 Develop your template in the `web/app/themes/mywebsite`.
 
-If you're going to build custom plugins put them in `web/app/plugins` and prefix the folder name with you project's namespace as used in the setup script. This way they won't be ignored by `.gitignore` otherwise you'll have to modify its rules.
+If you're going to build custom plugins put them in `web/app/plugins` and prefix the folder name with you project's namespace e.g. `mywebsite-cool-plugin`. This way they won't be ignored by `.gitignore` otherwise you'll have to modify its rules.
 
-Use **composer** to pull in 3rd-party plugins to your project from [WordPres Packagist](http://wpackagist.org/).
+Use **composer** to pull in 3rd-party plugins to your project from [WordPres Packagist](http://wpackagist.org/) e.g. `composer require wpackagist-plugin/wordpress-seo`.
 
 
 ## Introducing new developers to your project
@@ -106,19 +106,19 @@ Use **composer** to pull in 3rd-party plugins to your project from [WordPres Pac
 Before you get your team to co-develop your project, you will want to set up a staging environment. When done:
 
 1. Have a look at the `sync.sh` script and set it up
-1. Make sure your team members have SSH access to staging
-2. Have them clone the code repository
-3. Everyone should set up a MySQL database
-4. Inside repo copy `.env.example` to `.env` and set it up with everyone's database settings
-5. Run the sync script to get the database
-6. In Nginx config at `<project_path>/etc/nginx.conf` uncomment and configure the block to rewrite URLs for file uploads. This way you don't have to sync the `uploads` folder from the server.
+2. Make sure your team members have SSH access to staging
+3. Have them clone the code repository
+4. Everyone should set up a MySQL database
+5. Inside repo copy `.env.example` to `.env` and set it up
+6. Run the sync script to get the database from staging
+7. In Nginx config at `<project_path>/etc/nginx.conf` uncomment and configure the block to rewrite URLs for file uploads. This way you don't have to sync the `uploads` folder from the server.
 
-Syncing the database only works downstream. Have some rules set up regarding configuration on staging and syncing. Make sure everyone sets up his changes on staging regularly and in small increments unless you figure out how to do migrations. Communicate configuration changes to the entire team. Always keep everyone in the loop.
+Syncing the database only works downstream. Have some rules set up regarding configuration on staging and syncing. Make sure everyone sets up their changes on staging regularly and in small increments unless you figure out how to do migrations. Communicate configuration changes to the entire team. Always keep everyone in the loop.
 
 
 ### Deploying
 
-WordPressBP includes a simple automated deployment script using Node Shell and SSH modules. You can deploy your website by running `npm run deploy -- production` but this requires some setup. All the configuration for deploys is in `config/deploy` directory if you're feeling adventurous.
+WordPressBP includes a simple automated deployment script using Node Shell and SSH packages. You can deploy your website by running `npm run deploy production` but this requires some setup. All the configuration for deploys is in `config/deploy` directory if you're feeling adventurous.
 
 TODO: Instructions how to prepare the server and configure automated deployments.
 
@@ -127,7 +127,7 @@ TODO: Instructions how to prepare the server and configure automated deployments
 
 **PLUGIN RULE #1: Do not use a plugin if doing it by yourself is reasonable!**
 
-You don't need plugins for sliders, lightboxes, social widgets etc. and you certainly don't want plugins not being actively developed.
+You don't need plugins for sliders, lightboxes, social widgets etc. and you certainly don't want plugins not being actively developed. Most WP plugins are garbage that will make your site slow and *insecure*.
 
 Here are some developer-friendly and maintained plugins that you can use:
 

@@ -8,7 +8,7 @@
 # 4. deactivate specified plugins
 # 5. delete revisions, cache and transients
 # 6. perform a search-replace for site URL and flush rewrite rules
-# 7. create an admin user for development
+# 7. create an admin user for development (dev / dev)
 #
 # Review TODOs below to setup the script
 #

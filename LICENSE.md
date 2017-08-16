@@ -1,4 +1,4 @@
-Copyright (c) 2015 Andrej Čremožnik and contributors
+Copyright (c) 2015-2017 Andrej Cremoznik and contributors
 https://github.com/andrejcremoznik/WordPressBP
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

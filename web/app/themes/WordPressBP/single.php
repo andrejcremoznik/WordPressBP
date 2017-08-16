@@ -1,10 +1,5 @@
 <?php
 
-if (!class_exists('Timber')) {
-  echo 'Timber not activated. Make sure you activate the plugin.';
-  return;
-}
-
 $post = new TimberPost();
 $context = Timber::get_context();
 $context['post'] = $post;

@@ -1,27 +1,27 @@
-/*! WordPressBP default theme | MIT License | github.com/andrejcremoznik/WordPressBP/ */
+/*! WordPressBP default theme | MIT License | keybase.io/andrejcremoznik */
 
 // Public asset uri (use with asset() function)
-$public-assets-uri: '/app/themes/WordPressBP/assets/default/';
+$public_assets_uri: '/app/themes/WordPressBP/assets/default/';
 
 // Font families
-$default-font-family: Arial, Helvetica, sans-serif;
+$default_font_family: Arial, Helvetica, sans-serif;
 
 // Font sizes
-$default-font-size: 16;    // absolute value
-$default-line-height: 1.5; // relative value without unit
+$default_font_size: 16;    // absolute value
+$default_line_height: 1.5; // relative value without unit
 
-$font-size-s: 12; // small: absolute value
-$font-size-l: 20; // large: absolute value
+$font_s: 12; // small: absolute value
+$font_l: 20; // large: absolute value
 
-$font-size-lt: 80%;  // smaller: relative value with unit
-$font-size-gt: 120%; // larger:  relative value with unit
+$font_lt: 80%;  // smaller: relative value with unit
+$font_gt: 120%; // larger:  relative value with unit
 
 // Basic colors
-$default-tx-color: #333;
-$default-bg-color: #fff;
+$default_tx_color: #333;
+$default_bg_color: #fff;
 
-$content-link-color: #346994;
-$content-link-hover-color: lighten($content-link-color, 30%);
+$content_link_color: #346994;
+$content_link_hover_color: lighten($content_link_color, 30%);
 
 /* =============== */
 

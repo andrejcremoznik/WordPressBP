@@ -1,6 +1,6 @@
-var sh = require('shelljs')
-var assets = 'web/app/themes/WordPressBP/assets'
-var version = Math.round(+new Date() / 1000)
+const sh = require('shelljs')
+const assets = 'web/app/themes/WordPressBP/assets'
+const version = Math.round(+new Date() / 1000)
 
 // Create build dir
 sh.mkdir('build')
@@ -20,7 +20,7 @@ sh.rm('-fr', 'build/web/app/uploads')
 
 // Move into build dir, fetch composer dependencies and create tarball
 sh.cd('build')
-sh.exec('composer install')
+sh.exec('composer install -o')
 
 // Create tarball
 sh.exec('tar -zcf build.tar.gz *')

@@ -1,6 +1,6 @@
 // Alignment helpers
-.pull-left { float: left; }
-.pull-right { float: right; }
+.pull_left { float: left; }
+.pull_right { float: right; }
 
 // Micro clearfix
 .cf {
@@ -27,7 +27,6 @@
   border: 0;
   overflow: hidden;
   position: absolute;
-  clip: rect(0 0 0 0);
 }
 
 // Hide element visually and from screenreaders, but maintain layout
@@ -48,7 +47,7 @@
   padding: 0;
   overflow: hidden;
 
-  > .responsive-embed-item,
+  > .responsive-embed__item,
   > iframe,
   > embed,
   > video,
@@ -60,8 +59,8 @@
     border: 0;
   }
 }
-.responsive-embed-16by9 { padding: 0 0 pc(9, 16); }
-.responsive-embed-4by3 { padding: 0 0 pc(3, 4); }
+.responsive-embed_16by9 { padding: 0 0 pc(9, 16); }
+.responsive-embed_4by3 { padding: 0 0 pc(3, 4); }
 
 // Responsive images
 .responsive-img {
@@ -72,19 +71,19 @@
 }
 
 // Offset elements
-.offset-top-0 { margin-top: 0; }
-.offset-top-s { margin-top: 1em; }
-.offset-top-m { margin-top: 2em; }
-.offset-top-l { margin-top: 4em; }
-.offset-right-0 { margin-right: 0; }
-.offset-right-s { margin-right: 1em; }
-.offset-right-m { margin-right: 2em; }
-.offset-right-l { margin-right: 4em; }
-.offset-bottom-0 { margin-bottom: 0; }
-.offset-bottom-s { margin-bottom: 1em; }
-.offset-bottom-m { margin-bottom: 2em; }
-.offset-bottom-l { margin-bottom: 4em; }
-.offset-left-0 { margin-left: 0; }
-.offset-left-s { margin-left: 1em; }
-.offset-left-m { margin-left: 2em; }
-.offset-left-l { margin-left: 4em; }
+.offset-top_0 { margin-top: 0; }
+.offset-top_s { margin-top: 1em; }
+.offset-top_m { margin-top: 2em; }
+.offset-top_l { margin-top: 4em; }
+.offset-right_0 { margin-right: 0; }
+.offset-right_s { margin-right: 1em; }
+.offset-right_m { margin-right: 2em; }
+.offset-right_l { margin-right: 4em; }
+.offset-bottom_0 { margin-bottom: 0; }
+.offset-bottom_s { margin-bottom: 1em; }
+.offset-bottom_m { margin-bottom: 2em; }
+.offset-bottom_l { margin-bottom: 4em; }
+.offset-left_0 { margin-left: 0; }
+.offset-left_s { margin-left: 1em; }
+.offset-left_m { margin-left: 2em; }
+.offset-left_l { margin-left: 4em; }

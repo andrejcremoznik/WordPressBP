@@ -2,10 +2,7 @@
 
 if (!class_exists('Timber')) {
   add_action('admin_notices', function() {
-    printf(
-      '<div class="error"><p>Timber not activated. Make sure you activate the plugin: <a href="%1$s#timber">%1$s</a></p></div>',
-      esc_url(admin_url('plugins.php'))
-    );
+    echo '<div class="error"><p>Timber not found.</p></div>';
   });
   return;
 }
@@ -201,7 +198,8 @@ class WordPressBP extends TimberSite {
 
   /**
    * Example how to use cahing for expensive
-   * operations done by the theme.
+   * operations done by the theme. No need to set expire
+   * times. To invalidate cache run flush_theme_cache().
    */
   /*
   function do_something_expensive() {
@@ -212,7 +210,7 @@ class WordPressBP extends TimberSite {
       wp_cache_set('theme_cache_itr', $cache_itr);
     }
     // Name the cache key for this result and append the cache iterator
-    $cache_key = 'expensive_operation_' . $cache_ns;
+    $cache_key = 'expensive_operation_' . $cache_itr;
     // Get result from cache if it exists otherwise create new result
     $expensive_operation = wp_cache_get($cache_key, 'theme');
     if ($expensive_operation === false) {

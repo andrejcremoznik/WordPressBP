@@ -2,8 +2,8 @@
 /*
 Plugin Name: WordPressBP Extensions
 Description: Provides extensions for the WordPressBP website
-Author:
-Author URI:
+Author: Andrej Cremoznik
+Author URI: https://keybase.io/andrejcremoznik
 Text Domain: WordPressBP-extensions
 Domain Path: /lang
 Version: 1.0.0
@@ -148,7 +148,7 @@ class WordPressBP_extensions {
         'singular_name'     => __('Name', 'WordPressBP-extensions')
       ],
       'supports'            => ['title', 'editor', 'author', 'thumbnail', 'comments', 'revisions'],
-      'taxonomies'          => ['category', 'post_tag']
+      'taxonomies'          => ['category', 'post_tag'],
       'public'              => true,
       'exclude_from_search' => true,
       'has_archive'         => true,
@@ -166,8 +166,9 @@ class WordPressBP_extensions {
     if (!is_admin() && $query->is_main_query()) {
 
       // Example: Include a custom post type in query
-      if (is_archive() || is_single() || is_home())
+      if (is_archive() || is_single() || is_home()) {
         $query->set('post_type', ['post', 'my_post_type']);
+      }
 
     }
   }

@@ -5,23 +5,6 @@
   "repository": "andrejcremoznik/WordPressBP",
   "license": "MIT",
   "private": true,
-  "dependencies": {
-    "normalize.css": "latest"
-  },
-  "devDependencies": {
-    "autoprefixer": "latest",
-    "browserify": "latest",
-    "csso": "latest",
-    "exorcist": "latest",
-    "node-sass": "latest",
-    "node-ssh": "latest",
-    "parallelshell": "latest",
-    "postcss-cli": "latest",
-    "shelljs": "latest",
-    "standard": "latest",
-    "uglify-js": "latest",
-    "watch": "latest"
-  },
   "scripts": {
     "css:sass": "node-sass --output-style compressed --source-map true --output web/app/themes/WordPressBP/assets web/app/themes/WordPressBP/css",
     "css:prefix": "postcss -r --use autoprefixer --autoprefixer.browsers 'last 2 versions' web/app/themes/WordPressBP/assets/*.css",
@@ -31,13 +14,11 @@
     "js:uglify": "for f in web/app/themes/WordPressBP/assets/*.js; do uglifyjs $f --screw-ie8 -o $f; done",
     "js:watch": "watch 'npm run js:bundle' web/app/themes/WordPressBP/js/ --wait=2 --ignoreDotFiles",
     "build": "npm run css:sass && npm run css:csso && npm run css:prefix && npm run js:bundle && npm run js:uglify",
-    "build:watch": "parallelshell 'npm run css:watch' 'npm run js:watch'",
-    "build:clean": "if [ -d build ]; then rm -fr build; fi",
-    "lint:js": "shopt -s globstar && standard web/app/themes/WordPressBP/**/*.js",
-    "lint:configs": "shopt -s globstar && standard config/**/*.js",
-    "predeploy": "npm run build:clean && npm run build && shjs config/deploy/build.js",
+    "clean": "if [ -d build ]; then rm -fr build; fi",
+    "watch": "parallelshell 'npm run css:watch' 'npm run js:watch'",
+    "predeploy": "npm run clean && npm run build && shjs config/deploy/build.js",
     "deploy": "node config/deploy/deploy.js",
-    "postdeploy": "npm run build:clean",
+    "postdeploy": "npm run clean",
     "deploy:revert": "node config/deploy/revert.js",
     "deploy:init": "node config/deploy/init.js"
   }

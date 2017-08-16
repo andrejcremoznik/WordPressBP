@@ -4,38 +4,39 @@ $root_dir = dirname(__DIR__);
 $webroot_dir = $root_dir . '/web';
 
 // Use Dotenv to set required environment variables and load .env file
+if (!file_exists($root_dir . '/.env')) {
+  die('<b>.env<b/> not found. Please configure your environment.')
+}
+
 $dotenv = new Dotenv\Dotenv($root_dir);
-if (file_exists($root_dir . '/.env')) {
-  $dotenv->load();
-  $dotenv->required(['DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_PREFIX', 'WP_HOME', 'WP_SITEURL']);
-}
+$dotenv->load();
+$dotenv->required(['DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_PREFIX', 'WP_HOME', 'WP_SITEURL']);
 
-// Set up our global environment constant and load its config first
+// Set up global environment constant and load its config first
 define('WP_ENV', getenv('WP_ENV') ?: 'development');
-
-$env_config = __DIR__ . '/environments/' . WP_ENV . '.php';
-
-if (file_exists($env_config)) {
-  require_once $env_config;
+$env_config  = $root_dir . '/config/environments/' . WP_ENV . '.php';
+if (!file_exists($env_config)) {
+  die('Environment configuration not found.')
 }
+require_once $env_config;
 
 // URLs
-define('WP_HOME',     getenv('WP_HOME'));
-define('WP_SITEURL',  getenv('WP_SITEURL'));
+define('WP_HOME',          getenv('WP_HOME'));
+define('WP_SITEURL',       getenv('WP_SITEURL'));
 
 // Custom Content Directory
-define('CONTENT_DIR',   '/app');
-define('WP_CONTENT_DIR', $webroot_dir . CONTENT_DIR);
-define('WP_CONTENT_URL', WP_HOME . CONTENT_DIR);
+define('CONTENT_DIR',      '/app');
+define('WP_CONTENT_DIR',   $webroot_dir . CONTENT_DIR);
+define('WP_CONTENT_URL',   WP_HOME . CONTENT_DIR);
 
 // DB settings
-define('DB_NAME',     getenv('DB_NAME'));
-define('DB_USER',     getenv('DB_USER'));
-define('DB_PASSWORD', getenv('DB_PASSWORD'));
-define('DB_HOST',     getenv('DB_HOST') ?: 'localhost');
-define('DB_CHARSET',  'utf8');
-define('DB_COLLATE',  '');
-$table_prefix = getenv('DB_PREFIX');
+define('DB_NAME',          getenv('DB_NAME'));
+define('DB_USER',          getenv('DB_USER'));
+define('DB_PASSWORD',      getenv('DB_PASSWORD'));
+define('DB_HOST',          getenv('DB_HOST') ?: 'localhost');
+define('DB_CHARSET',       'utf8');
+define('DB_COLLATE',       '');
+$table_prefix =            getenv('DB_PREFIX');
 
 // Authentication Unique Keys and Salts
 define('AUTH_KEY',         getenv('AUTH_KEY'));
@@ -54,7 +55,6 @@ define('AUTOSAVE_INTERVAL',          120);
 define('WP_POST_REVISIONS',          2);
 define('EMPTY_TRASH_DAYS',           3);
 define('DISALLOW_FILE_EDIT',         true);
-
 
 if (!defined('ABSPATH')) {
   define('ABSPATH', $webroot_dir . '/wp/');

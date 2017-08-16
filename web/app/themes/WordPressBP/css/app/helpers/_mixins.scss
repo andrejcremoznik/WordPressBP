@@ -2,7 +2,7 @@
  * Convert PX units to EMs.
  * Ex: font-size: pem(16);
  */
-@function pem($pxval, $base: $default-font-size) {
+@function pem($pxval, $base: $default_font_size) {
   @return #{$pxval / $base}em;
 }
 
@@ -11,7 +11,7 @@
  * Ex: font-size: rem(16);
  */
 @function rem($pxval) {
-  @return #{$pxval / $default-font-size}rem;
+  @return #{$pxval / $default_font_size}rem;
 }
 
 /**
@@ -27,6 +27,6 @@
  * Ex: asset('image.jpg')
  * or: asset('shared_image.jpg', '/app/themes/WordPressBP/assets/')
  */
-@function asset($file, $path: $public-assets-uri) {
+@function asset($file, $path: $public_assets_uri) {
   @return url("#{$path + $file}");
 }

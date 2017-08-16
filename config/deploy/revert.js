@@ -1,36 +1,56 @@
-var deployEnv = process.argv[2] || 'staging'
-var deployConf = require('./config')
+const path = require('path')
+const NodeSSH = require('node-ssh')
+const deployEnv = process.argv[2] || 'staging'
+const deployConf = require('./config')
 
 if (!(deployEnv in deployConf.deployEnvSSH)) {
   console.error('==> Unknown deploy environment: ' + deployEnv)
   process.exit(1)
 }
 
-var config = {
+const config = {
   deploySSH: deployConf['deployEnvSSH'][deployEnv],
   deployPath: deployConf['deployEnvPaths'][deployEnv]
 }
-var NodeSSH = require('node-ssh')
-var ssh = new NodeSSH()
 
-ssh.connect(config.deploySSH).then(function () {
+// Build bash shell command to exeute on the server
+var revertProcedure = [
+  // Rename folder for current release to broken
+  [
+    'mv',
+    path.join(config.deployPath, 'current'),
+    path.join(config.deployPath, 'broken')
+  ].join(' '),
+  // Rename folder for previous (working) release to current
+  [
+    'mv',
+    path.join(config.deployPath, 'previous'),
+    path.join(config.deployPath, 'current')
+  ].join(' '),
+  // Remove broken release dir
+  ['rm -fr', path.join(config.deployPath, 'broken')].join(' ')
+].join(' && ')
+
+// Run
+var ssh = new NodeSSH()
+console.log('==> Reverting to previous deploy on: ' + deployEnv)
+ssh.connect(config.deploySSH)
+.then(() => {
   console.log('==> Connected')
-  ssh.execCommand([
-    // Rename symlink to current (broken) release
-    'mv ' + config.deployPath + '/current ' + config.deployPath + '/broken',
-    // Restore symlink to previous (working) release
-    'mv ' + config.deployPath + '/previous ' + config.deployPath + '/current',
-    // Remove broken release dir and symlink
-    'rm -rf ' + config.deployPath + '/broken'
-  ].join('&&')).then(function () {
+  ssh.execCommand(revertProcedure)
+  .then((result) => {
     console.log('==> Done')
+    console.log(['STDOUT:', result.stdout].join(' '))
+    console.log(['STDERR:', result.stderr].join(' '))
     process.exit()
-  }, function (err) {
+  })
+  .catch((err) => {
     console.error('==> Failed')
     console.log(err)
     process.exit(1)
   })
-}, function (err) {
+})
+.catch((err) => {
   console.error('==> Connection failed')
   console.log(err)
   process.exit(1)
