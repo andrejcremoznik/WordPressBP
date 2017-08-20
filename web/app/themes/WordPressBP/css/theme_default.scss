@@ -10,11 +10,9 @@ $default_font_family: Arial, Helvetica, sans-serif;
 $default_font_size: 16;    // absolute value
 $default_line_height: 1.5; // relative value without unit
 
+$font_m: $default_font_size;
 $font_s: 12; // small: absolute value
 $font_l: 20; // large: absolute value
-
-$font_lt: 80%;  // smaller: relative value with unit
-$font_gt: 120%; // larger:  relative value with unit
 
 // Basic colors
 $default_tx_color: #333;

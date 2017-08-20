@@ -84,14 +84,11 @@ mv ${project_repo}/config/nginx/nginx.conf ${project_path}/etc/
 cd $project_repo
 
 echo -e "==> Installing composer dependencies…\n"
-composer require composer/installers vlucas/phpdotenv johnpbloch/wordpress wpackagist-plugin/disable-emojis
+composer require composer/installers vlucas/phpdotenv johnpbloch/wordpress timber/timber wpackagist-plugin/disable-emojis
 
 echo -e "==> Installing NPM dependencies…\n"
 npm install --save normalize.css
-npm install --save-dev autoprefixer csso csso-cli node-sass node-ssh parallelshell postcss-cli shelljs watch
-
-echo -e "==> Building frontend assets…\n"
-npm run build
+npm install --save-dev node-sass postcss postcss-csso autoprefixer node-ssh npm-run-all shelljs watch babel-preset-env babel-plugin-external-helpers rollup rollup-plugin-babel rollup-plugin-babel-minify rollup-plugin-commonjs rollup-plugin-node-resolve
 
 echo -e "==> Done.\n"
 echo "==> The following steps require a MySQL user with CREATE DATABASE privileges OR a user with basic use privileges for an existing database"
@@ -146,13 +143,13 @@ echo "==> Activating $namespace theme…"
 wp theme activate ${namespace}
 
 echo "==> Creating developer admin account (login: dev / dev)"
-
 wp user create dev dev@dev.dev --user_pass=dev --role=administrator
 
-#cd - 2>&1 >/dev/null
+echo "==> Building front-end assets…"
+npm run build
 
 echo -e "==> All done.\n"
 echo "Check $project_path/etc/nginx.conf, make sure the file is included in /etc/nginx/nginx.conf and reload the server."
 echo "Map the correct IP to $namespace.dev in your hosts file."
-echo -e "Login at http://$namespace.dev/wp/wp-login.php\n"
+echo -e "Login at http://$namespace.dev/wp/wp-login.php (login: dev / dev)\n"
 echo "Happy hacking!"

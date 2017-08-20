@@ -1,17 +1,5 @@
 {
-  "name": "WordPressBP",
   "type": "project",
-  "version": "1.0.0",
-  "description": "WordPressBP WordPress website",
-  "license": "MIT",
-  "homepage": "https://github.com/andrejcremoznik/WordPressBP",
-  "authors": [
-    {
-      "name": "Andrej Cremoznik",
-      "email": "andrej@cremoznik.si",
-      "homepage": "https://keybase.io/andrejcremoznik"
-    }
-  ],
   "config": {
     "preferred-install": "dist"
   },

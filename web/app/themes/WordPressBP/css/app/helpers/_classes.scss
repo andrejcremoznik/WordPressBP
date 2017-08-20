@@ -18,20 +18,6 @@
   visibility: hidden;
 }
 
-// Hide element visually, but have it available for screenreaders
-.visuallyhidden {
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  border: 0;
-  overflow: hidden;
-  position: absolute;
-}
-
-// Hide element visually and from screenreaders, but maintain layout
-.invisible { visibility: hidden; }
-
 // Set defaults for SVG icons
 .svg {
   display: inline-block;

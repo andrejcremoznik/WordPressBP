@@ -19,8 +19,8 @@ class WordPressBP extends TimberSite {
     add_action('widgets_init',                [$this, 'widgets_init']);
     add_action('wp_enqueue_scripts',          [$this, 'scripts_styles']);
     add_action('wp_default_scripts',          [$this, 'remove_jquery_migrate']);
-    add_action('save_post',                   [$this, 'flush_theme_cache']);
-    add_action('deleted_post',                [$this, 'flush_theme_cache']);
+    //add_action('save_post',                   [$this, 'flush_theme_cache']);
+    //add_action('deleted_post',                [$this, 'flush_theme_cache']);
 
     add_filter('comment_form_default_fields', [$this, 'modify_comment_form_fields']);
     add_filter('timber/context',              [$this, 'timber_context']);
