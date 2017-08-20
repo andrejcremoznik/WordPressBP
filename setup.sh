@@ -88,7 +88,7 @@ composer require composer/installers vlucas/phpdotenv johnpbloch/wordpress timbe
 
 echo -e "==> Installing NPM dependencies…\n"
 npm install --save normalize.css
-npm install --save-dev node-sass postcss postcss-csso autoprefixer node-ssh npm-run-all shelljs watch babel-preset-env babel-plugin-external-helpers rollup rollup-plugin-babel rollup-plugin-babel-minify rollup-plugin-commonjs rollup-plugin-node-resolve
+npm install --save-dev node-sass postcss postcss-csso autoprefixer node-ssh npm-run-all shelljs watch babel-preset-env babel-plugin-external-helpers rollup rollup-plugin-babel rollup-plugin-babel-minify
 
 echo -e "==> Done.\n"
 echo "==> The following steps require a MySQL user with CREATE DATABASE privileges OR a user with basic use privileges for an existing database"

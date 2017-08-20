@@ -5,9 +5,9 @@ const postcss      = require('postcss')
 const csso         = require('postcss-csso')
 const autoprefixer = require('autoprefixer')
 
-const compress = process.argv[2] === 'minify'
-const inDir    = path.resolve('./web/app/themes/WordPressBP/css')
-const outDir   = path.resolve('./web/app/themes/WordPressBP/assets')
+const compress     = process.argv[2] === 'minify'
+const inDir        = path.resolve('./web/app/themes/WordPressBP/css')
+const outDir       = path.resolve('./web/app/themes/WordPressBP/assets')
 
 var postCssPlugins = [
   autoprefixer({ cascade: false })
@@ -32,7 +32,6 @@ fs.readdir(inDir, (err, files) => {
       includePaths: ['node_modules/']
     }, (err, result) => {
       if (err) throw err.formatted
-
 
       postcss(postCssPlugins)
       .process(result.css)

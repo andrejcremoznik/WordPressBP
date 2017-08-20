@@ -1,18 +1,12 @@
-const fs   = require('fs')
-const path = require('path')
-const rollup = require('rollup')
-const resolve = require('rollup-plugin-node-resolve')
-const commonjs = require('rollup-plugin-commonjs')
-const babel = require('rollup-plugin-babel')
-const minify = require('rollup-plugin-babel-minify')
+const fs       = require('fs')
+const path     = require('path')
+const rollup   = require('rollup')
+const babel    = require('rollup-plugin-babel')
+const minify   = require('rollup-plugin-babel-minify')
 
 const compress = process.argv[2] === 'minify'
-const entry = path.resolve('./web/app/themes/WordPressBP/js/main.js')
-const outDir = path.resolve('./web/app/themes/WordPressBP/assets')
 
 var plugins = [
-  resolve({ jsnext: true, main: true }),
-  commonjs({ include: 'node_modules/**' }),
   babel()
 ]
 
@@ -21,34 +15,26 @@ if (compress) {
 }
 
 rollup.rollup({
-  entry,
+  input: path.resolve('./web/app/themes/WordPressBP/js/main.js'),
   external: ['jquery'],
   plugins,
-  onwarn(warning) {
-    console.warn(warning.message)
+  onwarn({ loc, message }) {
+    if (loc) {
+      console.warn(`${loc.file} (${loc.line}:${loc.column}) ${message}`)
+    } else {
+      console.warn(message)
+    }
   }
 })
 .then((bundle) => {
-  return bundle.generate({
+  return bundle.write({
+    file: path.join(path.resolve('./web/app/themes/WordPressBP/assets'), 'app.js'),
     format: 'umd',
-    moduleName: 'WordPressBP',
+    name: 'WordPressBP',
+    sourcemap: !compress,
     globals: {
-      jquery: '$'
-    },
-    sourceMap: !compress
+      jquery: 'jQuery'
+    }
   })
 })
-.then((result) => {
-  fs.writeFile(path.join(outDir, 'app.js'), result.code, (err) => {
-    if (err) throw err
-  })
-
-  if (result.map) {
-    fs.writeFile(path.join(outDir, 'app.js.map'), result.map, (err) => {
-      if (err) throw err
-    })
-  }
-})
-.catch((err) => {
-  throw err
-})
+.catch(console.error)

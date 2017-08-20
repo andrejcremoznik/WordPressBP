@@ -5,7 +5,7 @@ $webroot_dir = $root_dir . '/web';
 
 // Use Dotenv to set required environment variables and load .env file
 if (!file_exists($root_dir . '/.env')) {
-  die('<b>.env<b/> not found. Please configure your environment.')
+  die('<b>.env<b/> not found. Please configure your environment.');
 }
 
 $dotenv = new Dotenv\Dotenv($root_dir);
@@ -16,7 +16,7 @@ $dotenv->required(['DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_PREFIX', 'WP_HOME', 
 define('WP_ENV', getenv('WP_ENV') ?: 'development');
 $env_config  = $root_dir . '/config/environments/' . WP_ENV . '.php';
 if (!file_exists($env_config)) {
-  die('Environment configuration not found.')
+  die('Environment configuration not found.');
 }
 require_once $env_config;
 
