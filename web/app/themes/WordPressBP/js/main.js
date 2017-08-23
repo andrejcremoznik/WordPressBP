@@ -1,4 +1,4 @@
-/*! WordPressBP | MIT License | keybase.io/andrejcremoznik */
+/*! WordPressBP | MIT License | https://keybase.io/andrejcremoznik */
 
 /**
  * Babel transpilation is configured with Rollup

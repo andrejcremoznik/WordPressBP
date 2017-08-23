@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WordPressBP Extensions
-Description: Provides extensions for the WordPressBP website
+Description: Extensions for the WordPressBP website
 Author: Andrej Cremoznik
 Author URI: https://keybase.io/andrejcremoznik
 Text Domain: WordPressBP-extensions

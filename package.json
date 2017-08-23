@@ -5,20 +5,18 @@
   "scripts": {
     "css": "node config/scripts/build-css.js",
     "js": "node config/scripts/build-js.js",
-
+    "lang": "node config/scripts/build-lang.js",
     "watch:css": "watch 'npm run css' web/app/themes/WordPressBP/css/ --wait=2 --ignoreDotFiles",
     "watch:js": "watch 'npm run js' web/app/themes/WordPressBP/js/ --wait=2 --ignoreDotFiles",
     "watch": "npm-run-all --parallel watch:*",
-
     "clean": "shx rm -fr build",
-    "build": "npm-run-all 'css minify' 'js minify'",
-    "pack": "node config/deploy/pack.js",
-
+    "build": "npm-run-all 'css minify' 'js minify' lang",
+    "pack": "node config/scripts/deploy-pack.js",
     "predeploy": "npm-run-all clean build pack",
-    "deploy": "node config/deploy/deploy.js",
+    "deploy": "node config/scripts/deploy-deploy.js",
     "postdeploy": "npm run clean",
-    "deploy:revert": "node config/deploy/revert.js",
-    "deploy:init": "node config/deploy/init.js"
+    "deploy:revert": "node config/scripts/deploy-revert.js",
+    "deploy:init": "node config/scripts/deploy-init.js"
   },
   "browserslist": [
     "> 5%",
@@ -26,13 +24,21 @@
   ],
   "babel": {
     "presets": [
-      ["env", {
-        "targets": {
-          "browsers": ["> 5%", "last 2 versions"]
-        },
-        "modules": false
-      }]
+      [
+        "env",
+        {
+          "targets": {
+            "browsers": [
+              "> 5%",
+              "last 2 versions"
+            ]
+          },
+          "modules": false
+        }
+      ]
     ],
-    "plugins": ["external-helpers"]
+    "plugins": [
+      "external-helpers"
+    ]
   }
 }

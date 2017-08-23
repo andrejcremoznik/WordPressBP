@@ -1,12 +1,12 @@
 <?php
 
-new \Timber\Timber();
+$timber = new \Timber\Timber();
 
 Timber::$dirname = ['views'];
 
 define('ASSET_VERSION', 'vDEV'); // Change during deploy
 
-class WordPressBP extends TimberSite {
+class WordPressBP extends Timber\Site {
 
   function __construct() {
 
@@ -47,7 +47,7 @@ class WordPressBP extends TimberSite {
     $context['env'] = WP_ENV;
     $context['site'] = $this;
     $context['wp_url'] = WP_SITEURL;
-    $context['primary_navigation'] = new TimberMenu('primary_navigation');
+    $context['primary_navigation'] = new Timber\Menu('primary_navigation');
     $context['i18n'] = [
       'no_content'          => __('Sorry, no content.', 'WordPressBP'),
       'missing_title'       => __('Missing page!', 'WordPressBP'),
@@ -145,7 +145,7 @@ class WordPressBP extends TimberSite {
    * Register styles and scripts for frontend
    *
    * Styles (wp_register_style, wp_enqueue_style)
-   * Scripts (wp_register_script, wp_enqueue_script)
+   * Scripts (wp_register_script, wp_enqueue_script, wp_localize_script)
    */
   function scripts_styles() {
     // Deregister scripts

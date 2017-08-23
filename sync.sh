@@ -14,7 +14,7 @@
 #
 
 # TODO: Set server SSH connection parameters
-ssh_connection="user@host"
+ssh_connection="user@host -p 54321"
 
 # TODO: Set path to the WordPress installation directory on the server
 remote_wordpress="/srv/http/WordPressBP.dev/releases/current/web/wp"

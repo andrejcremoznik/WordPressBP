@@ -27,6 +27,7 @@ package-lock.json
 web/app/themes/WordPressBP/assets/*.css
 web/app/themes/WordPressBP/assets/*.js
 web/app/themes/WordPressBP/assets/*.map
+web/app/**/*.mo
 
 # Build directory
 build/

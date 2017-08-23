@@ -1,10 +1,14 @@
 #!/bin/bash
 
 if [ $# -lt 2 ]; then
-  echo -e "Usage:\n $0 <namespace> <project_path> [<branch>]\n"
-  echo " <namespace>:    Lowercase alphanumeric name for your project. Must not start with a number."
-  echo " <project_path>: Path to directory where the project structure will be set up."
-  echo " <branch>:       Branch from which to create the project structure. Defaults to 'master'"
+  echo -e "\nUsage:"
+  echo -e "  $0 <namespace> <project_path> [<branch>]"
+  echo -e "\nParams:"
+  echo -e "  <namespace>:    Lowercase alphanumeric name for your project. Must not start with a number. Must be directory / file system / URL friendly."
+  echo -e "  <project_path>: Path to directory where the project structure will be set up."
+  echo -e "  <branch>:       Branch from which to create the project structure. Defaults to 'master'."
+  echo -e "\nExample:"
+  echo -e "  $0 mything /srv/http/mything.dev\n"
   exit
 fi
 
@@ -42,6 +46,7 @@ echo -e "For instructions on how to set these up, please read https://gist.githu
 command -v composer >/dev/null 2>&1 || { echo >&2 "Composer not installed. Aborting…"; exit 1; }
 command -v npm >/dev/null 2>&1 || { echo >&2 "NPM not installed. Aborting…"; exit 1; }
 command -v wp >/dev/null 2>&1 || { echo >&2 "WP-CLI not installed. Aborting…"; exit 1; }
+command -v msgfmt >/dev/null 2>&1 || { echo >&2 "msgfmt not found. Please install gettext. Aborting…"; exit 1; }
 
 echo "==> All there."
 
@@ -70,6 +75,8 @@ done
 echo -e "# ${namespace}\n" > ${project_repo}/README.md
 cp ${project_repo}/.env.example ${project_repo}/.env
 
+echo -e "\nsync.sh export-ignore\nconfig/scripts/ export-ignore\nweb/app/uploads/ export-ignore\nweb/app/themes/**/css/ export-ignore\nweb/app/themes/**/js/ export-ignore\n" >> ${project_repo}/.gitattributes
+
 # Replace WordPressBP in file contents with $namespace
 echo "==> Namespacing file contents…"
 
@@ -88,7 +95,7 @@ composer require composer/installers vlucas/phpdotenv johnpbloch/wordpress timbe
 
 echo -e "==> Installing NPM dependencies…\n"
 npm install --save normalize.css
-npm install --save-dev node-sass postcss postcss-csso autoprefixer node-ssh npm-run-all shelljs watch babel-preset-env babel-plugin-external-helpers rollup rollup-plugin-babel rollup-plugin-babel-minify
+npm install --save-dev node-sass postcss postcss-csso autoprefixer node-ssh npm-run-all shelljs shx watch babel-preset-env babel-plugin-external-helpers rollup rollup-plugin-babel rollup-plugin-babel-minify
 
 echo -e "==> Done.\n"
 echo "==> The following steps require a MySQL user with CREATE DATABASE privileges OR a user with basic use privileges for an existing database"
