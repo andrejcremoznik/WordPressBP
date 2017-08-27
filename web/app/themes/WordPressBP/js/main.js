@@ -1,26 +1,13 @@
-var $ = window.jQuery
+/*! WordPressBP | MIT License | https://keybase.io/andrejcremoznik */
 
 /**
- * Example event delegation helper
- *
- * 1. Capture clicks on elements with the '.js-click' class
- * 2. Pass the data-action attribute's value from clicked element to clickHandler
- * 3. In clickHandler check data.action's value and run custom code
+ * Babel transpilation is configured with Rollup
+ * so you can use the latest and greates ES2015+
  */
-var clickHandler = require('./app/click-handler')
-$(document).on('click', '.js-click', function (e) {
-  e.preventDefault()
 
-  var $el = $(this)
-  var data = $el.data()
+import $ from 'jquery'
 
-  if (('action' in data) && data.action) {
-    data.action.split(',').forEach(function (act) {
-      clickHandler(act, data, $el)
-    })
-  }
+$(() => {
+  // DOM ready
+  console.log('Hello @WordPressBP!')
 })
-
-// Example module
-var Module1 = require('./app/module1')
-Module1.init({ msg: 'App loaded.' })

@@ -8,13 +8,13 @@
 # 4. deactivate specified plugins
 # 5. delete revisions, cache and transients
 # 6. perform a search-replace for site URL and flush rewrite rules
-# 7. create an admin user for development
+# 7. create an admin user for development (dev / dev)
 #
 # Review TODOs below to setup the script
 #
 
 # TODO: Set server SSH connection parameters
-ssh_connection="user@host"
+ssh_connection="user@host -p 54321"
 
 # TODO: Set path to the WordPress installation directory on the server
 remote_wordpress="/srv/http/WordPressBP.dev/releases/current/web/wp"

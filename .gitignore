@@ -21,11 +21,13 @@ web/app/uploads/*
 # 3rd party dependencies
 vendor/
 node_modules/
+package-lock.json
 
 # Compiled assets
 web/app/themes/WordPressBP/assets/*.css
 web/app/themes/WordPressBP/assets/*.js
 web/app/themes/WordPressBP/assets/*.map
+web/app/**/*.mo
 
 # Build directory
 build/

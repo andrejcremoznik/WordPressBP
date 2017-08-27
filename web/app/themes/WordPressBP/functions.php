@@ -1,20 +1,12 @@
 <?php
 
-if (!class_exists('Timber')) {
-  add_action('admin_notices', function() {
-    printf(
-      '<div class="error"><p>Timber not activated. Make sure you activate the plugin: <a href="%1$s#timber">%1$s</a></p></div>',
-      esc_url(admin_url('plugins.php'))
-    );
-  });
-  return;
-}
+$timber = new \Timber\Timber();
 
 Timber::$dirname = ['views'];
 
 define('ASSET_VERSION', 'vDEV'); // Change during deploy
 
-class WordPressBP extends TimberSite {
+class WordPressBP extends Timber\Site {
 
   function __construct() {
 
@@ -22,8 +14,8 @@ class WordPressBP extends TimberSite {
     add_action('widgets_init',                [$this, 'widgets_init']);
     add_action('wp_enqueue_scripts',          [$this, 'scripts_styles']);
     add_action('wp_default_scripts',          [$this, 'remove_jquery_migrate']);
-    add_action('save_post',                   [$this, 'flush_theme_cache']);
-    add_action('deleted_post',                [$this, 'flush_theme_cache']);
+    //add_action('save_post',                   [$this, 'flush_theme_cache']);
+    //add_action('deleted_post',                [$this, 'flush_theme_cache']);
 
     add_filter('comment_form_default_fields', [$this, 'modify_comment_form_fields']);
     add_filter('timber/context',              [$this, 'timber_context']);
@@ -55,7 +47,7 @@ class WordPressBP extends TimberSite {
     $context['env'] = WP_ENV;
     $context['site'] = $this;
     $context['wp_url'] = WP_SITEURL;
-    $context['primary_navigation'] = new TimberMenu('primary_navigation');
+    $context['primary_navigation'] = new Timber\Menu('primary_navigation');
     $context['i18n'] = [
       'no_content'          => __('Sorry, no content.', 'WordPressBP'),
       'missing_title'       => __('Missing page!', 'WordPressBP'),
@@ -153,7 +145,7 @@ class WordPressBP extends TimberSite {
    * Register styles and scripts for frontend
    *
    * Styles (wp_register_style, wp_enqueue_style)
-   * Scripts (wp_register_script, wp_enqueue_script)
+   * Scripts (wp_register_script, wp_enqueue_script, wp_localize_script)
    */
   function scripts_styles() {
     // Deregister scripts
@@ -201,7 +193,8 @@ class WordPressBP extends TimberSite {
 
   /**
    * Example how to use cahing for expensive
-   * operations done by the theme.
+   * operations done by the theme. No need to set expire
+   * times. To invalidate cache run flush_theme_cache().
    */
   /*
   function do_something_expensive() {
@@ -212,7 +205,7 @@ class WordPressBP extends TimberSite {
       wp_cache_set('theme_cache_itr', $cache_itr);
     }
     // Name the cache key for this result and append the cache iterator
-    $cache_key = 'expensive_operation_' . $cache_ns;
+    $cache_key = 'expensive_operation_' . $cache_itr;
     // Get result from cache if it exists otherwise create new result
     $expensive_operation = wp_cache_get($cache_key, 'theme');
     if ($expensive_operation === false) {

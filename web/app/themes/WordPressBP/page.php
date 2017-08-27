@@ -1,11 +1,6 @@
 <?php
 
-if (!class_exists('Timber')) {
-  echo 'Timber not activated. Make sure you activate the plugin.';
-  return;
-}
-
-$post = new TimberPost();
+$post = new Timber\Post();
 $context = Timber::get_context();
 $context['post'] = $post;
 if (is_active_sidebar('primary_sidebar')) {

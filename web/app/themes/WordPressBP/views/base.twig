@@ -2,15 +2,15 @@
 <html {{ site.language_attributes }}>
 <head>
   <meta charset="{{ site.charset }}">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
   {{ wp_head }}
   {% block head %}{% endblock %}
 </head>
 <body class="{{ body_class }}">
 
-  <header class="header" role="banner">
+  <header class="header">
     <a class="header__logo" href="/" title="{{ site.name }}" rel="home">{{ site.name }}</a>
-    <nav class="nav-primary" role="navigation">
+    <nav class="nav-primary">
     {% spaceless %}
       <ul class="nav">
       {% for item in primary_navigation.get_items %}
@@ -33,7 +33,7 @@
   </header>
 
   <div class="body">
-    <main class="main" role="main">
+    <main class="main">
       {% block content %}
         <article class="post post_empty">
           <p>{{ i18n.no_content }}</p>
@@ -41,15 +41,14 @@
       {% endblock %}
     </main>
     {% if primary_sidebar is defined and primary_sidebar %}
-      <aside class="aside" role="complementary">
+      <aside class="aside">
         {{ primary_sidebar }}
       </aside>
     {% endif %}
   </div>
 
-  <footer class="footer" role="contentinfo">
+  <footer class="footer">
     {% block footer %}{% endblock %}
-    <p>Click handler example: <a href="https://google.com" class="js-click" data-action="exampleAction">CLICK ME</a></p>
   </footer>
 
   {{ wp_footer }}

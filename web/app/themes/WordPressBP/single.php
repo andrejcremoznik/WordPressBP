@@ -1,18 +1,13 @@
 <?php
 
-if (!class_exists('Timber')) {
-  echo 'Timber not activated. Make sure you activate the plugin.';
-  return;
-}
-
-$post = new TimberPost();
 $context = Timber::get_context();
+$post = new Timber\Post();
 $context['post'] = $post;
 if (is_active_sidebar('primary_sidebar')) {
   $context['primary_sidebar'] = Timber::get_widgets('primary_sidebar');
 }
 if (comments_open()) {
-  $context['comment_form'] = TimberHelper::get_comment_form();
+  $context['comment_form'] = Timber\Helper::get_comment_form();
 }
 
 if (post_password_required($post->ID)) {

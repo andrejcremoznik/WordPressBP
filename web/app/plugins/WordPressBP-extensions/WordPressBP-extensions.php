@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: WordPressBP Extensions
-Description: Provides extensions for the WordPressBP website
-Author:
-Author URI:
+Description: Extensions for the WordPressBP website
+Author: Andrej Cremoznik
+Author URI: https://keybase.io/andrejcremoznik
 Text Domain: WordPressBP-extensions
 Domain Path: /lang
 Version: 1.0.0
@@ -78,6 +78,9 @@ class WordPressBP_extensions {
    * Activation functionality
    */
   private static function single_activate() {
+    // Create "Super Editor" role
+    self::add_role_super_editor();
+
     // Flush rewrite rules if using custom post types or taxonomies
     // flush_rewrite_rules();
   }
@@ -86,6 +89,9 @@ class WordPressBP_extensions {
    * Deactivation functionality
    */
   private static function single_deactivate() {
+    // Remove "Super Editor" role
+    self::remove_role_super_editor();
+
     // Flush rewrite rules if using custom post types or taxonomies
     // flush_rewrite_rules();
   }
@@ -148,7 +154,7 @@ class WordPressBP_extensions {
         'singular_name'     => __('Name', 'WordPressBP-extensions')
       ],
       'supports'            => ['title', 'editor', 'author', 'thumbnail', 'comments', 'revisions'],
-      'taxonomies'          => ['category', 'post_tag']
+      'taxonomies'          => ['category', 'post_tag'],
       'public'              => true,
       'exclude_from_search' => true,
       'has_archive'         => true,
@@ -166,12 +172,27 @@ class WordPressBP_extensions {
     if (!is_admin() && $query->is_main_query()) {
 
       // Example: Include a custom post type in query
-      if (is_archive() || is_single() || is_home())
+      if (is_archive() || is_single() || is_home()) {
         $query->set('post_type', ['post', 'my_post_type']);
+      }
 
     }
   }
   */
+
+
+  /**
+   * Add a new role that has access to Dashboard > Appearance but isn't Admin
+   */
+  private static function add_role_super_editor() {
+    $super_editor = get_role('editor')->capabilities;
+    $super_editor['edit_theme_options'] = true;
+    add_role('super_editor', 'Super Editor', $super_editor);
+  }
+
+  private static function remove_role_super_editor() {
+    remove_role('super_editor');
+  }
 
 }
 

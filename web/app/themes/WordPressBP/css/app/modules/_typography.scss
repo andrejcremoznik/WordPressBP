@@ -1,43 +1,38 @@
 // Typography
-html { font: #{$default-font-size}px/#{$default-line-height} $default-font-family; }
+html { font: #{$default_font_size}px/#{$default_line_height} $default_font_family; }
 
 body {
-  color: $default-tx-color;
-  background: $default-bg-color;
+  color: $default_tx_color;
+  background: $default_bg_color;
 }
 
 a {
-  color: $content-link-color;
-  &:hover {
-    color: $content-link-hover-color;
-  }
+  color: $content_link_color;
+  &:hover { color: $content_link_hover_color; }
 }
 
 img { vertical-align: middle; }
 
-.text-left { text-align: left; }
-.text-right { text-align: right; }
-.text-center { text-align: center; }
-.text-justify { text-align: justify; }
+.t_left { text-align: left; }
+.t_right { text-align: right; }
+.t_center { text-align: center; }
+.t_justify { text-align: justify; }
+.t_wrap { white-space: normal; }
+.t_nowrap { white-space: nowrap; }
+.t_uppercase { text-transform: uppercase; }
+.t_lowercase { text-transform: lowercase; }
+.t_capitalize { text-transform: capitalize; }
 
-.text-wrap { white-space: normal; }
-.text-nowrap { white-space: nowrap; }
-
-.text-uppercase { text-transform: uppercase; }
-.text-lowercase { text-transform: lowercase; }
-.text-capitalize { text-transform: capitalize; }
-
-.font-inherit { font: inherit; }
-.font-bold { font-weight: bold; }
-.font-italic { font-style: italic; }
-.font-normal {
+.f_inherit { font: inherit; }
+.f_bold { font-weight: bold; }
+.f_italic { font-style: italic; }
+.f_normal {
   font-weight: normal;
   font-style: normal;
 }
 
-.font-s { font-size: rem($font-size-s); }
-.font-l { font-size: rem($font-size-l); }
-.font-lt { font-size: $font-size-lt; }
-.font-gt { font-size: $font-size-gt; }
+.f_s { font-size: rem($font_s); }
+.f_m { font-size: rem($font_m); }
+.f_l { font-size: rem($font_l); }
 
-.color-inherit { color: inherit; }
+.c_inherit { color: inherit; }

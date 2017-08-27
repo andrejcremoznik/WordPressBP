@@ -1,44 +1,44 @@
 {
   "name": "WordPressBP",
   "version": "1.0.0",
-  "description": "WordPressBP WordPress website",
-  "repository": "andrejcremoznik/WordPressBP",
-  "license": "MIT",
   "private": true,
-  "dependencies": {
-    "normalize.css": "latest"
-  },
-  "devDependencies": {
-    "autoprefixer": "latest",
-    "browserify": "latest",
-    "csso": "latest",
-    "exorcist": "latest",
-    "node-sass": "latest",
-    "node-ssh": "latest",
-    "parallelshell": "latest",
-    "postcss-cli": "latest",
-    "shelljs": "latest",
-    "standard": "latest",
-    "uglify-js": "latest",
-    "watch": "latest"
-  },
   "scripts": {
-    "css:sass": "node-sass --output-style compressed --source-map true --output web/app/themes/WordPressBP/assets web/app/themes/WordPressBP/css",
-    "css:prefix": "postcss -r --use autoprefixer --autoprefixer.browsers 'last 2 versions' web/app/themes/WordPressBP/assets/*.css",
-    "css:csso": "for f in web/app/themes/WordPressBP/assets/*.css; do csso $f $f; done",
-    "css:watch": "watch 'npm run css:sass && npm run css:prefix'  web/app/themes/WordPressBP/css/ --wait=2 --ignoreDotFiles",
-    "js:bundle": "browserify web/app/themes/WordPressBP/js/main.js -d | exorcist web/app/themes/WordPressBP/assets/app.js.map > web/app/themes/WordPressBP/assets/app.js",
-    "js:uglify": "for f in web/app/themes/WordPressBP/assets/*.js; do uglifyjs $f --screw-ie8 -o $f; done",
-    "js:watch": "watch 'npm run js:bundle' web/app/themes/WordPressBP/js/ --wait=2 --ignoreDotFiles",
-    "build": "npm run css:sass && npm run css:csso && npm run css:prefix && npm run js:bundle && npm run js:uglify",
-    "build:watch": "parallelshell 'npm run css:watch' 'npm run js:watch'",
-    "build:clean": "if [ -d build ]; then rm -fr build; fi",
-    "lint:js": "shopt -s globstar && standard web/app/themes/WordPressBP/**/*.js",
-    "lint:configs": "shopt -s globstar && standard config/**/*.js",
-    "predeploy": "npm run build:clean && npm run build && shjs config/deploy/build.js",
-    "deploy": "node config/deploy/deploy.js",
-    "postdeploy": "npm run build:clean",
-    "deploy:revert": "node config/deploy/revert.js",
-    "deploy:init": "node config/deploy/init.js"
+    "css": "node config/scripts/build-css.js",
+    "js": "node config/scripts/build-js.js",
+    "lang": "node config/scripts/build-lang.js",
+    "watch:css": "watch 'npm run css' web/app/themes/WordPressBP/css/ --wait=2 --ignoreDotFiles",
+    "watch:js": "watch 'npm run js' web/app/themes/WordPressBP/js/ --wait=2 --ignoreDotFiles",
+    "watch": "npm-run-all --parallel watch:*",
+    "clean": "shx rm -fr build",
+    "build": "npm-run-all 'css minify' 'js minify' lang",
+    "pack": "node config/scripts/deploy-pack.js",
+    "predeploy": "npm-run-all clean build pack",
+    "deploy": "node config/scripts/deploy-deploy.js",
+    "postdeploy": "npm run clean",
+    "deploy:revert": "node config/scripts/deploy-revert.js",
+    "deploy:init": "node config/scripts/deploy-init.js"
+  },
+  "browserslist": [
+    "> 5%",
+    "last 2 versions"
+  ],
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "browsers": [
+              "> 5%",
+              "last 2 versions"
+            ]
+          },
+          "modules": false
+        }
+      ]
+    ],
+    "plugins": [
+      "external-helpers"
+    ]
   }
 }
