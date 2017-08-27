@@ -78,6 +78,9 @@ class WordPressBP_extensions {
    * Activation functionality
    */
   private static function single_activate() {
+    // Create "Super Editor" role
+    self::add_role_super_editor();
+
     // Flush rewrite rules if using custom post types or taxonomies
     // flush_rewrite_rules();
   }
@@ -86,6 +89,9 @@ class WordPressBP_extensions {
    * Deactivation functionality
    */
   private static function single_deactivate() {
+    // Remove "Super Editor" role
+    self::remove_role_super_editor();
+
     // Flush rewrite rules if using custom post types or taxonomies
     // flush_rewrite_rules();
   }
@@ -173,6 +179,20 @@ class WordPressBP_extensions {
     }
   }
   */
+
+
+  /**
+   * Add a new role that has access to Dashboard > Appearance but isn't Admin
+   */
+  private static function add_role_super_editor() {
+    $super_editor = get_role('editor')->capabilities;
+    $super_editor['edit_theme_options'] = true;
+    add_role('super_editor', 'Super Editor', $super_editor);
+  }
+
+  private static function remove_role_super_editor() {
+    remove_role('super_editor');
+  }
 
 }
 
