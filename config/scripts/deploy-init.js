@@ -1,7 +1,7 @@
 const path = require('path')
 const NodeSSH = require('node-ssh')
 const deployEnv = process.argv[2] || 'staging'
-const deployConf = require('./config')
+const deployConf = require('./deploy-config')
 
 if (!(deployEnv in deployConf.deployEnvSSH)) {
   console.error('==> Unknown deploy environment: ' + deployEnv)
@@ -35,10 +35,8 @@ ssh.connect(config.deploySSH)
 .then(() => {
   console.log('==> Connected')
   ssh.execCommand(initProcedure)
-  .then((result) => {
-    console.log('==> Done. Set up the ' + config.deployPath + '/static/.env file on the server. Review deploy.js script.')
-    console.log(['STDOUT:', result.stdout].join(' '))
-    console.log(['STDERR:', result.stderr].join(' '))
+  .then(() => {
+    console.log('==> Done. Set up the ' + config.deployPath + '/static/.env file on the server. Review deploy-deploy.js script before use.')
     process.exit()
   })
   .catch((err) => {

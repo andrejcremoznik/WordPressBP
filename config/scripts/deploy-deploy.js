@@ -1,8 +1,8 @@
 const path = require('path')
 const NodeSSH = require('node-ssh')
-const version = Math.round(+new Date() / 1000)
+const version = Math.round(+new Date() / 1000).toString()
 const deployEnv = process.argv[2] || 'staging'
-const deployConf = require('./config')
+const deployConf = require('./deploy-config')
 
 if (!(deployEnv in deployConf.deployEnvSSH)) {
   console.error('==> Unknown deploy environment: ' + deployEnv)
@@ -30,7 +30,7 @@ var deployProcedure = [
   ].join(' '),
   [
     'ln -s',
-    path.join(config.deployPath, 'static/env'),
+    path.join(config.deployPath, 'static/.env'),
     path.join(config.deployReleasePath, '.env')
   ].join(' '),
   // Remove previous release dir
@@ -44,7 +44,7 @@ var deployProcedure = [
   // Move new release to current
   [
     'mv',
-    config.deployReleasePath
+    config.deployReleasePath,
     path.join(config.deployPath, 'current')
   ].join(' '),
   // Remove uploaded build tarball
@@ -61,10 +61,8 @@ ssh.connect(config.deploySSH)
   .then(() => {
     console.log('==> Applying new build')
     ssh.execCommand(deployProcedure)
-    .then((result) => {
+    .then(() => {
       console.log('==> Done.')
-      console.log(['STDOUT:', result.stdout].join(' '))
-      console.log(['STDERR:', result.stderr].join(' '))
       process.exit()
     })
     .catch((err) => {

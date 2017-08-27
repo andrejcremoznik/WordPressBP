@@ -2,7 +2,7 @@ const path    = require('path')
 const sh      = require('shelljs')
 
 const assets  = 'web/app/themes/WordPressBP/assets'
-const version = Math.round(+new Date() / 1000)
+const version = Math.round(+new Date() / 1000).toString()
 
 // Create build dir
 sh.mkdir('build')
