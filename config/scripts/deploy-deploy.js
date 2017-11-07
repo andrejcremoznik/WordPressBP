@@ -56,13 +56,13 @@ var ssh = new NodeSSH()
 console.log('==> Deploying to: ' + deployEnv)
 ssh.connect(config.deploySSH)
 .then(() => {
-  console.log('==> Connected')
+  console.log('==> Connected. Uploading…')
   ssh.putFile('build/build.tar.gz', config.deployTmp)
   .then(() => {
     console.log('==> Applying new build')
     ssh.execCommand(deployProcedure)
     .then(() => {
-      console.log('==> Done.')
+      console.log('==> Done')
       process.exit()
     })
     .catch((err) => {
