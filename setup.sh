@@ -86,7 +86,7 @@ find ${project_repo}/ -type f -print0 | xargs -0 sed -i "s/WordPressBP/${namespa
 echo -e "==> Setting up Nginx configuration in $project_path/etc\n"
 
 sed -i "s|{project_path}|${project_path}|g" ${project_repo}/config/nginx/nginx.conf
-mv ${project_repo}/config/nginx/nginx.conf ${project_path}/etc/
+mv ${project_repo}/config/nginx/nginx.conf.dist ${project_path}/etc/nginx.conf
 
 cd $project_repo
 
