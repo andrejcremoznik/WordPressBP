@@ -1,7 +1,3 @@
-// Alignment helpers
-.pull_left { float: left; }
-.pull_right { float: right; }
-
 // Micro clearfix
 .cf {
   &::before,
@@ -55,21 +51,3 @@
   width: auto;
   height: auto;
 }
-
-// Offset elements
-.offset-top_0 { margin-top: 0; }
-.offset-top_s { margin-top: 1em; }
-.offset-top_m { margin-top: 2em; }
-.offset-top_l { margin-top: 4em; }
-.offset-right_0 { margin-right: 0; }
-.offset-right_s { margin-right: 1em; }
-.offset-right_m { margin-right: 2em; }
-.offset-right_l { margin-right: 4em; }
-.offset-bottom_0 { margin-bottom: 0; }
-.offset-bottom_s { margin-bottom: 1em; }
-.offset-bottom_m { margin-bottom: 2em; }
-.offset-bottom_l { margin-bottom: 4em; }
-.offset-left_0 { margin-left: 0; }
-.offset-left_s { margin-left: 1em; }
-.offset-left_m { margin-left: 2em; }
-.offset-left_l { margin-left: 4em; }

@@ -17,16 +17,15 @@ class WordPressBP_extensions {
 
   private function __construct() {
 
+    // Actions
     add_action('init',          [$this, 'plugin_textdomain']);
-
-    add_filter('jpeg_quality',  [$this, 'jpeg_quality'], 1, 0);
-
-    //add_filter('locale',        [$this, 'dashboard_lang']);
-
     //add_action('init',          [$this, 'taxonomies'], 0);
     //add_action('init',          [$this, 'post_types']);
-
     //add_action('pre_get_posts', [$this, 'main_query']);
+
+    // Filters
+    add_filter('jpeg_quality',  [$this, 'jpeg_quality'], 1, 0);
+    //add_filter('locale',        [$this, 'dashboard_lang']);
   }
 
   public static function get_instance() {

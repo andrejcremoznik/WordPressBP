@@ -1,22 +1,21 @@
 module.exports = {
+  defaultDeployEnv: 'staging',
   deployEnvSSH: {
     staging: {
       host: 'hostname',
       port: 22,
       username: 'user',
-      agent: process.env.SSH_AUTH_SOCK,
-      phpProcessGroup: 'www-data' // Needed to set correct folder permissions
+      agent: process.env.SSH_AUTH_SOCK
     },
     production: {
       host: 'hostname',
       port: 22,
       username: 'user',
-      agent: process.env.SSH_AUTH_SOCK,
-      phpProcessGroup: 'www-data' // Needed to set correct folder permissions
+      agent: process.env.SSH_AUTH_SOCK
     }
   },
   deployEnvPaths: {
-    staging: '/srv/http/beta.WordPressBP/releases',
-    production: '/srv/http/WordPressBP/releases'
+    staging: '/srv/http/beta.WordPressBP',
+    production: '/srv/http/WordPressBP'
   }
 }

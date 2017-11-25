@@ -14,9 +14,13 @@ sql-dump-*.sql
 
 # Application
 web/wp/
+web/app/languages/*
 web/app/plugins/*
 !web/app/plugins/WordPressBP*
+web/app/themes/*
+!web/app/themes/WordPressBP*
 web/app/uploads/*
+web/app/object-cache.php
 
 # 3rd party dependencies
 vendor/

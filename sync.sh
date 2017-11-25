@@ -4,9 +4,9 @@
 # This script will:
 # 1. check if WP-CLI is available locally and on server
 # 2. empty your local database (NO BACKUP! If you need a backup, extend this script.)
-# 3. connect to server, using WP-CLI dump the database, pipe compressed data to local host, uncompress and import using WP-CLI
+# 3. connect to server, dump the database using WP-CLI, pipe compressed data to localhost, uncompress and import using WP-CLI
 # 4. deactivate specified plugins
-# 5. delete revisions, cache and transients
+# 5. delete spam, revisions, cache and transients
 # 6. perform a search-replace for site URL and flush rewrite rules
 # 7. create an admin user for development (dev / dev)
 #
@@ -25,35 +25,33 @@ function findWPCLI {
 findWPCLI locally
 ssh $ssh_connection "$(typeset -f); findWPCLI 'on server'" || exit 1;
 
-echo "==> Dropping local database…"
+echo -e "==> Dropping local database…"
 wp db reset --yes
 
-echo "==> Importing database from production…"
+echo -e "==> Importing database from production…"
 ssh $ssh_connection "wp --path=$remote_wordpress db export - | gzip" | gunzip | wp db import -
 
-# TODO: Disable plugins you don't need for development locally
-#echo "==> Disabling production only plugins…"
+# TODO: Deactivate plugins you don't want locally
+#echo -e "==> Deactivating production only plugins…"
 #wp plugin deactivate relevanssi wordpress-seo
 
-echo "==> Removing spam…"
+echo -e "==> Cleaning up…"
 wp comment delete $(wp comment list --status=spam --format=ids) --force
-
-echo "==> Cleaning up cache and stuff…"
 wp db query "DELETE FROM wpdb_posts WHERE post_type = 'revision'"
 wp cache flush
 wp transient delete-all
 
 # TODO: Do a search-replace on the entire database for site URL
-#echo "==> Search/replace hostname…"
+#echo -e "==> Search/replace hostname…"
 #wp search-replace production.site WordPressBP.dev
 
-echo "==> Flushing rewrite rules…"
+echo -e "==> Flushing rewrite rules…"
 wp rewrite flush
 
-echo "==> Creating admin account for development (login: dev / dev)"
+echo -e "==> Creating admin account for development (login: dev / dev)"
 wp user create dev dev@dev.dev --user_pass=dev --role=administrator
 
-echo "==> Optimizing database…"
+echo -e "==> Optimizing database…"
 wp db optimize
 
-echo "==> Done."
+echo -e "==> Done."
