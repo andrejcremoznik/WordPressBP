@@ -17,7 +17,7 @@ const config = {
 }
 
 // Build bash shell command to exeute on the server
-var deployProcedure = [
+let deployProcedure = [
   // Create new release dir
   ['mkdir -p', config.deployReleasePath].join(' '),
 
@@ -69,7 +69,7 @@ var deployProcedure = [
 ].filter(cmd => cmd).join(' && ')
 
 // Run
-var ssh = new NodeSSH()
+let ssh = new NodeSSH()
 console.log(`==> Deploying to: ${deployEnv}`)
 ssh.connect(config.deploySSH)
 .then(() => {

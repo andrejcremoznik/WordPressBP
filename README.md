@@ -91,7 +91,7 @@ If you don't have or don't want to use a root MySQL account, you'll be asked to 
 
 ### Nginx web server
 
-Let's assume your `project_path` is `/srv/http/mywebsite.dev` and `namespace` is `mywebsite`.
+Lets assume your `project_path` is `/srv/http/mywebsite.dev` and `namespace` is `mywebsite`.
 
 Create `/etc/nginx/sites-enabled/mywebsite.dev.conf` with the following content and restart Nginx:
 
@@ -263,7 +263,7 @@ Deploy requires **Git**, **SSH** and **tar**. It's been tested on Linux environm
 
 Run `npm run deploy` or `npm run deploy <environment>`.
 
-1. When you run deploy, current repository `HEAD` will be build and zipped into an tarball archive
+1. When you run deploy, current repository `HEAD` will be build and zipped into a tarball archive
 2. The tarball is uploaded to server over SSH and extracted into a temporary directory
 3. Static folders and files like `uploads` are symlinked into this temporary directory
 4. Finally, the live `current` directory is renamed to `previous` and the new temporary directory is renamed to `current`
@@ -299,7 +299,7 @@ If your server requires public key authentication, locally the key needs to be m
   flush privileges;
   \q
   ```
-6. Dump local database and import it on the server: `wp db export - | ssh user@host -p 54321 'mysql -u dbuser -psome_password mywebsitedb'` (run this locally, the `-p<password>` is intentionally without space).
+6. Dump local database and import it on the server: `wp db export - | ssh user@host -p 54321 'mysql -u dbuser -psome_password mywebsitedb'` (run this locally, the `-p<password>` is intentionally without space after `-p`).
 7. Set up the environment in `<directory_from_step_1>/static/.env`.
 8. Make `<directory_from_step_1>/static/uploads` writable for the PHP process group:
   ```

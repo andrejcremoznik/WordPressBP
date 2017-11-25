@@ -13,7 +13,7 @@ const config = {
   deployPath: deployConf['deployEnvPaths'][deployEnv]
 }
 
-var initProcedure = [
+let initProcedure = [
   // Create directories
   ['mkdir -p', path.join(config.deployPath, 'current/web')].join(' '),
   ['mkdir -p', path.join(config.deployPath, 'previous')].join(' '),
@@ -24,7 +24,7 @@ var initProcedure = [
   ['echo -e "<?php phpinfo();\n" >', path.join(config.deployPath, 'current/web/index.php')].join(' ')
 ].filter(cmd => cmd).join(' && ')
 
-var ssh = new NodeSSH()
+let ssh = new NodeSSH()
 console.log(`==> Preparing directories for deploy on: ${deployEnv}`)
 ssh.connect(config.deploySSH)
 .then(() => {

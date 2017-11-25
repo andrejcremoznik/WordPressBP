@@ -14,7 +14,7 @@ const config = {
 }
 
 // Build bash shell command to exeute on the server
-var revertProcedure = [
+let revertProcedure = [
   // Rename folder for current release to broken
   [
     'mv',
@@ -32,7 +32,7 @@ var revertProcedure = [
 ].filter(cmd => cmd).join(' && ')
 
 // Run
-var ssh = new NodeSSH()
+let ssh = new NodeSSH()
 console.log(`==> Reverting to previous deploy on: ${deployEnv}`)
 ssh.connect(config.deploySSH)
 .then(() => {
