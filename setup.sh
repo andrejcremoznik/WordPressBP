@@ -41,7 +41,7 @@ fi
 
 # Required software check
 echo -e "==> Checking for required software…"
-echo -e "For instructions on how to set these up, please read https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd\n"
+echo -e "For instructions on how to set these up, please read https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd"
 command -v composer >/dev/null 2>&1 || { echo >&2 "Composer not installed. Aborting…"; exit 1; }
 command -v npm >/dev/null 2>&1 || { echo >&2 "NPM not installed. Aborting…"; exit 1; }
 command -v wp >/dev/null 2>&1 || { echo >&2 "WP-CLI not installed. Aborting…"; exit 1; }
@@ -78,15 +78,15 @@ find ${project_path}/ -type f -print0 | xargs -0 sed -i "s/WordPressBP/${namespa
 cd $project_path
 
 # Install Composer dependencies
-echo -e "==> Installing composer dependencies…\n"
+echo -e "\n==> Installing composer dependencies…"
 composer require composer/installers vlucas/phpdotenv johnpbloch/wordpress timber/timber wpackagist-plugin/disable-emojis
 
 # Install NPM dependencies
-echo -e "==> Installing NPM dependencies…\n"
+echo -e "\n==> Installing NPM dependencies…"
 npm install --save normalize.css
 npm install --save-dev node-sass postcss postcss-csso autoprefixer node-ssh npm-run-all shelljs shx watch babel-preset-env babel-plugin-external-helpers rollup rollup-plugin-babel rollup-plugin-babel-minify rollup-plugin-commonjs rollup-plugin-node-resolve
 
-echo -e "==> Done.\n"
+echo -e "\n==> Done.\n"
 
 # Set up the database and install WordPress
 echo -e "==> The following steps require a MySQL user with CREATE DATABASE privileges OR a user with basic use privileges for an existing database."
@@ -131,7 +131,7 @@ read -e -p "Admin password: " wp_pass
 read -e -p "Admin e-mail: " wp_email
 
 # Install WordPress
-echo -e "==> Installing WordPress…"
+echo -e "\n==> Installing WordPress…"
 wp core install --url=http://${namespace}.dev --title="${wp_title}" --admin_user=${wp_user} --admin_password=${wp_pass} --admin_email=${wp_email}
 
 # Remove demo content
@@ -157,6 +157,6 @@ npm run build
 
 # Finish
 echo -e "==> All done.\n"
-echo -e "Set up the web server to serve $namespace.dev from $project_path/web."
-echo -e "Map the server IP to $namespace.dev in your local hosts file."
-echo -e "Log in at http://$namespace.dev/wp/wp-login.php (login: dev / dev)\n"
+echo -e "- Set up the web server to serve $namespace.dev from $project_path/web."
+echo -e "- Map the server IP to $namespace.dev in your local hosts file."
+echo -e "- Log in at http://$namespace.dev/wp/wp-login.php (login: dev / dev)\n"
