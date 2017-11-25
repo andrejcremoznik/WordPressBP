@@ -13,10 +13,38 @@ WordPressBP is **meant for developers** developing a WordPress site **from scrat
 2. a [WordPress Plugin Boilerplate](https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate)
 3. a [WordPress Widget Boilerplate](https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate)
 
+If you need a stripped down version to manage WordPress installations with 3rd-party themes and plugins and an automated deployment process, check out my other project [ManagedWP](https://github.com/andrejcremoznik/ManagedWP).
+
+**Index:**
+
+* [System requirements](#system-requirements)
+* [Installation](#installation)
+  * [Setup script](#setup-script)
+  * [Nginx web server](#nginx-web-server)
+* [Development](#development)
+  * [Front-end](#front-end)
+    * [Including NPM dependencies](#including-npm-dependencies)
+  * [Back-end](#back-end)
+    * [WordPress config](#wordpress-config)
+    * [Including free plugins and themes](#including-free-plugins-and-themes)
+    * [Including non-free plugins and themes](#including-non-free-plugins-and-themes)
+    * [Including languages](#including-languages)
+* [Sync from staging or production](#sync-from-staging-or-production)
+  * [Set up a new development environment](#set-up-a-new-development-environment)
+* [Deployment](#deployment)
+  * [How it works](#how-it-works)
+  * [Deploy configuration](#deploy-configuration)
+  * [First deploy](#first-deploy)
+  * [Deploying and reverting](#deploying-and-reverting)
+* [Recommended plugins](#recommended-plugins)
+* [Contributors](#contributors)
+* [License](#license)
+
 
 ## System requirements
 
-* LEMP stack (Linux, Nginx, PHP 5.6+, MySQL)
+* LEMP stack (Linux, Nginx, MySQL, PHP 5.6+)
+* Git
 * NodeJS (`node`, `npm`)
 * [Composer](https://getcomposer.org/)
 * [WP-CLI](http://wp-cli.org/)
@@ -25,11 +53,18 @@ WordPressBP is **meant for developers** developing a WordPress site **from scrat
 Read [this Gist](https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd) on how to correctly set these tools up on your development environment.
 
 
-## Quick-start guide
+## Installation
 
-The setup script will take care of (almost) everything to get you started.
-Make sure you meet the system requirements above.
+**Quick-start guide:**
 
+1. Clone this repository and move into it
+2. Run the setup script `./setup.sh mywebsite /srv/http/mywebsite.dev`
+3. Set up the web server to serve `mywebsite.dev` from `/srv/http/mywebsite.dev/web`
+4. Map the server IP to `mywebsite.dev` in your local hosts file (`/etc/hosts`)
+5. Login at `http://mywebsite.dev/wp/wp-login.php` (login: dev / dev)
+6. Initialize Git in `/srv/http/mywebsite.dev/` and start developing
+
+Continue reading for details.
 
 ### Setup script
 
@@ -47,26 +82,70 @@ Example:
   ./setup.sh mything /srv/http/mything.dev
 ```
 
-The script will create the directory at `project_path` if it doesn't exist. Make sure the parent directory (or `project_path` if exists) is **writable** by the user running this script. **Do not run the setup script as root.** It won't do anything evil but you shouldn't take my word for it.
+The script will create the directory at `project_path` if it doesn't exist. Make sure the parent directory (or `project_path` if exists) is **writable** by the user running this script. **Do not run the setup script as root** unless you're doing everything as root on your dev environment.
 
-Later on the setup script will use *composer*, *npm* and *wp* (WP-CLI) to install dependencies and setup WordPress. Make sure these tools are installed as explained [here](https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd).
+The script will use *composer*, *npm* and *wp* (WP-CLI) to install dependencies and setup WordPress. Make sure these tools are installed as explained [here](https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd).
 
-If you don't have or don't want to use a root MySQL account, prepare a database and user beforehand.
+If you don't have or don't want to use a root MySQL account, you'll be asked to manually create a database and user for it.
 
 
-### Nginx
+### Nginx web server
 
 Let's assume your `project_path` is `/srv/http/mywebsite.dev` and `namespace` is `mywebsite`.
 
-1. The main virtual host configuration file is `/srv/http/mywebsite.dev/etc/nginx.conf`. Look at the file if it requires any changes (you might need to change the `fastcgi_pass`). This file is specific to your system.
-2. At `/srv/http/mywebsite.dev/repo/config/nginx/mywebsite.conf` is shared Nginx configuration. This file is included in your code repository and loaded by the main virtual host file. If you need specific Nginx configuration to be shared among all developers and production, this is the place.
-3. You need to include `/srv/http/mywebsite.dev/etc/nginx.conf` in your system Nginx config at `/etc/nginx/nginx.conf`. Inside the `http { ... }` block put `include /srv/http/*/etc/nginx.conf;`.
-4. Restart Nginx to load the new configuration: `sudo systemctl restart nginx.service`
+Create `/etc/nginx/sites-enabled/mywebsite.dev.conf` with the following content and restart Nginx:
 
-By default your website will be accessible at `http://<namespace>.dev`. Map `mywebsite.dev` to the correct IP address in your `hosts` file.
+```
+server {
+  listen [::]:80 deferred;
+  listen 80 deferred;
+
+  server_name mywebsite.dev;
+  root /srv/http/mywebsite.dev/web;
+
+  access_log off;
+
+  # Rewrite URLs for uploaded files from dev to prod
+  # - If you've synced the DB from a production site, you don't need to
+  #   download the uploads folder for images to work.
+  #location /app/uploads {
+  #  rewrite ^ http://production.site/$request_uri permanent;
+  #}
+
+  location / {
+    try_files $uri $uri/ @wordpress;
+  }
+
+  location @wordpress {
+    rewrite ^ /index.php last;
+  }
+
+  location ~ \.php$ {
+    try_files $uri =404;
+    fastcgi_index index.php;
+    include fastcgi_params;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_pass unix:/var/run/php/php7.1-fpm.sock;
+  }
+}
+```
+
+To be able to access `http://mywebsite.dev` you need to map the server IP to `mywebsite.dev` domain in `/etc/hosts`. If you're running the server on your local machine, the IP is `127.0.0.1`, if you are using a virtual environment (and you should), then use the IP of that VM.
+
+```
+$ /etc/hosts
+
+...
+127.0.0.1 mywebsite.dev
+```
+
+For production refer to the following guides. They include expire headers, gzip configuration and various other settings necessary for high performance and security.
+
+* [Complete production configuration](https://gist.github.com/andrejcremoznik/13ceca9d83abb3088353066b240138d5)
+* [Complete production configuration with SSL](https://gist.github.com/andrejcremoznik/f0036b58398cafaa9b14ff04030646da)
 
 
-## Developing
+## Development
 
 Go to your project at `<project_path>/repo` and initialize git or whatever versioning system you like. Note that `.gitignore` and `.gitattributes` are already present so you can quick-start by running:
 
@@ -83,11 +162,25 @@ git push -u origin master
 
 Front-end dependencies are handled by NPM and will be installed in the `node_modules` sub-folder.
 
-When developing use `npm run watch` to watch CSS and JS for changes and to compile on every change.
-
-`npm run build` will compile all assets and minify them.
+* `npm run watch` will watch CSS and JS in the theme directory for changes and compile on every change
+* `npm run lang` will compile translations (`.po` files)
+* `npm run build` will compile and minify CSS and JS and compile translations
 
 Run `npm run` to list all available tasks as configured in `package.json`.
+
+**Compilation details:**
+
+JS is compiled with [Rollup](https://rollupjs.org/) from **ES2015+**. Build process is coded in `config/scripts/build-js.js` which you can adjust as needed.
+
+CSS is compiled with `node-sass` from **Sass** sources. Build process is coded in `config/scripts/build-css.js`.
+
+Languages are build from `.po` files with `msgfmt`. Build process is coded in `config/scripts/build-lang.js`.
+
+
+#### Including NPM dependencies
+
+* Include dependencies: `npm install momentjs --save`
+* Keep dependecies updated: `npm update --save && npm update --dev --save-dev`
 
 
 ### Back-end
@@ -96,27 +189,72 @@ Develop your template in the `web/app/themes/mywebsite`. The base template is se
 
 If you're going to build custom plugins put them in `web/app/plugins` and prefix the folder name with you project's namespace e.g. `mywebsite-cool-plugin`. This way they won't be ignored by `.gitignore` otherwise you'll have to modify its rules. A basic plugin is included with some neat defaults and example code that you can extend to support your theme.
 
-Use **composer** to pull in 3rd-party libraries and WP plugins from [WordPres Packagist](https://wpackagist.org/)  to your project. E.g. `composer require wpackagist-plugin/wordpress-seo`.
+
+#### WordPress config
+
+WordPress configuration is set in the following files:
+
+* `.env` - local environment settings
+* `config/application.php` - global defaults
+* `config/environments/<environment>.php` - environment specific defaults
 
 
-## Introducing new developers to your project
+#### Including free plugins and themes
 
-Before you get your team to co-develop your project, you will want to set up a staging environment (see [Deploying](#deploying)). You'll also need WP-CLI available on the server to non-interactive shells (set up the PATH at the very top of `.bashrc`). When done:
+Use **composer** to pull in free plugins and themes from [WordPres Packagist](https://wpackagist.org/). You can also include any packages from [Packagist](https://packagist.org/) and other compatible repositories.
 
-1. Have a look at the `sync.sh` script and set it up
-2. Make sure your team members have SSH access to staging
-3. Have them clone the code repository
-4. Everyone should set up a MySQL database
-5. Inside repo copy `.env.example` to `.env` and set it up
-6. Run the sync script to get the database from staging
-7. In Nginx config at `<project_path>/etc/nginx.conf` uncomment and configure the block to rewrite URLs for file uploads. This way you don't have to sync the `uploads` folder from the server.
-
-Syncing the database only works downstream. Have some rules set up regarding configuration on staging and syncing. Make sure everyone sets up their changes on staging regularly and in small increments unless you figure out how to do migrations. Communicate configuration changes to the entire team. Always keep everyone in the loop.
+* Include a plugin: `composer require wpackagist-plugin/wordpress-seo`
+* Keep dependencies updated: `composer update`
 
 
-## Deploying
+#### Including non-free plugins and themes
 
-WordPressBP includes a simple automated deployment script using Node Shell and SSH packages. You can deploy your website by running `npm run deploy [production]` but this requires some setup. All the configuration for deploys is in `config/scripts` directory.
+You want to keep those out of the repository but still deploy them with the rest of the code. `.gitignore` is set up to ignore everything inside `web/app/{themes,plugins}/` unless the name starts with `<namespace>` so you can easily place non-free themes and plugin there for local development.
+
+Then open `config/scripts/deploy-pack.js` and make sure these files are copied into the `build` directory before deploy. Look for the `TODO` comment near the top of the file for examples.
+
+
+#### Including languages
+
+You could set up composer to use [WP language packs by Koodimonni](https://wp-languages.github.io/) or you can manually download the language pack you need and place the files in `web/app/languages/`.
+
+Then edit `config/scripts/deploy-pack.js` and make sure these files are copied into the `build` directory before deploy.
+
+
+## Sync from staging or production
+
+**Syncing from the server requires SSH access.** Basic SSH understanding is expected for syncing and deployment which isn't covered here.
+
+Syncing requires `wp` (WP-CLI) also available in non-interactive shells on the server. [This gist](https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd) explains that as well.
+
+Open `sync.sh` and look for `TODO` comments. Set those up before you use the script.
+
+
+### Set up a new development environment
+
+1. Ensure you have SSH access to staging or production (wherever `sync.sh` points to)
+2. Create a local database and user
+3. Clone the repository
+4. Copy `.env.example` to `.env` and set it up
+5. Install dependencies and build the project
+  ```
+  composer install
+  npm install
+  npm run build
+  ```
+6. Sync the database `./sync.sh`
+7. Set up the web server and `/etc/hosts`
+
+If you want to push database changes upstream, you will have to figure out how to do migrations. Without that, the only way to ensure a working codebase for everybody on the team is to **only sync the database downstream.** Whenever database changes are required (WP settings, posts, pages etc.) repeat them on staging when you push and deploy the code.
+
+Keep notes on what to configure when you push everything to production.
+
+*Ideas / contributions for DB migrations welcome!*
+
+
+## Deployment
+
+WordPressBP includes a simple automated deployment script using `node-shell` and `node-ssh` packages. You can deploy your website by running `npm run deploy` but this requires some setup. All the configuration for deploys is in `config/scripts` directory.
 
 Deploy requires **Git**, **SSH** and **tar**. It's been tested on Linux environments, Mac should work, but Windows probably won't.
 
@@ -129,48 +267,54 @@ Run `npm run deploy` or `npm run deploy <environment>`.
 2. The tarball is uploaded to server over SSH and extracted into a temporary directory
 3. Static folders and files like `uploads` are symlinked into this temporary directory
 4. Finally, the live `current` directory is renamed to `previous` and the new temporary directory is renamed to `current`
-5. Cleanup tasks are run to remove any temporary files from server and local folders.
+5. Cleanup tasks are run to remove any temporary files from server and local folders
 
 If there's an error with the newly deployed version, you are able to revert to previous deploy by running `npm run deploy:revert <environment>`.
 
+If your server is correctly configured, the deployment scripts will never require root (or sudo) to any command or part of the file system.
 
-### Configuration
+
+### Deploy configuration
 
 Edit `config/scripts/deploy-config.js`.
 
-`deployEnvSSH` holds all environments you want to deploy too. If you don't specify an environment when running `npm run deploy`, scripts will default to `staging`.
+* `defaultDeployEnv` - default environment to deploy to. Needs an entry in `deployEnvSSH` and `deployEnvPaths`
+* `deployEnvSSH` - SSH connection parameters for all environments you want to deploy too
+* `deployEnvPaths` - Path to directory where you want to deploy the files to for all environments
 
-Every environment defines parameters for an SSH connection. `agent` points to an SSH agent socket. It's strongly advisable to have your SSH keys managed by an agent so instead of working around this with a different type of connection, [better configure your system](https://wiki.archlinux.org/index.php/SSH_Keys#SSH_agents).
-
-`phpProcessGroup` should be the name of the group the PHP process runs as. This usually defaults to `www-data`. Deploy scripts use this to set writable permissions for things like `uploads`.
-
-`deployEnvPaths` holds the paths to deploy directories for all environments. It's recommended to use `/srv/http` as the base for your websites. **This directory needs to be writable by the configured user.**
+If your server requires public key authentication, locally the key needs to be managed by an SSH agent so that NodeJS can access it through the `SSH_AUTH_SOCK` environment variable.
 
 
 ### First deploy
 
-First you need to set up folders, Nginx and the database on the server.
-
-1. Run `npm run deploy:init [environment]`. This will set up the basic skeleton at the configured remote path.
-2. Create the database on server:
+1. Create a **writable** (for the SSH user) directory on the server where you want to store the files. This should be the path set in `deployEnvPaths` in `config/scripts/deploy-config.js`.
+2. On development machine run `npm run deploy:init` or `npm run deploy:init [environment]`. This will create the needed directory structure.
+3. Configure the web server to serve from `<directory_from_step_1>/current/web`.
+4. Visit your website. If everything is correct you should see a `phpinfo()` page.
+5. Create the database:
   ```
   $ mysql -u root -p
-  CREATE NEW DATABASE mywebsite;
-  GRANT ALL PRIVILEGES ON *.mywebsite TO 'someuser'@'localhost' IDENTIFIED BY 'somepassword';
-  FLUSH PRIVILEGES;
+  create database mywebsitedb;
+  grant all privileges on mywebsitedb.* to 'dbuser'@'localhost' identified by 'some_password';
+  flush privileges;
   \q
   ```
-3. Set up Nginx on server. Use local config as an example. Web root should be path configured in `deploy-config.js` + `/current/web`.
-4. Configure the `.env` file that the script warned about. Use the local file as an example. Don't forget to configure the salts.
-5. Deploy the project: `npm run deploy [environment]`
-6. Populate the database by exporting locally and importing on server or simply visiting the website in browser and running the installation script.
+6. Dump local database and import it on the server: `wp db export - | ssh user@host -p 54321 'mysql -u dbuser -psome_password mywebsitedb'` (run this locally, the `-p<password>` is intentionally without space).
+7. Set up the environment in `<directory_from_step_1>/static/.env`.
+8. Make `<directory_from_step_1>/static/uploads` writable for the PHP process group:
+  ```
+  chown user:www-data uploads # you might need to sudo this
+  chmod g+w uploads
+  ```
+9. Finally, deploy the code: `npm run deploy` or `npm run deploy [environment]`.
 
 
 ### Deploying and reverting
 
-`npm run deploy [environment]` will deploy the current Git `HEAD` so make sure you're on the correct spot.
+All commands support optional environment. If you don't specify it, the default from `config/scripts/deploy-config.js` will be used.
 
-If you deploy broken code, you can revert **1 time** to the previous release by running `npm run deploy:revert [environment]`.
+* `npm run deploy [environment]` will deploy the current Git `HEAD` to `environment`. If you leave out the environment, the `defaultDeployEnv` will be used.
+* `npm run deploy:revert [environment]` allows you to revert **1 time** to previously deployed release.
 
 If you need more flexibility, you can extend the deploy scripts or look into a dedicated deploy tool.
 
@@ -183,12 +327,12 @@ You don't need plugins for sliders, lightboxes, social widgets etc. and you cert
 
 Here are some developer-friendly and maintained plugins that you can use:
 
-* [Advanced Custom Fields](http://wordpress.org/plugins/advanced-custom-fields/) - custom fields for posts
-* [Polylang](http://wordpress.org/plugins/polylang/) - everything you need for multilingual sites
+* [Advanced Custom Fields](https://www.advancedcustomfields.com/) - custom fields for posts
+* [Polylang](http://wordpress.org/plugins/polylang/) - multilingual sites
 * [Yoast SEO](http://wordpress.org/plugins/wordpress-seo/) - SEO metadata for posts, sitemap…
 * [WP-PageNavi](http://wordpress.org/plugins/wp-pagenavi/) - numbered pagination for archives
-* [Redirect Editor](http://wordpress.org/plugins/redirect-editor/) - need to 301 redirect a URL?
-* [Ninja Forms](http://wordpress.org/plugins/ninja-forms/) - works fairly well for forms
+* [Redirect Editor](http://wordpress.org/plugins/redirect-editor/) - 301 redirect URLs inside WP
+* [Ninja Forms](http://wordpress.org/plugins/ninja-forms/) - free forms plugin
 
 
 ## Contributors

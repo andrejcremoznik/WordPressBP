@@ -7,12 +7,16 @@ $public_assets_uri: '/app/themes/WordPressBP/assets/default/';
 $default_font_family: Arial, Helvetica, sans-serif;
 
 // Font sizes
-$default_font_size: 16;    // absolute value
-$default_line_height: 1.5; // relative value without unit
+$default_font_size: 16;    // absolute value, no unit
+$default_line_height: 1.5; // relative value, no unit
 
+$font_s: 12;
 $font_m: $default_font_size;
-$font_s: 12; // small: absolute value
-$font_l: 20; // large: absolute value
+$font_l: 20;
+
+$font_h1: 32;
+$font_h2: 24;
+$font_h3: 20;
 
 // Basic colors
 $default_tx_color: #333;
@@ -21,7 +25,6 @@ $default_bg_color: #fff;
 $content_link_color: #346994;
 $content_link_hover_color: lighten($content_link_color, 30%);
 
-/* =============== */
 
 // Import theme core
 @import "app/app";

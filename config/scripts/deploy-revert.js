@@ -1,10 +1,10 @@
 const path = require('path')
 const NodeSSH = require('node-ssh')
-const deployEnv = process.argv[2] || 'staging'
 const deployConf = require('./deploy-config')
+const deployEnv = process.argv[2] || deployConf.defaultDeployEnv
 
 if (!(deployEnv in deployConf.deployEnvSSH)) {
-  console.error('==> Unknown deploy environment: ' + deployEnv)
+  console.error(`==> Unknown deploy environment: ${deployEnv}`)
   process.exit(1)
 }
 
@@ -29,27 +29,24 @@ var revertProcedure = [
   ].join(' '),
   // Remove broken release dir
   ['rm -fr', path.join(config.deployPath, 'broken')].join(' ')
-].join(' && ')
+].filter(cmd => cmd).join(' && ')
 
 // Run
 var ssh = new NodeSSH()
-console.log('==> Reverting to previous deploy on: ' + deployEnv)
+console.log(`==> Reverting to previous deploy on: ${deployEnv}`)
 ssh.connect(config.deploySSH)
 .then(() => {
-  console.log('==> Connected')
+  console.log(`==> Connected`)
   ssh.execCommand(revertProcedure)
   .then(() => {
-    console.log('==> Done')
-    process.exit()
+    console.log(`==> Done`)
   })
-  .catch((err) => {
-    console.error('==> Failed')
-    console.log(err)
-    process.exit(1)
+  .catch(err => {
+    console.error(`==> Failed`)
+    throw err
   })
 })
-.catch((err) => {
-  console.error('==> Connection failed')
-  console.log(err)
-  process.exit(1)
+.catch(err => {
+  console.error(`==> Connection failed`)
+  throw err
 })

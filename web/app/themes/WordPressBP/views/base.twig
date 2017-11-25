@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html {{ site.language_attributes }}>
+<html lang="{{ site.language }}">
 <head>
   <meta charset="{{ site.charset }}">
   <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
@@ -9,8 +9,8 @@
 <body class="{{ body_class }}">
 
   <header class="header">
-    <a class="header__logo" href="/" title="{{ site.name }}" rel="home">{{ site.name }}</a>
-    <nav class="nav-primary">
+    <a class="header__logo" href="/" title="{{ site.name }}">{{ site.name }}</a>
+    <nav class="header__nav nav-primary">
     {% spaceless %}
       <ul class="nav">
       {% for item in primary_navigation.get_items %}
@@ -19,7 +19,7 @@
           {% if item.get_children %}
             <ul class="nav nav-primary__drop">
             {% for child in item.get_children %}
-              <li class="nav-primary__drop-item">
+              <li class="nav-primary__drop-item {{ child.classes|join(' ') }}">
                 <a class="nav-primary__drop-link" href="{{ child.get_link }}">{{ child.title }}</a>
               </li>
             {% endfor %}
@@ -32,20 +32,19 @@
     </nav>
   </header>
 
-  <div class="body">
-    <main class="main">
-      {% block content %}
-        <article class="post post_empty">
-          <p>{{ i18n.no_content }}</p>
-        </article>
-      {% endblock %}
-    </main>
-    {% if primary_sidebar is defined and primary_sidebar %}
-      <aside class="aside">
-        {{ primary_sidebar }}
-      </aside>
-    {% endif %}
-  </div>
+  <main class="main">
+    {% block content %}
+      <article class="post post_empty">
+        <p>{{ i18n.no_content }}</p>
+      </article>
+    {% endblock %}
+  </main>
+
+  {% if primary_sidebar is defined and primary_sidebar %}
+    <aside class="aside">
+      {{ primary_sidebar }}
+    </aside>
+  {% endif %}
 
   <footer class="footer">
     {% block footer %}{% endblock %}

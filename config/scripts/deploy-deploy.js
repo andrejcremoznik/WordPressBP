@@ -1,11 +1,11 @@
 const path = require('path')
 const NodeSSH = require('node-ssh')
 const version = Math.round(+new Date() / 1000).toString()
-const deployEnv = process.argv[2] || 'staging'
 const deployConf = require('./deploy-config')
+const deployEnv = process.argv[2] || deployConf.defaultDeployEnv
 
 if (!(deployEnv in deployConf.deployEnvSSH)) {
-  console.error('==> Unknown deploy environment: ' + deployEnv)
+  console.error(`==> Unknown deploy environment: ${deployEnv}`)
   process.exit(1)
 }
 
@@ -20,8 +20,10 @@ const config = {
 var deployProcedure = [
   // Create new release dir
   ['mkdir -p', config.deployReleasePath].join(' '),
+
   // Extract uploaded tarball to new release dir
   ['tar -zxf', config.deployTmp, '-C', config.deployReleasePath].join(' '),
+
   // Symlink static files into the new release dir
   [
     'ln -s',
@@ -33,6 +35,21 @@ var deployProcedure = [
     path.join(config.deployPath, 'static/.env'),
     path.join(config.deployReleasePath, '.env')
   ].join(' '),
+
+  // NOTE: If you use Let's Encrypt, you might want to set up a symlink to "certs/.well-known" directory
+  // [
+  //   'ln -s',
+  //   '/srv/http/certs/.well-known',
+  //   path.join(config.deployReleasePath, 'web/.well-known')
+  // ].join(' '),
+
+  // NOTE: If you want to enable object cache on production, copy object-cache.php from the caching plugin to /web/app/
+  // deployEnv === 'production' ? [
+  //   'cp',
+  //   path.join(config.deployReleasePath, 'web/app/plugins/redis-cache/includes/object-cache.php'),
+  //   path.join(config.deployReleasePath, 'web/app/object-cache.php')
+  // ].join(' ') : false, // "false" will drop the item from command chain when condition doesn't match
+
   // Remove previous release dir
   ['rm -fr', path.join(config.deployPath, 'previous')].join(' '),
   // Move current release to previous
@@ -49,36 +66,32 @@ var deployProcedure = [
   ].join(' '),
   // Remove uploaded build tarball
   ['rm -f', config.deployTmp].join(' ')
-].join(' && ')
+].filter(cmd => cmd).join(' && ')
 
 // Run
 var ssh = new NodeSSH()
-console.log('==> Deploying to: ' + deployEnv)
+console.log(`==> Deploying to: ${deployEnv}`)
 ssh.connect(config.deploySSH)
 .then(() => {
-  console.log('==> Connected')
+  console.log(`==> Connected. Uploading…`)
   ssh.putFile('build/build.tar.gz', config.deployTmp)
   .then(() => {
-    console.log('==> Applying new build')
+    console.log(`==> Applying new build`)
     ssh.execCommand(deployProcedure)
     .then(() => {
-      console.log('==> Done.')
-      process.exit()
+      console.log(`==> Done`)
     })
-    .catch((err) => {
-      console.error('==> Couldn’t apply build')
-      console.log(err)
-      process.exit(1)
+    .catch(err => {
+      console.error(`==> Couldn’t apply build`)
+      throw err
     })
   })
-  .catch((err) => {
-    console.error('==> Upload failed')
-    console.log(err)
-    process.exit(1)
+  .catch(err => {
+    console.error(`==> Upload failed`)
+    throw err
   })
 })
-.catch((err) => {
-  console.error('==> Connection failed')
-  console.log(err)
-  process.exit(1)
+.catch(err => {
+  console.error(`==> Connection failed`)
+  throw err
 })

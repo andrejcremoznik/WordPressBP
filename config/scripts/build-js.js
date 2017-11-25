@@ -1,12 +1,16 @@
-const fs       = require('fs')
-const path     = require('path')
-const rollup   = require('rollup')
-const babel    = require('rollup-plugin-babel')
-const minify   = require('rollup-plugin-babel-minify')
+const fs = require('fs')
+const path = require('path')
+const rollup = require('rollup')
+const babel = require('rollup-plugin-babel')
+const minify = require('rollup-plugin-babel-minify')
+const commonjs = require('rollup-plugin-commonjs')
+const resolve  = require('rollup-plugin-node-resolve')
 
 const compress = process.argv[2] === 'minify'
 
-var plugins = [
+let plugins = [
+  resolve({ jsnext: true }),
+  commonjs({ include: 'node_modules/**' }),
   babel()
 ]
 
@@ -26,7 +30,7 @@ rollup.rollup({
     }
   }
 })
-.then((bundle) => {
+.then(bundle => {
   return bundle.write({
     file: path.join(path.resolve('./web/app/themes/WordPressBP/assets'), 'app.js'),
     format: 'umd',

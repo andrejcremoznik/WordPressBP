@@ -1,29 +1,47 @@
 <?php
 
-$timber = new \Timber\Timber();
+// NOTE: If you need to rely on a plugin (like ACF) uncomment this snippet
+// if (!function_exists('get_field') && !is_admin()) {
+//   wp_die(sprintf(
+//     '<b>WordPressBP</b> template requires <a href="https://www.advancedcustomfields.com/">ACF PRO</a> plugin. After installing the plugin enable it in the <a href="%s">Dashboard</a>.',
+//     admin_url('plugins.php')
+//   ));
+// }
 
+new \Timber\Timber();
 Timber::$dirname = ['views'];
-
-define('ASSET_VERSION', 'vDEV'); // Change during deploy
 
 class WordPressBP extends Timber\Site {
 
-  function __construct() {
+  private $asset_version = 'vDEV'; // String replaced during deploy with a timestamp
 
-    add_action('after_setup_theme',           [$this, 'setup']);
-    add_action('widgets_init',                [$this, 'widgets_init']);
-    add_action('wp_enqueue_scripts',          [$this, 'scripts_styles']);
-    add_action('wp_default_scripts',          [$this, 'remove_jquery_migrate']);
-    //add_action('save_post',                   [$this, 'flush_theme_cache']);
-    //add_action('deleted_post',                [$this, 'flush_theme_cache']);
+  public $cache_itr; // Cache iteration
 
+  public function __construct() {
+    // Get cache iteration
+    $this->cache_itr = $this->get_cache_itr();
+
+    // Run action hooks
+    add_action('after_setup_theme', [$this, 'setup']);
+    // add_action('widgets_init', [$this, 'widgets_init']);
+    add_action('wp_enqueue_scripts', [$this, 'scripts_styles']);
+    add_action('wp_default_scripts', [$this, 'remove_jquery_migrate']);
+    add_action('save_post', [$this, 'flush_theme_cache']);
+    add_action('deleted_post', [$this, 'flush_theme_cache']);
+
+    // Run filters
+    add_filter('upload_mimes', [$this, 'extra_upload_types']);
     add_filter('comment_form_default_fields', [$this, 'modify_comment_form_fields']);
-    add_filter('timber/context',              [$this, 'timber_context']);
-    add_filter('timber/twig',                 [$this, 'timber_twig']);
+    add_filter('body_class', [$this, 'modify_body_classes']);
+    add_filter('timber/context', [$this, 'timber_context']);
+    add_filter('timber/twig', [$this, 'timber_twig']);
+    // NOTE: Hide ACF admin on production
+    // if (WP_ENV === 'production') {
+    //   add_filter('acf/settings/show_admin', '__return_false');
+    // }
 
     /**
      * Clean up wp_head()
-     *
      * http://codex.wordpress.org/Plugin_API/Action_Reference/wp_head
      */
     remove_action('wp_head', 'rsd_link');
@@ -40,23 +58,39 @@ class WordPressBP extends Timber\Site {
     parent::__construct();
   }
 
+  private function get_cache_itr() {
+    $cache_itr = wp_cache_get('theme_cache_itr');
+    if ($cache_itr === false) {
+      $cache_itr = 1;
+      wp_cache_set('theme_cache_itr', $cache_itr);
+    }
+    return $cache_itr;
+  }
+
   /**
-   * Add custom values global context
+   * Add custom values global Timber context
    */
-  function timber_context($context) {
-    $context['env'] = WP_ENV;
-    $context['site'] = $this;
-    $context['wp_url'] = WP_SITEURL;
+  public function timber_context($context) {
+    $context['site'] = [
+      'name' => $this->name,
+      'theme_uri' => $this->theme->uri,
+      'wp_uri' => WP_SITEURL,
+      'env' => WP_ENV,
+      'charset' => $this->charset,
+      'language' => $this->language
+    ];
+    // Menus
     $context['primary_navigation'] = new Timber\Menu('primary_navigation');
+    // Language strings
     $context['i18n'] = [
-      'no_content'          => __('Sorry, no content.', 'WordPressBP'),
-      'missing_title'       => __('Missing page!', 'WordPressBP'),
+      'no_content' => __('Sorry, no content.', 'WordPressBP'),
+      'missing_title' => __('Missing page!', 'WordPressBP'),
       'missing_description' => __('We couldn’t find any content at this address.', 'WordPressBP'),
-      'author'              => __('Author', 'WordPressBP'),
-      'password'            => __('Password', 'WordPressBP'),
-      'submit'              => __('Submit', 'WordPressBP'),
-      'comments'            => __('Comments', 'WordPressBP'),
-      'says'                => __('says', 'WordPressBP')
+      'author' => __('Author', 'WordPressBP'),
+      'password' => __('Password', 'WordPressBP'),
+      'submit' => __('Submit', 'WordPressBP'),
+      'comments' => __('Comments', 'WordPressBP'),
+      'says' => __('says', 'WordPressBP')
     ];
     return $context;
   }
@@ -64,7 +98,7 @@ class WordPressBP extends Timber\Site {
   /**
    * Add custom functions to Twig
    */
-  function timber_twig($twig) {
+  public function timber_twig($twig) {
     $twig->enableStrictVariables();
     return $twig;
   }
@@ -72,12 +106,11 @@ class WordPressBP extends Timber\Site {
   /**
    * Set up theme's defaults, register various features
    */
-  function setup() {
+  public function setup() {
 
     /**
      * Load theme text domain
-     *
-     * http://codex.wordpress.org/I18n_for_WordPress_Developers
+     * https://developer.wordpress.org/themes/functionality/internationalization/
      */
     load_theme_textdomain('WordPressBP', get_template_directory() . '/lang');
 
@@ -130,7 +163,7 @@ class WordPressBP extends Timber\Site {
   /**
    * Set up theme's sidebars
    */
-  function widgets_init() {
+  public function widgets_init() {
     register_sidebar([
       'name'          => __('Primary Sidebar', 'WordPressBP'),
       'id'            => 'primary_sidebar',
@@ -147,15 +180,15 @@ class WordPressBP extends Timber\Site {
    * Styles (wp_register_style, wp_enqueue_style)
    * Scripts (wp_register_script, wp_enqueue_script, wp_localize_script)
    */
-  function scripts_styles() {
+  public function scripts_styles() {
     // Deregister scripts
     wp_deregister_script('wp-embed');
 
     // Register styles
-    wp_register_style('default', get_template_directory_uri() . '/assets/theme_default.css', [], ASSET_VERSION, 'all');
+    wp_register_style('default', get_template_directory_uri() . '/assets/theme_default.css', [], $this->asset_version, 'all');
 
     // Register scripts
-    wp_register_script('app', get_template_directory_uri() . '/assets/app.js', ['jquery-core'], ASSET_VERSION, true);
+    wp_register_script('app', get_template_directory_uri() . '/assets/app.js', ['jquery-core'], $this->asset_version, true);
 
     // Enqueue styles
     wp_enqueue_style('default');
@@ -164,7 +197,7 @@ class WordPressBP extends Timber\Site {
     wp_enqueue_script('app');
   }
   // Some plugins enqueue 'jquery' which wants migrate. Screw migrate.
-  function remove_jquery_migrate(&$scripts) {
+  public function remove_jquery_migrate(&$scripts) {
     if (!is_admin()) {
       $scripts->remove('jquery');
       $scripts->add('jquery', false, ['jquery-core']);
@@ -174,7 +207,7 @@ class WordPressBP extends Timber\Site {
   /**
    * Remove URL field from comment form
    */
-  function modify_comment_form_fields($fields) {
+  public function modify_comment_form_fields($fields) {
     if (isset($fields['url'])) {
       unset($fields['url']);
     }
@@ -187,36 +220,50 @@ class WordPressBP extends Timber\Site {
    *
    * - see below for an example function how to correctly use the cache
    */
-  function flush_theme_cache() {
+  public function flush_theme_cache() {
     wp_cache_incr('theme_cache_itr');
   }
 
   /**
-   * Example how to use cahing for expensive
-   * operations done by the theme. No need to set expire
-   * times. To invalidate cache run flush_theme_cache().
+   * Allow upload of additional file types
+   */
+  public function extra_upload_types($mimes) {
+    $mimes['svg'] = 'image/xml+svg';
+    return $mimes;
+  }
+
+  /**
+   * Modify classes on body
+   */
+  public function modify_body_classes($classes) {
+    $url_parts = explode('/', substr($_SERVER['REQUEST_URI'], 1));
+    array_pop($url_parts);
+    if (empty($url_parts)) $url_parts[] = 'frontpage';
+    array_splice($url_parts, 0, 0, ['path']);
+    $classes[] = implode('-', $url_parts);
+    return $classes;
+  }
+
+  /**
+   * NOTE: Example how to use caching for expensive operations done by the theme.
+   * - Outside of this class use $theme->cache_itr to get the current iterator.
+   * - Iterator will automatically increase whenever a post is saved or deleted.
    */
   /*
-  function do_something_expensive() {
-    // Get the cache iterator integer
-    $cache_itr = wp_cache_get('theme_cache_itr');
-    if ($cache_itr === false) {
-      $cache_itr = 1;
-      wp_cache_set('theme_cache_itr', $cache_itr);
-    }
-    // Name the cache key for this result and append the cache iterator
-    $cache_key = 'expensive_operation_' . $cache_itr;
-    // Get result from cache if it exists otherwise create new result
-    $expensive_operation = wp_cache_get($cache_key, 'theme');
+  public function do_something_expensive() {
+    // Create a unique cache key using the cache iterator
+    $cache_key = 'expensive_operation_' . $this->cache_itr;
+    // Get result from cache
+    $expensive_operation = wp_cache_get($cache_key);
+    // If there is no cache, recreate it
     if ($expensive_operation === false) {
-      // Do your thing here
       $expensive_operation = 'The result of something you do not want to run on every load.';
-      // Cache it
-      wp_cache_set($cache_key, $expensive_operation, 'theme');
+      wp_cache_set($cache_key, $expensive_operation);
     }
+    // Return result
     return $expensive_operation;
   }
   */
 }
 
-new WordPressBP();
+$theme = new WordPressBP();
