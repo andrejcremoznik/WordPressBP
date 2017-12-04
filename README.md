@@ -45,7 +45,7 @@ If you need a stripped down version to manage WordPress installations with 3rd-p
 
 * LEMP stack (Linux, Nginx, MySQL, PHP 5.6+)
 * Git
-* NodeJS (`node`, `npm`)
+* NodeJS (`node`) and NPM (`npm`)
 * [Composer](https://getcomposer.org/)
 * [WP-CLI](http://wp-cli.org/)
 * gettext utilities (`msgfmt`) for i18n
@@ -108,7 +108,7 @@ server {
   # Rewrite URLs for uploaded files from dev to prod
   # - If you've synced the DB from a production site, you don't need to
   #   download the uploads folder for images to work.
-  #location /app/uploads {
+  #location /app/uploads/ {
   #  rewrite ^ http://production.site/$request_uri permanent;
   #}
 
@@ -212,6 +212,19 @@ Use **composer** to pull in free plugins and themes from [WordPres Packagist](ht
 You want to keep those out of the repository but still deploy them with the rest of the code. `.gitignore` is set up to ignore everything inside `web/app/{themes,plugins}/` unless the name starts with `<namespace>` so you can easily place non-free themes and plugin there for local development.
 
 Then open `config/scripts/deploy-pack.js` and make sure these files are copied into the `build` directory before deploy. Look for the `TODO` comment near the top of the file for examples.
+
+**Protip:** If you're developing multiple sites on the same dev environment and share a plugin between them (like ACF Pro), symlink it from a single source everywhere you need it. When the project is being packed for deploy, the `copy` command will resolve the symlink and copy the files instead. E.g.:
+
+* Shared plugin: `/srv/http/shared-plugin`
+* Project 1 `/srv/http/project1/web/app/plugins/shared-plugin -> /srv/http/shared-plugin` - a symlink to shared plugin
+* Project 2 `/srv/http/project2/web/app/plugins/shared-plugin -> /srv/http/shared-plugin` - a symlink to shared plugin
+* Then for every project copy the common plugin into `build` when deploying:
+  ```
+  add to: config/scripts/deploy-pack.js:
+  ...
+  sh.cp('-fr', 'web/app/plugins/shared-plugin', 'build/web/app/plugins/')
+  ...
+  ```
 
 
 #### Including languages
