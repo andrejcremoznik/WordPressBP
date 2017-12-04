@@ -45,7 +45,7 @@ If you need a stripped down version to manage WordPress installations with 3rd-p
 
 * LEMP stack (Linux, Nginx, MySQL, PHP 5.6+)
 * Git
-* NodeJS (`node`, `npm`)
+* NodeJS (`node`) and NPM (`npm`)
 * [Composer](https://getcomposer.org/)
 * [WP-CLI](http://wp-cli.org/)
 * gettext utilities (`msgfmt`) for i18n
@@ -91,7 +91,7 @@ If you don't have or don't want to use a root MySQL account, you'll be asked to 
 
 ### Nginx web server
 
-Let's assume your `project_path` is `/srv/http/mywebsite.dev` and `namespace` is `mywebsite`.
+Lets assume your `project_path` is `/srv/http/mywebsite.dev` and `namespace` is `mywebsite`.
 
 Create `/etc/nginx/sites-enabled/mywebsite.dev.conf` with the following content and restart Nginx:
 
@@ -108,7 +108,7 @@ server {
   # Rewrite URLs for uploaded files from dev to prod
   # - If you've synced the DB from a production site, you don't need to
   #   download the uploads folder for images to work.
-  #location /app/uploads {
+  #location /app/uploads/ {
   #  rewrite ^ http://production.site/$request_uri permanent;
   #}
 
@@ -213,6 +213,19 @@ You want to keep those out of the repository but still deploy them with the rest
 
 Then open `config/scripts/deploy-pack.js` and make sure these files are copied into the `build` directory before deploy. Look for the `TODO` comment near the top of the file for examples.
 
+**Protip:** If you're developing multiple sites on the same dev environment and share a plugin between them (like ACF Pro), symlink it from a single source everywhere you need it. When the project is being packed for deploy, the `copy` command will resolve the symlink and copy the files instead. E.g.:
+
+* Shared plugin: `/srv/http/shared-plugin`
+* Project 1 `/srv/http/project1/web/app/plugins/shared-plugin -> /srv/http/shared-plugin` - a symlink to shared plugin
+* Project 2 `/srv/http/project2/web/app/plugins/shared-plugin -> /srv/http/shared-plugin` - a symlink to shared plugin
+* Then for every project copy the common plugin into `build` when deploying:
+  ```
+  add to: config/scripts/deploy-pack.js:
+  ...
+  sh.cp('-fr', 'web/app/plugins/shared-plugin', 'build/web/app/plugins/')
+  ...
+  ```
+
 
 #### Including languages
 
@@ -263,7 +276,7 @@ Deploy requires **Git**, **SSH** and **tar**. It's been tested on Linux environm
 
 Run `npm run deploy` or `npm run deploy <environment>`.
 
-1. When you run deploy, current repository `HEAD` will be build and zipped into an tarball archive
+1. When you run deploy, current repository `HEAD` will be build and zipped into a tarball archive
 2. The tarball is uploaded to server over SSH and extracted into a temporary directory
 3. Static folders and files like `uploads` are symlinked into this temporary directory
 4. Finally, the live `current` directory is renamed to `previous` and the new temporary directory is renamed to `current`
@@ -299,7 +312,7 @@ If your server requires public key authentication, locally the key needs to be m
   flush privileges;
   \q
   ```
-6. Dump local database and import it on the server: `wp db export - | ssh user@host -p 54321 'mysql -u dbuser -psome_password mywebsitedb'` (run this locally, the `-p<password>` is intentionally without space).
+6. Dump local database and import it on the server: `wp db export - | ssh user@host -p 54321 'mysql -u dbuser -psome_password mywebsitedb'` (run this locally, the `-p<password>` is intentionally without space after `-p`).
 7. Set up the environment in `<directory_from_step_1>/static/.env`.
 8. Make `<directory_from_step_1>/static/uploads` writable for the PHP process group:
   ```

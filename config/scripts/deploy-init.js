@@ -13,7 +13,7 @@ const config = {
   deployPath: deployConf['deployEnvPaths'][deployEnv]
 }
 
-var initProcedure = [
+let initProcedure = [
   // Create directories
   ['mkdir -p', path.join(config.deployPath, 'current/web')].join(' '),
   ['mkdir -p', path.join(config.deployPath, 'previous')].join(' '),
@@ -24,24 +24,25 @@ var initProcedure = [
   ['echo -e "<?php phpinfo();\n" >', path.join(config.deployPath, 'current/web/index.php')].join(' ')
 ].filter(cmd => cmd).join(' && ')
 
-var ssh = new NodeSSH()
+let ssh = new NodeSSH()
 console.log(`==> Preparing directories for deploy on: ${deployEnv}`)
 ssh.connect(config.deploySSH)
 .then(() => {
-  console.log(`==> Connected`)
+  console.log(`==> Connected.`)
   ssh.execCommand(initProcedure)
   .then(() => {
     console.log(`==> Done. You still need to:`)
     console.log(`- Set up the web server with webroot in "${config.deployPath}/current/web".`)
     console.log(`- Configure ${config.deployPath}/static/.env.`)
     console.log(`- Make ${config.deployPath}/static/uploads writable for the PHP process group.`)
+    process.exit()
   })
   .catch(err => {
-    console.error(`==> Failed`)
+    console.error(`==> Failed.`)
     throw err
   })
 })
 .catch(err => {
-  console.error(`==> Connection failed`)
+  console.error(`==> Connection failed.`)
   throw err
 })

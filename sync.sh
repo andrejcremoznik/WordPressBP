@@ -29,7 +29,7 @@ echo -e "==> Dropping local database…"
 wp db reset --yes
 
 echo -e "==> Importing database from production…"
-ssh $ssh_connection "wp --path=$remote_wordpress db export - | gzip" | gunzip | wp db import -
+ssh -C $ssh_connection "wp --path=$remote_wordpress db export -" | wp db import -
 
 # TODO: Deactivate plugins you don't want locally
 #echo -e "==> Deactivating production only plugins…"
