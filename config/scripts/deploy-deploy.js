@@ -64,6 +64,10 @@ let deployProcedure = [
     config.deployReleasePath,
     path.join(config.deployPath, 'current')
   ].join(' '),
+
+  // NOTE: If you use caching plugins this is the place to flush the cache. The example uses WP CLI which needs to be available to the user deploying in a non-interactive shell
+  // deployEnv === 'production' ? ['wp cache flush --path=', path.join(config.deployPath, 'current/web/wp')].join('') : false,
+
   // Remove uploaded build tarball
   ['rm -f', config.deployTmp].join(' ')
 ].filter(cmd => cmd).join(' && ')
