@@ -9,13 +9,11 @@ const compress = process.argv[2] === 'minify'
 const inDir = path.resolve('./web/app/themes/WordPressBP/css')
 const outDir = path.resolve('./web/app/themes/WordPressBP/assets')
 
-let postCssPlugins = [
-  autoprefixer({ cascade: false })
-]
-
+let postCssPlugins = []
 if (compress) {
   postCssPlugins.push(csso({ comments: true }))
 }
+postCssPlugins.push(autoprefixer({ cascade: false }))
 
 fs.readdir(inDir, (err, files) => {
   if (err) throw err
@@ -34,7 +32,7 @@ fs.readdir(inDir, (err, files) => {
       if (err) throw err.formatted
 
       postcss(postCssPlugins)
-        .process(result.css)
+        .process(result.css, { from: css, to: css })
         .then(res => {
           res.warnings().forEach(warn => {
             console.log(warn.toString())
