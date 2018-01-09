@@ -97,8 +97,8 @@ Create `/etc/nginx/sites-enabled/mywebsite.dev.conf` with the following content 
 
 ```
 server {
-  listen [::]:80 deferred;
-  listen 80 deferred;
+  listen [::]:80;
+  listen 80;
 
   server_name mywebsite.dev;
   root /srv/http/mywebsite.dev/web;
