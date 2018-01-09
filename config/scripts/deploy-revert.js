@@ -27,6 +27,10 @@ let revertProcedure = [
     path.join(config.deployPath, 'previous'),
     path.join(config.deployPath, 'current')
   ].join(' '),
+
+  // NOTE: If you use caching plugins this is the place to flush the cache. The example uses WP CLI which needs to be available to the user deploying in a non-interactive shell
+  // deployEnv === 'production' ? ['wp cache flush --path=', path.join(config.deployPath, 'current/web/wp')].join('') : false,
+
   // Remove broken release dir
   ['rm -fr', path.join(config.deployPath, 'broken')].join(' ')
 ].filter(cmd => cmd).join(' && ')
