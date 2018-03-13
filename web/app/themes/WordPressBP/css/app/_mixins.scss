@@ -1,9 +1,11 @@
 /**
  * Convert PX units to REMs.
  * Ex: font-size: rem(16);
+ * When using inside a media query where the root size might have changed, you can supply
+ * your own root value to be used instead of $default_font_size
  */
-@function rem($pxval, $default_size_mod: 0) {
-  @return #{$pxval / ($default_font_size - $default_size_mod)}rem;
+@function rem($pxval, $default_root_size: $default_font_size) {
+  @return #{$pxval / $default_root_size}rem;
 }
 
 /**
