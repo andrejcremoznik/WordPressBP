@@ -9,18 +9,20 @@ body {
 
 a {
   color: $content_link_color;
+  &:focus,
   &:hover { color: $content_link_hover_color; }
 }
 
 img { vertical-align: middle; }
 
-p {
+p, ul, ol, table, blockquote {
   margin: 0 0 #{$default_line_height}em;
   &:last-child { margin-bottom: 0; }
 }
 
 h1, h2, h3 {
   margin: 1.5em 0;
+  line-height: 1.2;
   font-weight: bold;
 }
 h1 { font-size: rem($font_h1); }
@@ -50,3 +52,10 @@ h3 { font-size: rem($font_h3); }
 .f_l { font-size: rem($font_l); }
 
 .c_inherit { color: inherit; }
+
+@media (max-width: 719px) {
+  html { font-size: #{$default_font_size - 2}px; }
+  h1 { font-size: rem($font_h1 - 6, -2); }
+  h2 { font-size: rem($font_h2 - 5, -2); }
+  h3 { font-size: rem($font_h3 - 4, -2); }
+}

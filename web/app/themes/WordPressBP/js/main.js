@@ -5,8 +5,6 @@
  * so you can use the latest and greates ES2015+
  */
 
-import $ from 'jquery'
-
 const runners = {
   default: function () {
     console.log('Run on every page')
@@ -20,9 +18,8 @@ const runners = {
   }
 }
 
-$(() => {
-  Object
-    .keys(runners)
+document.addEventListener('DOMContentLoaded', () => {
+  Object.keys(runners)
     .filter(key => key !== 'default')
     .forEach(key => {
       if (document.body.classList.contains(key)) {

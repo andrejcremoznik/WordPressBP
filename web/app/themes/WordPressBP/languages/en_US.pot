@@ -29,5 +29,8 @@ msgstr ""
 msgid "Comments"
 msgstr ""
 
-msgid "says"
+msgid "Your comment is awaiting moderation."
+msgstr ""
+
+msgid "There are currently no comments."
 msgstr ""

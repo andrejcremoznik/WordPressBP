@@ -17,7 +17,7 @@
 ssh_connection="user@host -p 54321"
 
 # TODO: Set path to the WordPress installation directory on the server
-remote_wordpress="/srv/http/WordPressBP.dev/releases/current/web/wp"
+remote_wordpress="/srv/http/WordPressBP.tld/releases/current/web/wp"
 
 function findWPCLI {
   command -v wp > /dev/null 2>&1 || { echo >&2 "==> WP-CLI needs to be available as 'wp' command in your PATH $1"; exit 1; }
@@ -38,8 +38,8 @@ ssh -C $ssh_connection "wp --path=$remote_wordpress db export -" | wp db import 
 echo -e "==> Cleaning up…"
 wp comment delete $(wp comment list --status=spam --format=ids) --force
 wp db query "DELETE FROM wpdb_posts WHERE post_type = 'revision'"
+wp transient delete --all
 wp cache flush
-wp transient delete-all
 
 # TODO: Do a search-replace on the entire database for site URL
 #echo -e "==> Search/replace hostname…"

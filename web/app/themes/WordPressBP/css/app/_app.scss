@@ -1,14 +1,10 @@
 // External dependencies
 @import "normalize.css/normalize";
 
-// Custom mixins
-@import "helpers/mixins";
-
-// Helper classes
-@import "helpers/classes";
-
 // Modules
+@import "modules/general";
 @import "modules/typography";
+
 
 // Quick hacks
 @import "shame";

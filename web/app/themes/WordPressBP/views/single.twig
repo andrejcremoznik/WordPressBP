@@ -17,18 +17,24 @@
 
   {% if post.comments or post.comment_status == 'open' %}
     <section class="comments">
-      <h3 class="comments__title">{{ i18n.comments }}</h3>
       {% if comment_form is defined %}{{ comment_form }}{% endif %}
-      {% if post.comments %}
-        <div class="comments__list">
+      <h3 class="comments__title">{{ i18n.comments }}</h3>
+      <div class="comments__list">
+        {% if not post.comment_count %}
+          <p class="comments__empty">{{ i18n.no_comments }}</p>
+        {% endif %}
         {% for comment in post.comments %}
-          <div class="comment comment_{{ comment.comment_type }}">
-            <p class="comment__author">{{ comment.author.name }} {{ i18n.says }}</p>
-            <div class="comment__content">{{ comment.comment_content|wpautop }}</div>
+          <div id="comment-{{ comment.id }}" class="comment comment_{{ comment.comment_type }}">
+            <p class="comment__author"><b>{{ comment.author.name }}</b> <span class="comment__time">({{ comment.date|date }})</span></p>
+            <div class="comment__content">
+              {{ comment.comment_content|wpautop }}
+              {% if not comment.approved %}
+                <p class="comment__moderation-msg">{{ i18n.comment_in_moderation }}</p>
+              {% endif %}
+            </div>
           </div>
         {% endfor %}
-        </div>
-      {% endif %}
+      </div>
     </section>
   {% endif %}
 

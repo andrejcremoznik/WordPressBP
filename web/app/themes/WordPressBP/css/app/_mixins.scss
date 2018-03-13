@@ -2,8 +2,8 @@
  * Convert PX units to REMs.
  * Ex: font-size: rem(16);
  */
-@function rem($pxval) {
-  @return #{$pxval / $default_font_size}rem;
+@function rem($pxval, $default_size_mod: 0) {
+  @return #{$pxval / ($default_font_size - $default_size_mod)}rem;
 }
 
 /**

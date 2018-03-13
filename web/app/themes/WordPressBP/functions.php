@@ -54,6 +54,9 @@ class WordPressBP extends Timber\Site {
     parent::__construct();
   }
 
+  /**
+   * Get cache itteration
+   */
   private function get_cache_itr() {
     $cache_itr = wp_cache_get('theme_cache_itr');
     if ($cache_itr === false) {
@@ -61,6 +64,23 @@ class WordPressBP extends Timber\Site {
       wp_cache_set('theme_cache_itr', $cache_itr);
     }
     return $cache_itr;
+  }
+
+  /**
+   * Generate menus
+   */
+  private function menu_parser($menu_id) {
+    $nav = new Timber\Menu($menu_id);
+    return array_map([$this, 'menu_item_data'], $nav->items);
+  }
+  private function menu_item_data($item) {
+    return [
+      'title' => $item->title(),
+      'link' => $item->link(),
+      'classes' => $item->classes,
+      'is_external' => !empty($item->target),
+      'children' => array_map([$this, 'menu_item_data'], $item->children)
+    ];
   }
 
   /**
@@ -76,7 +96,9 @@ class WordPressBP extends Timber\Site {
       'language' => $this->language
     ];
     // Menus
-    $context['primary_navigation'] = new Timber\Menu('primary_navigation');
+    $context['menus'] = [
+      'primary' => $this->menu_parser('primary_navigation')
+    ];
     // Language strings
     $context['i18n'] = [
       'no_content' => __('Sorry, no content.', 'WordPressBP'),
@@ -86,7 +108,8 @@ class WordPressBP extends Timber\Site {
       'password' => __('Password', 'WordPressBP'),
       'submit' => __('Submit', 'WordPressBP'),
       'comments' => __('Comments', 'WordPressBP'),
-      'says' => __('says', 'WordPressBP')
+      'comment_in_moderation' => __('Your comment is awaiting moderation.', 'WordPressBP'),
+      'no_comments' => __('There are currently no comments.', 'WordPressBP')
     ];
     return $context;
   }
@@ -161,12 +184,12 @@ class WordPressBP extends Timber\Site {
    */
   public function widgets_init() {
     register_sidebar([
-      'name'          => __('Primary Sidebar', 'WordPressBP'),
-      'id'            => 'primary_sidebar',
+      'name' => __('Primary Sidebar', 'WordPressBP'),
+      'id' => 'primary_sidebar',
       'before_widget' => '<div id="%1$s" class="widget %2$s">',
-      'after_widget'  => '</div>',
-      'before_title'  => '<h3 class="widget__title">',
-      'after_title'   => '</h3>'
+      'after_widget' => '</div>',
+      'before_title' => '<h3 class="widget__title">',
+      'after_title' => '</h3>'
     ]);
   }
 
@@ -184,7 +207,7 @@ class WordPressBP extends Timber\Site {
     wp_register_style('default', get_template_directory_uri() . '/assets/theme_default.css', [], $this->asset_version, 'all');
 
     // Register scripts
-    wp_register_script('app', get_template_directory_uri() . '/assets/app.js', ['jquery-core'], $this->asset_version, true);
+    wp_register_script('app', get_template_directory_uri() . '/assets/app.js', [], $this->asset_version, true);
 
     // Enqueue styles
     wp_enqueue_style('default');
