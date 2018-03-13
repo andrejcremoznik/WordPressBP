@@ -71,7 +71,7 @@ class WordPressBP extends Timber\Site {
    */
   private function menu_parser($menu_id) {
     $nav = new Timber\Menu($menu_id);
-    return array_map([$this, 'menu_item_data'], $nav->items);
+    return $nav->items ? array_map([$this, 'menu_item_data'], $nav->items) : [];
   }
   private function menu_item_data($item) {
     return [
