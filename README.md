@@ -343,9 +343,13 @@ Here are some developer-friendly and maintained plugins that you can use:
 * [Advanced Custom Fields](https://www.advancedcustomfields.com/) - custom fields for posts
 * [Polylang](http://wordpress.org/plugins/polylang/) - multilingual sites
 * [Yoast SEO](http://wordpress.org/plugins/wordpress-seo/) - SEO metadata for posts, sitemap…
-* [WP-PageNavi](http://wordpress.org/plugins/wp-pagenavi/) - numbered pagination for archives
-* [Redirect Editor](http://wordpress.org/plugins/redirect-editor/) - 301 redirect URLs inside WP
 * [Ninja Forms](http://wordpress.org/plugins/ninja-forms/) - free forms plugin
+* [WP-PageNavi](http://wordpress.org/plugins/wp-pagenavi/) - numbered pagination for archives
+
+And some of my own plugins:
+
+* [Lean Lightbox](https://github.com/andrejcremoznik/lean-lightbox) - lightbox for single image links and post galleries
+* [Lean Redirect Editor](https://github.com/andrejcremoznik/lean-redirect-editor) - redirect users from any path on your hostname to any URL.
 
 
 ## Contributors
