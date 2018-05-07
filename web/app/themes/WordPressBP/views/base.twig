@@ -11,15 +11,15 @@
     <a class="header__logo" href="/" title="{{ site.name }}">{{ site.name }}</a>
     <nav class="header__nav nav-primary">
     {% spaceless %}
-      <ul class="nav">
+      <ul class="nav nav_lv1">
       {% for item in menus.primary %}
-        <li class="{{ ['nav-primary__item']|merge(item.classes)|join(' ') }}">
-          <a class="nav-primary__link" href="{{ item.link }}"{% if item.is_external %} target="_blank"{% endif %}>{{ item.title }}</a>
+        <li class="{{ ['nav__item']|merge(item.classes)|join(' ') }}">
+          <a class="nav__link" href="{{ item.link }}" target="{{ item.target }}">{{ item.title }}</a>
           {% if item.children %}
-            <ul class="nav nav-primary__drop">
+            <ul class="nav nav_lv2">
             {% for child in item.children %}
-              <li class="{{ ['nav-primary__drop-item']|merge(child.classes)|join(' ') }}">
-                <a class="nav-primary__drop-link" href="{{ child.link }}"{% if child.is_external %} target="_blank"{% endif %}>{{ child.title }}</a>
+              <li class="{{ ['nav__item']|merge(child.classes)|join(' ') }}">
+                <a class="nav__link" href="{{ child.link }}" target="{{ child.target }}">{{ child.title }}</a>
               </li>
             {% endfor %}
             </ul>
@@ -39,10 +39,8 @@
     {% endblock %}
   </main>
 
-  {% if primary_sidebar is defined and primary_sidebar %}
-    <aside class="aside">
-      {{ primary_sidebar }}
-    </aside>
+  {% if sidebar is defined and sidebar %}
+    <aside class="aside">{{ sidebar }}</aside>
   {% endif %}
 
   {{ wp_footer }}

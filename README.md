@@ -343,8 +343,7 @@ Here are some developer-friendly and maintained plugins that you can use:
 * [Advanced Custom Fields](https://www.advancedcustomfields.com/) - custom fields for posts
 * [Polylang](http://wordpress.org/plugins/polylang/) - multilingual sites
 * [Yoast SEO](http://wordpress.org/plugins/wordpress-seo/) - SEO metadata for posts, sitemap…
-* [Ninja Forms](http://wordpress.org/plugins/ninja-forms/) - free forms plugin
-* [WP-PageNavi](http://wordpress.org/plugins/wp-pagenavi/) - numbered pagination for archives
+* [Ninja Forms](http://wordpress.org/plugins/ninja-forms/) - forms plugin
 
 And some of my own plugins:
 

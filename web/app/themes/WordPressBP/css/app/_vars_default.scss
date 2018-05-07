@@ -1,11 +1,3 @@
-<<<<<<< Updated upstream:web/app/themes/WordPressBP/css/theme_default.scss
-/*! WordPressBP default theme | MIT License | https://keybase.io/andrejcremoznik */
-@import "app/variables";
-@import "app/mixins";
-
-// Import theme core
-@import "app/app";
-=======
 // Public asset uri (use with asset() function)
 $public_assets_uri: '/app/themes/WordPressBP/assets/default/';
 
@@ -30,4 +22,3 @@ $default_bg_color: #fff;
 
 $content_link_color: #346994;
 $content_link_hover_color: lighten($content_link_color, 30%);
->>>>>>> Stashed changes:web/app/themes/WordPressBP/css/app/_vars_default.scss

@@ -2,7 +2,7 @@
 
 /**
  * Babel transpilation is configured with Rollup
- * so you can use the latest and greates ES2015+
+ * so you can use the latest and greatest ES2015+
  */
 
 const runners = {

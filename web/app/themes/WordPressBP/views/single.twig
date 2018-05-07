@@ -2,7 +2,6 @@
 
 {% block content %}
 <article class="post post_{{ post.post_type }}">
-
   <header class="post__header">
     <h1 class="post__title">{{ post.title }}</h1>
     <p class="post__meta">
@@ -10,33 +9,6 @@
       <span class="post__author">{{ i18n.author }}: <a href="{{ post.author.path }}">{{ post.author.name }}</a></span>
     </p>
   </header>
-
-  <section class="post__content">
-    {{ post.content }}
-  </section>
-
-  {% if post.comments or post.comment_status == 'open' %}
-    <section class="comments">
-      {% if comment_form is defined %}{{ comment_form }}{% endif %}
-      <h3 class="comments__title">{{ i18n.comments }}</h3>
-      <div class="comments__list">
-        {% if not post.comment_count %}
-          <p class="comments__empty">{{ i18n.no_comments }}</p>
-        {% endif %}
-        {% for comment in post.comments %}
-          <div id="comment-{{ comment.id }}" class="comment comment_{{ comment.comment_type }}">
-            <p class="comment__author"><b>{{ comment.author.name }}</b> <span class="comment__time">({{ comment.date|date }})</span></p>
-            <div class="comment__content">
-              {{ comment.comment_content|wpautop }}
-              {% if not comment.approved %}
-                <p class="comment__moderation-msg">{{ i18n.comment_in_moderation }}</p>
-              {% endif %}
-            </div>
-          </div>
-        {% endfor %}
-      </div>
-    </section>
-  {% endif %}
-
+  <section class="post__content">{{ post.content }}</section>
 </article>
 {% endblock %}

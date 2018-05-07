@@ -3,8 +3,6 @@
 {% block content %}
 <article class="post post_{{ post.post_type }}">
   <h1 class="post__title">{{ post.title }}</h1>
-  <section class="post__content">
-    {{ post.content }}
-  </section>
+  <section class="post__content">{{ post.content }}</section>
 </article>
 {% endblock %}
