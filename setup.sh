@@ -83,7 +83,6 @@ composer require composer/installers vlucas/phpdotenv johnpbloch/wordpress timbe
 
 # Install NPM dependencies
 echo -e "\n==> Installing NPM dependencies…"
-npm install --save normalize.css
 npm install --save-dev node-sass postcss postcss-csso autoprefixer node-ssh npm-run-all shelljs shx watch babel-preset-env babel-plugin-external-helpers rollup rollup-plugin-babel rollup-plugin-babel-minify rollup-plugin-commonjs rollup-plugin-node-resolve
 
 echo -e "\n==> Done.\n"
