@@ -1,10 +1,22 @@
+<<<<<<< Updated upstream
 // External dependencies
 @import "normalize.css/normalize";
 
 // Modules
 @import "modules/general";
 @import "modules/typography";
+=======
+// Custom mixins
+@import "general/mixins";
+
+// General styles
+@import "general/base";
+@import "general/typography";
+
+// Modules
+// @import "modules/my_module";
+>>>>>>> Stashed changes
 
 
 // Quick hacks
-@import "shame";
+@import "general/shame";

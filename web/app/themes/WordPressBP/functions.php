@@ -139,7 +139,7 @@ class WordPressBP extends Timber\Site {
      * To enable custom styles for the visual editor add editor_theme_default.css
      * to the template assets subdirectory and uncomment the line below
      */
-    //add_editor_style('assets/editor_theme_default.css');
+    //add_editor_style('assets/editor_default.css');
 
     /**
      * Register navigation menus
@@ -204,7 +204,7 @@ class WordPressBP extends Timber\Site {
     wp_deregister_script('wp-embed');
 
     // Register styles
-    wp_register_style('default', get_template_directory_uri() . '/assets/theme_default.css', [], $this->asset_version, 'all');
+    wp_register_style('default', get_template_directory_uri() . '/assets/default.css', [], $this->asset_version, 'all');
 
     // Register scripts
     wp_register_script('app', get_template_directory_uri() . '/assets/app.js', [], $this->asset_version, true);

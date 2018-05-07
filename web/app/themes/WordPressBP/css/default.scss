@@ -1,6 +1,7 @@
 /*! WordPressBP default theme | MIT License | https://keybase.io/andrejcremoznik */
-@import "app/variables";
-@import "app/mixins";
+
+// Import variables
+@import "app/vars_default";
 
 // Import theme core
 @import "app/app";
