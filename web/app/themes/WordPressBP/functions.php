@@ -11,6 +11,10 @@
 new Timber\Timber();
 Timber::$dirname = ['views'];
 
+if (WP_ENV == 'production') {
+  Timber::$cache = WP_CACHE; // NOTE: requires CACHE_DIR writable by you and PHP
+}
+
 class WordPressBP extends Timber\Site {
 
   private $asset_version = 'vDEV'; // String replaced with a timestamp during deploy
@@ -22,17 +26,19 @@ class WordPressBP extends Timber\Site {
     $this->cache_itr = $this->get_cache_itr();
 
     // Run action hooks
-    add_action('after_setup_theme',  [$this, 'setup']);
-    // add_action('widgets_init',       [$this, 'widgets_init']);
-    add_action('wp_enqueue_scripts', [$this, 'scripts_styles']);
-    add_action('save_post',          [$this, 'flush_theme_cache']);
-    add_action('deleted_post',       [$this, 'flush_theme_cache']);
+    add_action('after_setup_theme',     [$this, 'setup']);
+    // add_action('widgets_init',          [$this, 'widgets_init']);
+    add_action('wp_enqueue_scripts',    [$this, 'scripts_styles']);
+    add_action('save_post',             [$this, 'flush_theme_cache']);
+    add_action('deleted_post',          [$this, 'flush_theme_cache']);
 
     // Run filters
-    add_filter('timber/context',     [$this, 'timber_context']);
-    add_filter('timber/twig',        [$this, 'timber_twig']);
+    add_filter('timber/context',        [$this, 'timber_context']);
+    add_filter('timber/twig',           [$this, 'timber_twig']);
+    add_filter('timber/cache/location', [$this, 'timber_cache']);
+
     // NOTE: Hide ACF admin on production
-    // if (WP_ENV === 'production') {
+    // if (WP_ENV == 'production') {
     //   add_filter('acf/settings/show_admin', '__return_false');
     // }
 
@@ -97,6 +103,13 @@ class WordPressBP extends Timber\Site {
   public function timber_twig($twig) {
     $twig->enableStrictVariables();
     return $twig;
+  }
+
+  /**
+   * Timber cache directory
+   */
+  public function timber_cache() {
+    return CACHE_DIR . '/timber/';
   }
 
   /**
