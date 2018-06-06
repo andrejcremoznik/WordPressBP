@@ -10,10 +10,7 @@
 
 new Timber\Timber();
 Timber::$dirname = ['views'];
-
-if (WP_ENV == 'production') {
-  Timber::$cache = WP_CACHE; // NOTE: requires CACHE_DIR writable by you and PHP
-}
+Timber::$cache = WP_CACHE;
 
 class WordPressBP extends Timber\Site {
 
@@ -33,6 +30,7 @@ class WordPressBP extends Timber\Site {
     add_action('deleted_post',          [$this, 'flush_theme_cache']);
 
     // Run filters
+    add_filter('body_class',            [$this, 'body_class']);
     add_filter('timber/context',        [$this, 'timber_context']);
     add_filter('timber/twig',           [$this, 'timber_twig']);
     add_filter('timber/cache/location', [$this, 'timber_cache']);
@@ -168,6 +166,18 @@ class WordPressBP extends Timber\Site {
     return $sizes;
   }
   */
+
+  /**
+   * Modify classes on <body>
+   */
+  public function body_class($classes) {
+    $url_parts = explode('/', substr($_SERVER['REQUEST_URI'], 1));
+    array_pop($url_parts);
+    if (empty($url_parts)) $url_parts[] = 'frontpage';
+    array_splice($url_parts, 0, 0, ['path']);
+    $classes[] = implode('-', $url_parts);
+    return $classes;
+  }
 
   /**
    * Set up theme's sidebars

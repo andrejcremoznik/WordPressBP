@@ -2,9 +2,9 @@
 
 {% block content %}
   {% if posts %}
-    {% for post in posts %}
-      {% include ['excerpt-'~post.post_type~'.twig', 'excerpt.twig'] %}
-    {% endfor %}
+    <div class="excerpts">
+      {% for post in posts %}{% include 'partial/excerpt.twig' %}{% endfor %}
+    </div>
   {% else %}
     <article class="post post_empty">
       <p>{{ i18n.no_content }}</p>
