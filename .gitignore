@@ -15,6 +15,7 @@ sql-dump-*.sql
 # Application
 web/wp/
 web/app/languages/*
+!web/app/languages/plugins*
 web/app/plugins/*
 !web/app/plugins/WordPressBP*
 web/app/themes/*
