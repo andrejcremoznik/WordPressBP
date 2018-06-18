@@ -1,12 +1,14 @@
 <?php
 
+/*
 // NOTE: If you need to rely on a plugin (like ACF) uncomment this snippet
-// if (!function_exists('get_field') && !is_admin()) {
-//   wp_die(sprintf(
-//     '<b>WordPressBP</b> template requires <a href="https://www.advancedcustomfields.com/">ACF PRO</a> plugin. After installing the plugin enable it in the <a href="%s">Dashboard</a>.',
-//     admin_url('plugins.php')
-//   ));
-// }
+if (!function_exists('get_field') && !is_admin()) {
+  wp_die(sprintf(
+    '<b>WordPressBP</b> template requires <a href="https://www.advancedcustomfields.com/">ACF PRO</a> plugin. After installing the plugin enable it in the <a href="%s">Dashboard</a>.',
+    admin_url('plugins.php')
+  ));
+}
+*/
 
 new Timber\Timber();
 Timber::$dirname = ['views'];
@@ -119,7 +121,7 @@ class WordPressBP extends Timber\Site {
      * To enable custom styles for the visual editor add editor_theme_default.css
      * to the template assets subdirectory and uncomment the line below
      */
-    //add_editor_style('assets/editor_default.css');
+    //add_editor_style('assets/editor-default.css');
 
     /**
      * Register navigation menus
