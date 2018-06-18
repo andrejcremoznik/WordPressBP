@@ -5,12 +5,16 @@
 
 # WP-CLI
 db-sync
-sql-dump-*.sql
+*dump*.sql
 
 # Dotenv
 .env
 .env.*
 !.env.example
+
+# Config
+config/scripts/deploy-config.js
+sync.sh
 
 # Application
 web/wp/
@@ -26,7 +30,6 @@ web/app/object-cache.php
 # 3rd party dependencies
 vendor/
 node_modules/
-package-lock.json
 
 # Compiled assets
 web/app/themes/WordPressBP/assets/*.css

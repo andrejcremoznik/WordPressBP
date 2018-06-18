@@ -96,26 +96,37 @@ Lets assume your `project_path` is `/srv/http/mywebsite.dev` and `namespace` is 
 Create `/etc/nginx/sites-enabled/mywebsite.dev.conf` with the following content and restart Nginx:
 
 ```
+# If you have SSL enable this redirect
+#server {
+#  listen [::]:80;
+#  listen 80;
+#  server_name mywebsite.dev www.mywebsite.dev;
+#  return 301 https://mywebsite.dev$request_uri;
+#}
+
 server {
+  # If no SSL:
   listen [::]:80;
   listen 80;
+  # Else if SSL:
+  #listen [::]:443 ssl http2;
+  #listen 443 ssl http2;
 
   server_name mywebsite.dev;
+
+  # If SSL:
+  #include /etc/nginx/conf.d/ssl.conf; # https://gist.github.com/andrejcremoznik/f0036b58398cafaa9b14ff04030646da#file-ssl-conf
+  #ssl_certificate /srv/http/mywebsite.dev.crt;
+  #ssl_certificate_key /srv/http/mywebsite.dev.key;
+
   root /srv/http/mywebsite.dev/web;
+  index index.html index.php;
 
-  access_log off;
-
-  # Rewrite URLs for uploaded files from dev to prod
-  # - If you've synced the DB from a production site, you don't need to
-  #   download the uploads folder for images to work.
-  #location /app/uploads/ {
-  #  rewrite ^ http://production.site/$request_uri permanent;
-  #}
+  client_max_body_size 20m;
 
   location / {
     try_files $uri $uri/ @wordpress;
   }
-
   location @wordpress {
     rewrite ^ /index.php last;
   }
@@ -125,7 +136,9 @@ server {
     fastcgi_index index.php;
     include fastcgi_params;
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    fastcgi_pass unix:/var/run/php/php7.1-fpm.sock;
+    # PHP FPM socket:
+    fastcgi_pass unix:/run/php-fpm/php-fpm.sock; # Arch
+    #fastcgi_pass unix:/var/run/php/php7.2-fpm.sock; # Ubuntu
   }
 }
 ```
@@ -139,10 +152,7 @@ $ /etc/hosts
 127.0.0.1 mywebsite.dev
 ```
 
-For production refer to the following guides. They include expire headers, gzip configuration and various other settings necessary for high performance and security.
-
-* [Complete production configuration](https://gist.github.com/andrejcremoznik/13ceca9d83abb3088353066b240138d5)
-* [Complete production configuration with SSL](https://gist.github.com/andrejcremoznik/f0036b58398cafaa9b14ff04030646da)
+* [Complete Nginx SSL configuration for production](https://gist.github.com/andrejcremoznik/f0036b58398cafaa9b14ff04030646da)
 
 
 ## Development
@@ -179,8 +189,8 @@ Languages are build from `.po` files with `msgfmt`. Build process is coded in `c
 
 #### Including NPM dependencies
 
-* Include dependencies: `npm install momentjs --save`
-* Keep dependecies updated: `npm update --save && npm update --dev --save-dev`
+* Include dependencies: `npm install momentjs`
+* Keep dependecies updated: `npm update`
 
 
 ### Back-end
@@ -240,7 +250,7 @@ Then edit `config/scripts/deploy-pack.js` and make sure these files are copied i
 
 Syncing requires `wp` (WP-CLI) also available in non-interactive shells on the server. [This gist](https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd) explains that as well.
 
-Open `sync.sh` and look for `TODO` comments. Set those up before you use the script.
+Copy `sync.sh.example` to `sync.sh`, open it and look for `TODO` comments. Set those up before you use the script.
 
 
 ### Set up a new development environment
@@ -289,7 +299,7 @@ If your server is correctly configured, the deployment scripts will never requir
 
 ### Deploy configuration
 
-Edit `config/scripts/deploy-config.js`.
+Copy `config/scripts/deploy-config.js.example` to `config/scripts/deploy-config.js` and open it.
 
 * `defaultDeployEnv` - default environment to deploy to. Needs an entry in `deployEnvSSH` and `deployEnvPaths`
 * `deployEnvSSH` - SSH connection parameters for all environments you want to deploy too

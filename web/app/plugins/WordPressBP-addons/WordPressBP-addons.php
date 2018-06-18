@@ -1,12 +1,12 @@
 <?php
 /**
- * Plugin Name:       WordPressBP Addons
- * Description:       Addons for the WordPressBP website
- * Version:           1.0.0
- * Author:            Andrej Cremoznik
- * Author URI:        https://keybase.io/andrejcremoznik
- * Text Domain:       WordPressBP-addons
- * Domain Path:       /languages
+ * Plugin Name: WordPressBP Addons
+ * Description: Addons for the WordPressBP website
+ * Version:     1.0.0
+ * Author:      Andrej Cremoznik
+ * Author URI:  https://keybase.io/andrejcremoznik
+ * Text Domain: WordPressBP-addons
+ * Domain Path: /languages
  */
 
 if (!defined('WPINC')) die();
@@ -15,7 +15,7 @@ class WordPressBP_Addons {
 
   public function run() {
     // Actions
-    add_action('init',                        [$this, 'plugin_textdomain']);
+    add_action('init',                        [$this, 'plugin_textdomain'], 0);
     // add_action('init',                        [$this, 'taxonomies'], 0);
     // add_action('init',                        [$this, 'post_types']);
     // add_action('pre_get_posts',               [$this, 'pre_get_posts']);
