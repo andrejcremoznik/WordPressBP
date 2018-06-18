@@ -110,7 +110,7 @@ sed -i "s/localhost/${dbhost}/g" .env
 
 read -e -p "Database table prefix: " -i "wpdb_" dbprefix
 sed -i "s/wpdb_/${dbprefix}/g" .env
-sed -i "s/wpdb_/${dbprefix}/g" sync.sh
+sed -i "s/wpdb_/${dbprefix}/g" sync.sh.example
 
 # Create the DB or prompt user to create it
 read -e -p "Does user $dbuser have CREATE DATABASE privileges? Create database now? (y/n): " dbperms
