@@ -111,25 +111,22 @@ server {
   # Else if SSL:
   #listen [::]:443 ssl http2;
   #listen 443 ssl http2;
-
-  server_name mywebsite.dev;
-
-  # If SSL:
   #include /etc/nginx/conf.d/ssl.conf; # https://gist.github.com/andrejcremoznik/f0036b58398cafaa9b14ff04030646da#file-ssl-conf
   #ssl_certificate /srv/http/mywebsite.dev.crt;
   #ssl_certificate_key /srv/http/mywebsite.dev.key;
 
+  server_name mywebsite.dev;
   root /srv/http/mywebsite.dev/web;
   index index.html index.php;
-
+  access_log off;
   client_max_body_size 20m;
 
-  location / {
-    try_files $uri $uri/ @wordpress;
-  }
-  location @wordpress {
-    rewrite ^ /index.php last;
-  }
+  # Rewrite URLs for uploaded files to production - no need to sync uploads from production
+  #location /app/uploads/ { try_files $uri @production; }
+  #location @production { rewrite ^ https://production.site/$request_uri permanent; }
+
+  location / { try_files $uri $uri/ @wordpress; }
+  location @wordpress { rewrite ^ /index.php last; }
 
   location ~ \.php$ {
     try_files $uri =404;
