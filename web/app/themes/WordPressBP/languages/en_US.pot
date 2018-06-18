@@ -8,29 +8,13 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 # http://localization-guide.readthedocs.org/en/latest/l10n/pluralforms.html
 
+# base.twig
 msgid "Sorry, no content."
 msgstr ""
 
+# 404.twig
 msgid "Missing page!"
 msgstr ""
 
 msgid "We couldn’t find any content at this address."
-msgstr ""
-
-msgid "Author"
-msgstr ""
-
-msgid "Password"
-msgstr ""
-
-msgid "Submit"
-msgstr ""
-
-msgid "Comments"
-msgstr ""
-
-msgid "Your comment is awaiting moderation."
-msgstr ""
-
-msgid "There are currently no comments."
 msgstr ""

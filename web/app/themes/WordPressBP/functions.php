@@ -84,14 +84,6 @@ class WordPressBP extends Timber\Site {
       'primary' => new Timber\Menu('primary', ['depth' => 2])
     ];
 
-    // Language strings
-    $context['i18n'] = [
-      'no_content' => __('Sorry, no content.', 'WordPressBP'),
-      'missing_title' => __('Missing page!', 'WordPressBP'),
-      'missing_description' => __('We couldn’t find any content at this address.', 'WordPressBP'),
-      'author' => __('Author', 'WordPressBP')
-    ];
-
     return $context;
   }
 

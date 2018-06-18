@@ -6,7 +6,7 @@
     <h1 class="post__title">{{ post.title }}</h1>
     <p class="post__meta">
       <span class="post__date"><time datetime="{{ post.post_date|date('c') }}" pubdate>{{ post.post_date|date }}</time></span>
-      <span class="post__author">{{ i18n.author }}: <a href="{{ post.author.path }}">{{ post.author.name }}</a></span>
+      <span class="post__author"><a href="{{ post.author.path }}">{{ post.author.name }}</a></span>
     </p>
   </header>
   <section class="post__content">{{ post.content }}</section>

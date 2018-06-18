@@ -2,9 +2,9 @@
 
 {% block content %}
 <article class="post post_404">
-  <h1 class="post__title">{{ i18n.missing_title }}</h1>
+  <h1 class="post__title">{{ __('Missing page!', 'WordPressBP') }}</h1>
   <section class="post__content">
-    <p>{{ i18n.missing_description }}</p>
+    <p>{{ __('We couldn’t find any content at this address.', 'WordPressBP') }}</p>
   </section>
 </article>
 {% endblock %}

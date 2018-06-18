@@ -1,15 +1,10 @@
 {% extends "base.twig" %}
 
 {% block content %}
-  {% if posts %}
-    <div class="excerpts">
-      {% for post in posts %}{% include 'partial/excerpt.twig' %}{% endfor %}
-    </div>
-  {% else %}
-    <article class="post post_empty">
-      <p>{{ i18n.no_content }}</p>
-    </article>
-  {% endif %}
-
+{% if posts %}
+  <div class="excerpts">
+    {% for post in posts %}{% include 'partial/excerpt.twig' %}{% endfor %}
+  </div>
   {% include 'partial/pagination.twig' with { pagination: posts.pagination({ show_all: false, mid_size: 3, end_size: 2 }) } %}
+{% endif %}
 {% endblock %}
