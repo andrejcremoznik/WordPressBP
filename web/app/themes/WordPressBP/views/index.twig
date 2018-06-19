@@ -1,24 +1,10 @@
 {% extends "base.twig" %}
 
 {% block content %}
-  {% if posts %}
-    {% for post in posts %}
-      {% include ['excerpt-'~post.post_type~'.twig', 'excerpt.twig'] %}
-    {% endfor %}
-  {% else %}
-    <article class="post post_empty">
-      <p>{{ i18n.no_content }}</p>
-    </article>
-  {% endif %}
-  {% if pagination.pages is defined and pagination.pages %}
-    <div class="pagination">
-    {% for page in pagination.pages %}
-      {% if page.link is defined and page.link %}
-        <a href="{{ page.link }}" class="pagination__item pagination__item_active">{{ page.title }}</a>
-      {% else %}
-        <span class="pagination__item pagination__item_inactive{% if page.current is defined and page.current %} pagination__item_current{% endif %}">{{ page.title }}</span>
-      {% endif %}
-    {% endfor %}
-    </div>
-  {% endif %}
+{% if posts %}
+  <div class="excerpts">
+    {% for post in posts %}{% include 'partial/excerpt.twig' %}{% endfor %}
+  </div>
+  {% include 'partial/pagination.twig' with { pagination: posts.pagination({ show_all: false, mid_size: 3, end_size: 2 }) } %}
+{% endif %}
 {% endblock %}

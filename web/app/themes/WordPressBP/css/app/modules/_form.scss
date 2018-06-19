@@ -1,0 +1,142 @@
+$form_field_radius: 4px !default;
+$form_field_border_width: 1px !default;
+$form_field_border_color: #999 !default;
+$form_field_padding: 8px !default;
+$form_field_font_size: 16px !default;
+$form_field_line_height: 1.5 !default;
+$form_field_focus_color: #2b62b4 !default;
+$form_field__error: #b00 !default;
+
+.form__item { margin-bottom: 1.5em; }
+
+.form__label {
+  display: block;
+  margin: 0 0 5px;
+  .form__item_required > &::after {
+    content: "*";
+    color: #b00;
+  }
+}
+
+.form__feedback {
+  margin: 5px 0 0;
+  font-size: $form_field_font_size - 2;
+  .form__item_error > & { color: $form_field__error; }
+}
+
+.form__toggle { // NOTE: Label wrapping a radio/checkbox
+  display: block;
+  > input { padding: 0; }
+}
+
+.form__input {
+  // Resets
+  box-sizing: border-box;
+  margin: 0;
+  &:focus {
+    outline: 0;
+    // box-shadow: none; // NOTE: Uncomment this if you won't use box-shadow for focus
+  }
+
+  // Defaults
+  transition: all ease .15s;
+  padding: $form_field_padding - $form_field_border_width;
+  border-width: $form_field_border_width;
+  border-style: solid;
+  border-color: $form_field_border_color;
+  border-radius: $form_field_radius;
+  color: #333;
+  background-color: #fff;
+  font-family: sans-serif;
+  font-weight: normal;
+  &:focus { box-shadow: 0 0 5px rgba($form_field_focus_color, .75) inset; }
+  .form__item_error & { box-shadow: 0 0 5px rgba($form_field__error, .75) inset; }
+}
+
+.form__input,
+.form__toggle { font-size: rem($form_field_font_size); }
+
+.form__input,
+.form__btn,
+.form__toggle,
+.form__insert { line-height: $form_field_line_height; }
+
+.form__text,
+.form__search,
+.form__number,
+.form__select,
+.form__btn,
+.form__insert { height: $form_field_font_size * $form_field_line_height + ($form_field_padding - $form_field_border_width) * 2 + $form_field_border_width * 2; }
+
+.form__btn {
+  padding-top: $form_field_padding;
+  padding-bottom: $form_field_padding;
+}
+
+.form__text,
+.form__search,
+.form__number,
+.form__select,
+.form__textarea {
+  display: block;
+  width: 100%;
+}
+
+.form__textarea {
+  min-height: 120px;
+  resize: vertical;
+  overflow: auto;
+}
+
+.form__search {
+  -webkit-appearance: textfield;
+  outline-offset: -2px;
+  &::-webkit-search-decoration { -webkit-appearance: none; }
+}
+
+.form__number {
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button { height: auto; }
+}
+
+.form__select {
+  text-transform: none;
+  -webkit-appearance: none;
+}
+
+.form__file {
+  &::-webkit-file-upload-button {
+    -webkit-appearance: button;
+  }
+}
+
+.form__field_group {
+  display: flex;
+  flex-wrap: nowrap;
+  > .form__input {
+    flex: 1;
+    border-radius: 0;
+  }
+  > .form__btn {
+    padding-top: $form_field_padding - $form_field_border_width;
+    padding-bottom: $form_field_padding - $form_field_border_width;
+  }
+}
+.form__insert {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: $form_field_padding - $form_field_border_width;
+  border-style: solid;
+  border-color: $form_field_border_color;
+  white-space: nowrap;
+  &:first-child { border-width: $form_field_border_width 0 $form_field_border_width $form_field_border_width; }
+  &:last-child { border-width: $form_field_border_width $form_field_border_width $form_field_border_width 0; }
+  &:not(.btn) { background-color: #eee; }
+  &.form__btn { border-radius: $form_field_radius; } // Only match border-radius when the button is inside a field group
+}
+.form__insert,
+.form__field_group > .form__input {
+  &:first-child { border-radius: $form_field_radius 0 0 $form_field_radius; }
+  &:last-child { border-radius: 0 $form_field_radius $form_field_radius 0; }
+}

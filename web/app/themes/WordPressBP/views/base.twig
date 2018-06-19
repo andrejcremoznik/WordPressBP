@@ -4,51 +4,25 @@
   <meta charset="{{ site.charset }}">
   <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
   {{ wp_head }}
-  {% block head %}{% endblock %}
 </head>
 <body class="{{ body_class }}">
 
   <header class="header">
     <a class="header__logo" href="/" title="{{ site.name }}">{{ site.name }}</a>
-    <nav class="header__nav nav-primary">
-    {% spaceless %}
-      <ul class="nav">
-      {% for item in primary_navigation.get_items %}
-        <li class="nav-primary__item {{ item.classes|join(' ') }}">
-          <a class="nav-primary__link" href="{{ item.get_link }}">{{ item.title }}</a>
-          {% if item.get_children %}
-            <ul class="nav nav-primary__drop">
-            {% for child in item.get_children %}
-              <li class="nav-primary__drop-item {{ child.classes|join(' ') }}">
-                <a class="nav-primary__drop-link" href="{{ child.get_link }}">{{ child.title }}</a>
-              </li>
-            {% endfor %}
-            </ul>
-          {% endif %}
-        </li>
-      {% endfor %}
-      </ul>
-    {% endspaceless %}
-    </nav>
+    {% include 'partial/nav-primary.twig' with { items: menus.primary.items } %}
   </header>
 
   <main class="main">
     {% block content %}
       <article class="post post_empty">
-        <p>{{ i18n.no_content }}</p>
+        <p>{{ __('Sorry, no content.', 'WordPressBP') }}</p>
       </article>
     {% endblock %}
   </main>
 
-  {% if primary_sidebar is defined and primary_sidebar %}
-    <aside class="aside">
-      {{ primary_sidebar }}
-    </aside>
+  {% if sidebar is defined and sidebar %}
+    <aside class="aside">{{ sidebar }}</aside>
   {% endif %}
-
-  <footer class="footer">
-    {% block footer %}{% endblock %}
-  </footer>
 
   {{ wp_footer }}
 </body>

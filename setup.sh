@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [ $# -lt 2 ]; then
   echo -e "\nUsage:"
@@ -83,7 +83,6 @@ composer require composer/installers vlucas/phpdotenv johnpbloch/wordpress timbe
 
 # Install NPM dependencies
 echo -e "\n==> Installing NPM dependencies…"
-npm install --save normalize.css
 npm install --save-dev node-sass postcss postcss-csso autoprefixer node-ssh npm-run-all shelljs shx watch babel-preset-env babel-plugin-external-helpers rollup rollup-plugin-babel rollup-plugin-babel-minify rollup-plugin-commonjs rollup-plugin-node-resolve
 
 echo -e "\n==> Done.\n"
@@ -111,7 +110,7 @@ sed -i "s/localhost/${dbhost}/g" .env
 
 read -e -p "Database table prefix: " -i "wpdb_" dbprefix
 sed -i "s/wpdb_/${dbprefix}/g" .env
-sed -i "s/wpdb_/${dbprefix}/g" sync.sh
+sed -i "s/wpdb_/${dbprefix}/g" sync.sh.example
 
 # Create the DB or prompt user to create it
 read -e -p "Does user $dbuser have CREATE DATABASE privileges? Create database now? (y/n): " dbperms

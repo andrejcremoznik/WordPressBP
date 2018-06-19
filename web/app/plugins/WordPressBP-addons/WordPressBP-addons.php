@@ -1,12 +1,12 @@
 <?php
 /**
- * Plugin Name:       WordPressBP Addons
- * Description:       Addons for the WordPressBP website
- * Version:           1.0.0
- * Author:            Andrej Cremoznik
- * Author URI:        https://keybase.io/andrejcremoznik
- * Text Domain:       WordPressBP-addons
- * Domain Path:       /languages
+ * Plugin Name: WordPressBP Addons
+ * Description: Addons for the WordPressBP website
+ * Version:     1.0.0
+ * Author:      Andrej Cremoznik
+ * Author URI:  https://keybase.io/andrejcremoznik
+ * Text Domain: WordPressBP-addons
+ * Domain Path: /languages
  */
 
 if (!defined('WPINC')) die();
@@ -15,7 +15,7 @@ class WordPressBP_Addons {
 
   public function run() {
     // Actions
-    add_action('init',                        [$this, 'plugin_textdomain']);
+    add_action('init',                        [$this, 'plugin_textdomain'], 0);
     // add_action('init',                        [$this, 'taxonomies'], 0);
     // add_action('init',                        [$this, 'post_types']);
     // add_action('pre_get_posts',               [$this, 'pre_get_posts']);
@@ -23,7 +23,6 @@ class WordPressBP_Addons {
 
     // Filters
     add_filter('upload_mimes',                [$this, 'upload_mimes']);
-    add_filter('body_class',                  [$this, 'body_class']);
     add_filter('jpeg_quality',                [$this, 'jpeg_quality'], 1, 0);
     add_filter('comment_form_default_fields', [$this, 'comment_form_default_fields']);
   }
@@ -101,7 +100,7 @@ class WordPressBP_Addons {
       $scripts->remove('jquery');
       $scripts->add('jquery', false, ['jquery-core']);
     }
-	}
+  }
 
   /**
    * Allow upload of additional file types
@@ -109,18 +108,6 @@ class WordPressBP_Addons {
   public function upload_mimes($mimes) {
     $mimes['svg'] = 'image/xml+svg';
     return $mimes;
-  }
-
-  /**
-   * Modify classes on <body>
-   */
-  public function body_class($classes) {
-    $url_parts = explode('/', substr($_SERVER['REQUEST_URI'], 1));
-    array_pop($url_parts);
-    if (empty($url_parts)) $url_parts[] = 'frontpage';
-    array_splice($url_parts, 0, 0, ['path']);
-    $classes[] = implode('-', $url_parts);
-    return $classes;
   }
 
   /**
@@ -146,7 +133,7 @@ class WordPressBP_Addons {
   private static function add_role_super_editor() {
     $super_editor = get_role('editor')->capabilities;
     $super_editor['edit_theme_options'] = true;
-    add_role('super_editor', __('Super Editor'), $super_editor);
+    add_role('super_editor', __('Super Editor', 'WordPressBP-addons'), $super_editor);
   }
   private static function remove_role_super_editor() {
     remove_role('super_editor');
@@ -181,7 +168,7 @@ register_deactivation_hook(__FILE__, ['WordPressBP_Addons', 'deactivate']);
 
 // Run plugin
 function run_WordPressBP_addons() {
-	$plugin = new WordPressBP_Addons();
-	$plugin->run();
+  $plugin = new WordPressBP_Addons();
+  $plugin->run();
 }
 run_WordPressBP_addons();

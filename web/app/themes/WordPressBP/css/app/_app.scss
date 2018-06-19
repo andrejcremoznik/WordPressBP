@@ -1,14 +1,14 @@
-// External dependencies
-@import "normalize.css/normalize";
-
 // Custom mixins
-@import "helpers/mixins";
+@import "general/mixins";
 
-// Helper classes
-@import "helpers/classes";
+// General styles
+@import "general/base";
+@import "general/wordpress";
+@import "general/typography";
 
 // Modules
-@import "modules/typography";
+@import "modules/btn";
+@import "modules/form";
 
 // Quick hacks
-@import "shame";
+@import "general/shame";

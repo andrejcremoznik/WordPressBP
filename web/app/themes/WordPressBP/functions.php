@@ -1,15 +1,18 @@
 <?php
 
+/*
 // NOTE: If you need to rely on a plugin (like ACF) uncomment this snippet
-// if (!function_exists('get_field') && !is_admin()) {
-//   wp_die(sprintf(
-//     '<b>WordPressBP</b> template requires <a href="https://www.advancedcustomfields.com/">ACF PRO</a> plugin. After installing the plugin enable it in the <a href="%s">Dashboard</a>.',
-//     admin_url('plugins.php')
-//   ));
-// }
+if (!function_exists('get_field') && !is_admin()) {
+  wp_die(sprintf(
+    '<b>WordPressBP</b> template requires <a href="https://www.advancedcustomfields.com/">ACF PRO</a> plugin. After installing the plugin enable it in the <a href="%s">Dashboard</a>.',
+    admin_url('plugins.php')
+  ));
+}
+*/
 
-new \Timber\Timber();
+new Timber\Timber();
 Timber::$dirname = ['views'];
+Timber::$cache = WP_CACHE;
 
 class WordPressBP extends Timber\Site {
 
@@ -22,17 +25,20 @@ class WordPressBP extends Timber\Site {
     $this->cache_itr = $this->get_cache_itr();
 
     // Run action hooks
-    add_action('after_setup_theme',  [$this, 'setup']);
-    // add_action('widgets_init',       [$this, 'widgets_init']);
-    add_action('wp_enqueue_scripts', [$this, 'scripts_styles']);
-    add_action('save_post',          [$this, 'flush_theme_cache']);
-    add_action('deleted_post',       [$this, 'flush_theme_cache']);
+    add_action('after_setup_theme',     [$this, 'setup']);
+    // add_action('widgets_init',          [$this, 'widgets_init']);
+    add_action('wp_enqueue_scripts',    [$this, 'scripts_styles']);
+    add_action('save_post',             [$this, 'flush_theme_cache']);
+    add_action('deleted_post',          [$this, 'flush_theme_cache']);
 
     // Run filters
-    add_filter('timber/context',     [$this, 'timber_context']);
-    add_filter('timber/twig',        [$this, 'timber_twig']);
+    add_filter('body_class',            [$this, 'body_class']);
+    add_filter('timber/context',        [$this, 'timber_context']);
+    add_filter('timber/twig',           [$this, 'timber_twig']);
+    add_filter('timber/cache/location', [$this, 'timber_cache']);
+
     // NOTE: Hide ACF admin on production
-    // if (WP_ENV === 'production') {
+    // if (WP_ENV == 'production') {
     //   add_filter('acf/settings/show_admin', '__return_false');
     // }
 
@@ -69,25 +75,17 @@ class WordPressBP extends Timber\Site {
   public function timber_context($context) {
     $context['site'] = [
       'name' => $this->name,
-      'theme_uri' => $this->theme->uri,
-      'wp_uri' => WP_SITEURL,
-      'env' => WP_ENV,
       'charset' => $this->charset,
-      'language' => $this->language
+      'language' => $this->language,
+      'theme_uri' => $this->theme->uri,
+      'env' => WP_ENV
     ];
+
     // Menus
-    $context['primary_navigation'] = new Timber\Menu('primary_navigation');
-    // Language strings
-    $context['i18n'] = [
-      'no_content' => __('Sorry, no content.', 'WordPressBP'),
-      'missing_title' => __('Missing page!', 'WordPressBP'),
-      'missing_description' => __('We couldn’t find any content at this address.', 'WordPressBP'),
-      'author' => __('Author', 'WordPressBP'),
-      'password' => __('Password', 'WordPressBP'),
-      'submit' => __('Submit', 'WordPressBP'),
-      'comments' => __('Comments', 'WordPressBP'),
-      'says' => __('says', 'WordPressBP')
+    $context['menus'] = [
+      'primary' => new Timber\Menu('primary', ['depth' => 2])
     ];
+
     return $context;
   }
 
@@ -97,6 +95,13 @@ class WordPressBP extends Timber\Site {
   public function timber_twig($twig) {
     $twig->enableStrictVariables();
     return $twig;
+  }
+
+  /**
+   * Timber cache directory
+   */
+  public function timber_cache() {
+    return CACHE_DIR . '/timber/';
   }
 
   /**
@@ -116,13 +121,13 @@ class WordPressBP extends Timber\Site {
      * To enable custom styles for the visual editor add editor_theme_default.css
      * to the template assets subdirectory and uncomment the line below
      */
-    //add_editor_style('assets/editor_theme_default.css');
+    //add_editor_style('assets/editor-default.css');
 
     /**
      * Register navigation menus
      */
     register_nav_menus([
-      'primary_navigation' => __('Primary Navigation', 'WordPressBP')
+      'primary' => __('Primary Navigation', 'WordPressBP')
     ]);
 
     /**
@@ -157,12 +162,24 @@ class WordPressBP extends Timber\Site {
   */
 
   /**
+   * Modify classes on <body>
+   */
+  public function body_class($classes) {
+    $url_parts = explode('/', substr($_SERVER['REQUEST_URI'], 1));
+    array_pop($url_parts);
+    if (empty($url_parts)) $url_parts[] = 'frontpage';
+    array_splice($url_parts, 0, 0, ['path']);
+    $classes[] = implode('-', $url_parts);
+    return $classes;
+  }
+
+  /**
    * Set up theme's sidebars
    */
   public function widgets_init() {
     register_sidebar([
-      'name'          => __('Primary Sidebar', 'WordPressBP'),
-      'id'            => 'primary_sidebar',
+      'name'          => __('Sidebar', 'WordPressBP'),
+      'id'            => 'sidebar',
       'before_widget' => '<div id="%1$s" class="widget %2$s">',
       'after_widget'  => '</div>',
       'before_title'  => '<h3 class="widget__title">',
@@ -181,10 +198,10 @@ class WordPressBP extends Timber\Site {
     wp_deregister_script('wp-embed');
 
     // Register styles
-    wp_register_style('default', get_template_directory_uri() . '/assets/theme_default.css', [], $this->asset_version, 'all');
+    wp_register_style('default', get_template_directory_uri() . '/assets/default.css', [], $this->asset_version, 'all');
 
     // Register scripts
-    wp_register_script('app', get_template_directory_uri() . '/assets/app.js', ['jquery-core'], $this->asset_version, true);
+    wp_register_script('app', get_template_directory_uri() . '/assets/app.js', [], $this->asset_version, true);
 
     // Enqueue styles
     wp_enqueue_style('default');

@@ -18,6 +18,7 @@ let initProcedure = [
   ['mkdir -p', path.join(config.deployPath, 'current/web')].join(' '),
   ['mkdir -p', path.join(config.deployPath, 'previous')].join(' '),
   ['mkdir -p', path.join(config.deployPath, 'static/uploads')].join(' '),
+  deployEnv == 'production' ? ['mkdir -p', path.join(config.deployPath, 'static/cache')].join(' ') : false,
   // Create an empty .env config file
   ['touch', path.join(config.deployPath, 'static/.env')].join(' '),
   // Create an index.php inside webroot
@@ -35,6 +36,9 @@ ssh.connect(config.deploySSH)
     console.log(`- Set up the web server with webroot in "${config.deployPath}/current/web".`)
     console.log(`- Configure ${config.deployPath}/static/.env.`)
     console.log(`- Make ${config.deployPath}/static/uploads writable for the PHP process group.`)
+    if (deployEnv == 'production') {
+      console.log(`- Make ${config.deployPath}/static/cache writable for the PHP process group and your SSH user.`)
+    }
     process.exit()
   })
   .catch(err => {

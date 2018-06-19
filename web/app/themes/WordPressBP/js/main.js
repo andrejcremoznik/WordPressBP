@@ -2,10 +2,8 @@
 
 /**
  * Babel transpilation is configured with Rollup
- * so you can use the latest and greates ES2015+
+ * so you can use the latest and greatest ES2015+
  */
-
-import $ from 'jquery'
 
 const runners = {
   default: function () {
@@ -20,9 +18,8 @@ const runners = {
   }
 }
 
-$(() => {
-  Object
-    .keys(runners)
+document.addEventListener('DOMContentLoaded', () => {
+  Object.keys(runners)
     .filter(key => key !== 'default')
     .forEach(key => {
       if (document.body.classList.contains(key)) {

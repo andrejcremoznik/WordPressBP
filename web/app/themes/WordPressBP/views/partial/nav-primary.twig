@@ -1,0 +1,22 @@
+{% if items is not empty %}
+<nav class="nav-primary">
+{% spaceless %}
+  <ul class="nav nav_lv1">
+  {% for item in items %}
+    <li class="{{ ['nav__item']|merge(item.classes)|join(' ') }}">
+      <a class="nav__link" href="{{ item.link }}" target="{{ item.target }}">{{ item.title }}</a>
+      {% if item.children %}
+        <ul class="nav nav_lv2">
+        {% for child in item.children %}
+          <li class="{{ ['nav__item']|merge(child.classes)|join(' ') }}">
+            <a class="nav__link" href="{{ child.link }}" target="{{ child.target }}">{{ child.title }}</a>
+          </li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    </li>
+  {% endfor %}
+  </ul>
+{% endspaceless %}
+</nav>
+{% endif %}
