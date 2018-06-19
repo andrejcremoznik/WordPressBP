@@ -149,7 +149,7 @@ $ /etc/hosts
 127.0.0.1 mywebsite.dev
 ```
 
-* [Complete Nginx SSL configuration for production](https://gist.github.com/andrejcremoznik/f0036b58398cafaa9b14ff04030646da)
+[Complete Nginx SSL configuration for production.](https://gist.github.com/andrejcremoznik/f0036b58398cafaa9b14ff04030646da)
 
 
 ## Development
