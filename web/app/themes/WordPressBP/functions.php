@@ -165,7 +165,7 @@ class WordPressBP extends Timber\Site {
    * Modify classes on <body>
    */
   public function body_class($classes) {
-    $url_parts = explode('/', substr($_SERVER['REQUEST_URI'], 1));
+    $url_parts = array_filter(explode('/', $_SERVER['REQUEST_URI']));
     array_pop($url_parts);
     if (empty($url_parts)) $url_parts[] = 'frontpage';
     array_splice($url_parts, 0, 0, ['path']);

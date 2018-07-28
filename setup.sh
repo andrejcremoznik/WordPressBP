@@ -85,13 +85,20 @@ composer require composer/installers vlucas/phpdotenv johnpbloch/wordpress timbe
 echo -e "\n==> Installing NPM dependencies…"
 npm install --save-dev node-sass postcss postcss-csso autoprefixer node-ssh npm-run-all shelljs shx watch babel-preset-env babel-plugin-external-helpers rollup rollup-plugin-babel rollup-plugin-babel-minify rollup-plugin-commonjs rollup-plugin-node-resolve
 
-echo -e "\n==> Done.\n"
+# Build front end assets
+echo -e "\n==> Building front-end assets…"
+npm run build
+
+echo -e "==> Done.\n"
 
 # Set up the database and install WordPress
 echo -e "==> The following steps require a MySQL user with CREATE DATABASE privileges OR a user with basic use privileges for an existing database."
-read -e -p "Do you wish to continue setting up WordPress? (y/n): " cont
+read -e -p "Do you wish to continue setting up WordPress? (y/n): " -i "y" cont
 if [ "$cont" != "y" ]; then
-  echo -e "Edit $project_path/.env with your database settings and install WordPress using WP-CLI or your browser."
+  echo -e "- Edit $project_path/.env with your database settings and install WordPress using WP-CLI or your browser."
+  echo -e "- Set up the web server to serve $namespace.dev from $project_path/web."
+  echo -e "- Map the server IP to $namespace.dev in your local hosts file."
+  echo -e "- Log in at http://$namespace.dev/wp/wp-login.php\n"
   exit
 fi
 
@@ -113,11 +120,11 @@ sed -i "s/wpdb_/${dbprefix}/g" .env
 sed -i "s/wpdb_/${dbprefix}/g" sync.sh.example
 
 # Create the DB or prompt user to create it
-read -e -p "Does user $dbuser have CREATE DATABASE privileges? Create database now? (y/n): " dbperms
+read -e -p "Does user $dbuser have CREATE DATABASE privileges? Create database now? (y/n): " -i "y" dbperms
 if [ "$dbperms" == "y" ]; then
   wp db create
 else
-  read -p "Please create $dbname database manually and grant $dbuser all basic use privileges. Press [Enter] when done…"
+  read -e -p "Please create $dbname database manually and grant $dbuser all basic use privileges. Press [Enter] when done…"
 fi
 
 # Ensure an empty DB
@@ -149,10 +156,6 @@ wp theme activate ${namespace}
 # Create a dev admin account
 echo -e "==> Creating developer admin account (login: dev / dev)."
 wp user create dev dev@dev.dev --user_pass=dev --role=administrator
-
-# Build front end assets
-echo -e "==> Building front-end assets…"
-npm run build
 
 # Finish
 echo -e "==> All done.\n"

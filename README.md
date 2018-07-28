@@ -125,8 +125,7 @@ server {
   #location /app/uploads/ { try_files $uri @production; }
   #location @production { rewrite ^ https://production.site/$request_uri permanent; }
 
-  location / { try_files $uri $uri/ @wordpress; }
-  location @wordpress { rewrite ^ /index.php last; }
+  location / { try_files $uri $uri/ /index.php?$args; }
 
   location ~ \.php$ {
     try_files $uri =404;

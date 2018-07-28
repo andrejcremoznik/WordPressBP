@@ -13,8 +13,8 @@ msgid "Sorry, no content."
 msgstr ""
 
 # 404.twig
-msgid "Missing page!"
+msgid "Oops! 404"
 msgstr ""
 
-msgid "We couldn’t find any content at this address."
+msgid "The page you’re trying to access doesn’t exist."
 msgstr ""
