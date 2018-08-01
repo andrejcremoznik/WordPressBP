@@ -13,7 +13,7 @@ const config = {
   deployPath: deployConf['deployEnvPaths'][deployEnv]
 }
 
-let initProcedure = [
+const initProcedure = [
   // Create directories
   ['mkdir -p', path.join(config.deployPath, 'current/web')].join(' '),
   ['mkdir -p', path.join(config.deployPath, 'previous')].join(' '),
@@ -25,28 +25,26 @@ let initProcedure = [
   ['echo -e "<?php phpinfo();\n" >', path.join(config.deployPath, 'current/web/index.php')].join(' ')
 ].filter(cmd => cmd).join(' && ')
 
-let ssh = new NodeSSH()
+const ssh = new NodeSSH()
 console.log(`==> Preparing directories for deploy on: ${deployEnv}`)
 ssh.connect(config.deploySSH)
 .then(() => {
   console.log(`==> Connected.`)
-  ssh.execCommand(initProcedure)
-  .then(() => {
-    console.log(`==> Done. You still need to:`)
-    console.log(`- Set up the web server with webroot in "${config.deployPath}/current/web".`)
-    console.log(`- Configure ${config.deployPath}/static/.env.`)
-    console.log(`- Make ${config.deployPath}/static/uploads writable for the PHP process group.`)
-    if (deployEnv == 'production') {
-      console.log(`- Make ${config.deployPath}/static/cache writable for the PHP process group and your SSH user.`)
-    }
-    process.exit()
-  })
-  .catch(err => {
-    console.error(`==> Failed.`)
-    throw err
-  })
+  return ssh.execCommand(initProcedure)
+})
+.then(() => {
+  console.log(`==> Done. You still need to:`)
+  console.log(`- Set up the web server with webroot in "${config.deployPath}/current/web".`)
+  console.log(`- Configure ${config.deployPath}/static/.env.`)
+  console.log(`- Make ${config.deployPath}/static/uploads writable for the PHP process group.`)
+  if (deployEnv == 'production') {
+    console.log(`- Make ${config.deployPath}/static/cache writable for the PHP process group and your SSH user.`)
+  }
+  ssh.dispose()
 })
 .catch(err => {
-  console.error(`==> Connection failed.`)
-  throw err
+  console.error(`==> Failed.`)
+  console.log(err)
+  process.exitCode = 1
+  ssh.dispose()
 })

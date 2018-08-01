@@ -17,7 +17,7 @@ const config = {
 }
 
 // Build bash shell command to exeute on the server
-let deployProcedure = [
+const deployProcedure = [
   // Create new release dir
   ['mkdir -p', config.deployReleasePath].join(' '),
 
@@ -82,30 +82,24 @@ let deployProcedure = [
 ].filter(cmd => cmd).join(' && ')
 
 // Run
-let ssh = new NodeSSH()
+const ssh = new NodeSSH()
 console.log(`==> Deploying to: ${deployEnv}`)
 ssh.connect(config.deploySSH)
 .then(() => {
   console.log(`==> Connected. Uploading…`)
-  ssh.putFile('build/build.tar.gz', config.deployTmp)
-  .then(() => {
-    console.log(`==> Applying new build…`)
-    ssh.execCommand(deployProcedure)
-    .then(() => {
-      console.log(`==> Done.`)
-      process.exit()
-    })
-    .catch(err => {
-      console.error(`==> Couldn’t apply build.`)
-      throw err
-    })
-  })
-  .catch(err => {
-    console.error(`==> Upload failed.`)
-    throw err
-  })
+  return ssh.putFile('build/build.tar.gz', config.deployTmp)
+})
+.then(() => {
+  console.log(`==> Applying new build…`)
+  return ssh.execCommand(deployProcedure)
+})
+.then(() => {
+  console.log(`==> Done.`)
+  ssh.dispose()
 })
 .catch(err => {
-  console.error(`==> Connection failed.`)
-  throw err
+  console.error(`==> Failed.`)
+  console.log(err)
+  process.exitCode = 1
+  ssh.dispose()
 })

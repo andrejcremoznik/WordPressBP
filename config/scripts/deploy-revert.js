@@ -14,7 +14,7 @@ const config = {
 }
 
 // Build bash shell command to exeute on the server
-let revertProcedure = [
+const revertProcedure = [
   // Rename folder for current release to broken
   [
     'mv',
@@ -36,22 +36,20 @@ let revertProcedure = [
 ].filter(cmd => cmd).join(' && ')
 
 // Run
-let ssh = new NodeSSH()
+const ssh = new NodeSSH()
 console.log(`==> Reverting to previous deploy on: ${deployEnv}`)
 ssh.connect(config.deploySSH)
 .then(() => {
   console.log(`==> Connected.`)
-  ssh.execCommand(revertProcedure)
-  .then(() => {
-    console.log(`==> Done.`)
-    process.exit()
-  })
-  .catch(err => {
-    console.error(`==> Failed.`)
-    throw err
-  })
+  return ssh.execCommand(revertProcedure)
+})
+.then(() => {
+  console.log(`==> Done.`)
+  ssh.dispose()
 })
 .catch(err => {
-  console.error(`==> Connection failed.`)
-  throw err
+  console.error(`==> Failed.`)
+  console.log(err)
+  process.exitCode = 1
+  ssh.dispose()
 })
