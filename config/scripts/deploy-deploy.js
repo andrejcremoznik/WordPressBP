@@ -13,7 +13,8 @@ const config = {
   deploySSH: deployConf['deployEnvSSH'][deployEnv],
   deployPath: deployConf['deployEnvPaths'][deployEnv],
   deployReleasePath: path.join(deployConf['deployEnvPaths'][deployEnv], version),
-  deployTmp: '/tmp/build.tar.gz'
+  deployTmp: '/tmp/build.tar.gz',
+  wpCliPath: path.join(deployConf['deployEnvPaths'][deployEnv], 'current/web/wp')
 }
 
 // Build bash shell command to exeute on the server
@@ -73,9 +74,9 @@ const deployProcedure = [
   ].join(' '),
 
   // Clear cache on production
-  deployEnv === 'production' ? ['wp timber clear_cache --path=', path.join(config.deployPath, 'current/web/wp')].join('') : false,
-  deployEnv === 'production' ? ['wp transient delete --all --path=', path.join(config.deployPath, 'current/web/wp')].join('') : false,
-  deployEnv === 'production' ? ['wp cache flush --path=', path.join(config.deployPath, 'current/web/wp')].join('') : false,
+  deployEnv === 'production' ? `wp timber clear_cache --path=${config.wpCliPath}` : false,
+  deployEnv === 'production' ? `wp transient delete --all --path=${config.wpCliPath}` : false,
+  deployEnv === 'production' ? `wp cache flush --path=${config.wpCliPath}` : false,
 
   // Remove uploaded build tarball
   ['rm -f', config.deployTmp].join(' ')

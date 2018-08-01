@@ -10,7 +10,8 @@ if (!(deployEnv in deployConf.deployEnvSSH)) {
 
 const config = {
   deploySSH: deployConf['deployEnvSSH'][deployEnv],
-  deployPath: deployConf['deployEnvPaths'][deployEnv]
+  deployPath: deployConf['deployEnvPaths'][deployEnv],
+  wpCliPath: path.join(deployConf['deployEnvPaths'][deployEnv], 'current/web/wp')
 }
 
 // Build bash shell command to exeute on the server
@@ -28,8 +29,10 @@ const revertProcedure = [
     path.join(config.deployPath, 'current')
   ].join(' '),
 
-  // NOTE: If you use caching plugins this is the place to flush the cache. The example uses WP CLI which needs to be available to the user deploying in a non-interactive shell
-  // deployEnv === 'production' ? ['wp cache flush --path=', path.join(config.deployPath, 'current/web/wp')].join('') : false,
+  // Clear cache on production
+  deployEnv === 'production' ? `wp timber clear_cache --path=${config.wpCliPath}` : false,
+  deployEnv === 'production' ? `wp transient delete --all --path=${config.wpCliPath}` : false,
+  deployEnv === 'production' ? `wp cache flush --path=${config.wpCliPath}` : false,
 
   // Remove broken release dir
   ['rm -fr', path.join(config.deployPath, 'broken')].join(' ')
