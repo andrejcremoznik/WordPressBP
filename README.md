@@ -43,7 +43,7 @@ If you need a stripped down version to manage WordPress installations with 3rd-p
 
 ## System requirements
 
-* LEMP stack (Linux, Nginx, MySQL, PHP 5.6+)
+* LEMP stack (Linux, Nginx, MySQL, PHP 7+)
 * Git
 * NodeJS (`node`) and NPM (`npm`)
 * [Composer](https://getcomposer.org/)
@@ -185,8 +185,8 @@ Languages are build from `.po` files with `msgfmt`. Build process is coded in `c
 
 #### Including NPM dependencies
 
-* Include dependencies: `npm install momentjs`
-* Keep dependecies updated: `npm update`
+* Include dependencies: `npm install <package>`
+* Keep dependencies updated: `npm update`
 
 
 ### Back-end
