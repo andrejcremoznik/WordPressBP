@@ -7,7 +7,7 @@ const resolve  = require('rollup-plugin-node-resolve')
 
 const compress = process.argv[2] === 'minify'
 
-let plugins = [
+const plugins = [
   resolve({ jsnext: true }),
   commonjs({ include: 'node_modules/**' }),
   babel()
@@ -29,15 +29,13 @@ rollup.rollup({
     }
   }
 })
-.then(bundle => {
-  return bundle.write({
-    file: path.join(path.resolve('./web/app/themes/WordPressBP/assets'), 'app.js'),
-    format: 'umd',
-    name: 'WordPressBP',
-    sourcemap: !compress,
-    globals: {
-      jquery: 'jQuery'
-    }
-  })
-})
+.then(bundle => bundle.write({
+  file: path.join(path.resolve('./web/app/themes/WordPressBP/assets'), 'app.js'),
+  format: 'umd',
+  name: 'WordPressBP',
+  sourcemap: !compress,
+  globals: {
+    jquery: 'jQuery'
+  }
+}))
 .catch(console.error)

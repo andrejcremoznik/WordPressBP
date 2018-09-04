@@ -79,11 +79,32 @@ cd $project_path
 
 # Install Composer dependencies
 echo -e "\n==> Installing composer dependencies…"
-composer require composer/installers vlucas/phpdotenv johnpbloch/wordpress timber/timber wpackagist-plugin/disable-emojis
+composer require \
+  composer/installers \
+  vlucas/phpdotenv \
+  johnpbloch/wordpress \
+  timber/timber \
+  wpackagist-plugin/disable-emojis
 
 # Install NPM dependencies
 echo -e "\n==> Installing NPM dependencies…"
-npm install --save-dev node-sass postcss postcss-csso autoprefixer node-ssh npm-run-all shelljs shx watch babel-preset-env babel-plugin-external-helpers rollup rollup-plugin-babel rollup-plugin-babel-minify rollup-plugin-commonjs rollup-plugin-node-resolve
+npm install --save-dev \
+  @babel/preset-env \
+  @babel/plugin-proposal-object-rest-spread \
+  autoprefixer \
+  node-sass \
+  node-ssh \
+  npm-run-all \
+  postcss \
+  postcss-csso \
+  rollup \
+  rollup-plugin-babel \
+  rollup-plugin-babel-minify \
+  rollup-plugin-commonjs \
+  rollup-plugin-node-resolve \
+  shelljs \
+  shx \
+  watch
 
 # Build front end assets
 echo -e "\n==> Building front-end assets…"
