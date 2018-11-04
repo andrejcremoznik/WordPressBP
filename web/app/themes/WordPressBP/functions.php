@@ -32,10 +32,10 @@ class WordPressBP extends Timber\Site {
     add_action('deleted_post',          [$this, 'flush_theme_cache']);
 
     // Run filters
-    add_filter('body_class',            [$this, 'body_class']);
+    // add_filter('body_class',            [$this, 'body_class']);
     add_filter('timber/context',        [$this, 'timber_context']);
     add_filter('timber/twig',           [$this, 'timber_twig']);
-    add_filter('timber/cache/location', [$this, 'timber_cache']);
+    add_filter('timber/cache/location', function () { return CACHE_DIR . '/timber/'; });
 
     // NOTE: Hide ACF admin on production
     // if (WP_ENV == 'production') {
@@ -56,10 +56,14 @@ class WordPressBP extends Timber\Site {
     remove_action('wp_head', 'rest_output_link_wp_head', 10);
     remove_action('wp_head', 'wp_oembed_add_discovery_links', 10);
     remove_action('template_redirect', 'rest_output_link_header', 11, 0);
+    remove_action('try_gutenberg_panel', 'wp_try_gutenberg_panel');
 
     parent::__construct();
   }
 
+  /**
+   * Cache versioning functions
+   */
   private function get_cache_itr() {
     $cache_itr = wp_cache_get('theme_cache_itr');
     if ($cache_itr === false) {
@@ -67,6 +71,9 @@ class WordPressBP extends Timber\Site {
       wp_cache_set('theme_cache_itr', $cache_itr);
     }
     return $cache_itr;
+  }
+  public function flush_theme_cache() {
+    wp_cache_incr('theme_cache_itr');
   }
 
   /**
@@ -95,13 +102,6 @@ class WordPressBP extends Timber\Site {
   public function timber_twig($twig) {
     $twig->enableStrictVariables();
     return $twig;
-  }
-
-  /**
-   * Timber cache directory
-   */
-  public function timber_cache() {
-    return CACHE_DIR . '/timber/';
   }
 
   /**
@@ -147,22 +147,18 @@ class WordPressBP extends Timber\Site {
      * Define custom image sizes with 'add_image_size'.
      *
      * To list any of the defined sizes in WP media manager dropdown
-     * uncomment the 'image_size_names_choose' filter and add them to the
-     * 'image_sizes' function defined below
+     * use the 'image_size_names_choose' filter
      */
-    //add_image_size('size_name', 300, 200, true);
-    //add_filter('image_size_names_choose', [$this, 'image_sizes']);
+    // add_image_size('size_name', 300, 200, true);
 
+    // add_filter('image_size_names_choose', function ($sizes) {
+    //   $sizes['size_name'] = __('Size name', 'WordPressBP');
+    //   return $sizes;
+    // };
   }
-  /*
-  function image_sizes($sizes) {
-    $sizes['size_name'] = __('New size label', 'WordPressBP');
-    return $sizes;
-  }
-  */
 
   /**
-   * Modify classes on <body>
+   * Add a unique class to <body> based on request URI
    */
   public function body_class($classes) {
     $url_parts = array_filter(explode('/', $_SERVER['REQUEST_URI']));
@@ -208,16 +204,6 @@ class WordPressBP extends Timber\Site {
 
     // Enqueue scripts
     wp_enqueue_script('app');
-  }
-
-  /**
-   * Helper to invalidate theme's caches by
-   * increasing the theme cache iterator
-   *
-   * - see below for an example function how to correctly use the cache
-   */
-  public function flush_theme_cache() {
-    wp_cache_incr('theme_cache_itr');
   }
 
 

@@ -1,9 +1,11 @@
 // Typography
-html { font: #{$default_font_size}px/#{$default_line_height} $default_font_family; }
+html { font-size: #{$default_font_size}px ; }
 
 body {
   color: $default_tx_color;
   background: $default_bg_color;
+  font-family: $default_font_family;
+  line-height: $default_line_height;
   -webkit-font-smoothing: antialiased;
 }
 

@@ -1,11 +1,11 @@
 {% if pagination.pages is not empty %}
-  <div class="pagination">
+<div class="pagination">
   {% for page in pagination.pages %}
     {% if page.link is defined and page.link %}
-      <a href="{{ page.link }}" class="pagination__item pagination__item_active">{{ page.title }}</a>
+    <a href="{{ page.link }}" class="pagination__item pagination__item_active">{{ page.title }}</a>
     {% else %}
-      <span class="pagination__item pagination__item_inactive{% if page.current %} pagination__item_current{% endif %}">{{ page.title }}</span>
+    <span class="pagination__item pagination__item_inactive{{ page.current ? ' pagination__item_current' }}">{{ page.title }}</span>
     {% endif %}
   {% endfor %}
-  </div>
+</div>
 {% endif %}

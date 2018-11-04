@@ -17,25 +17,15 @@ const config = {
 // Build bash shell command to exeute on the server
 const revertProcedure = [
   // Rename folder for current release to broken
-  [
-    'mv',
-    path.join(config.deployPath, 'current'),
-    path.join(config.deployPath, 'broken')
-  ].join(' '),
+  `mv ${path.join(config.deployPath, 'current')} ${path.join(config.deployPath, 'broken')}`,
   // Rename folder for previous (working) release to current
-  [
-    'mv',
-    path.join(config.deployPath, 'previous'),
-    path.join(config.deployPath, 'current')
-  ].join(' '),
-
+  `mv ${path.join(config.deployPath, 'previous')} ${path.join(config.deployPath, 'current')}`,
   // Clear cache on production
   deployEnv === 'production' ? `wp timber clear_cache --path=${config.wpCliPath}` : false,
   deployEnv === 'production' ? `wp transient delete --all --path=${config.wpCliPath}` : false,
   deployEnv === 'production' ? `wp cache flush --path=${config.wpCliPath}` : false,
-
   // Remove broken release dir
-  ['rm -fr', path.join(config.deployPath, 'broken')].join(' ')
+  `rm -fr ${path.join(config.deployPath, 'broken')}`
 ].filter(cmd => cmd).join(' && ')
 
 // Run

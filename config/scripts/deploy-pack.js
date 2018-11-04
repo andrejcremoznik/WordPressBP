@@ -19,8 +19,8 @@ sh.exec('git archive --format=tar --prefix=build/ HEAD | (tar xf -)')
 // sh.cp('-fr', 'web/app/languages/*', 'build/web/app/languages/') // You may use a wildcard for languages
 
 // Copy generated static assets into the build dir
-sh.cp(assets + '/*.js', 'build/' + assets)
-sh.cp(assets + '/*.css', 'build/' + assets)
+sh.cp(`${assets}/*.js`, `build/${assets}/`)
+sh.cp(`${assets}/*.css`, `build/${assets}/`)
 sh.find('./web/app')
   .filter(file => file.match(/\.mo$/) && (file.match('plugins/WordPressBP') || file.match('themes/WordPressBP')))
   .forEach(lang => {

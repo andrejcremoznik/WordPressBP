@@ -11,10 +11,9 @@ const runners = {
   },
   /**
    * Body class based runners
-   * - Add your own using the 'path-*' body class
    */
-  'path-frontpage': function () {
-    console.log('Run on frontpage')
+  'blog': function () {
+    console.log('Run on blog index')
   }
 }
 

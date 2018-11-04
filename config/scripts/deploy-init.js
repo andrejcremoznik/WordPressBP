@@ -15,14 +15,14 @@ const config = {
 
 const initProcedure = [
   // Create directories
-  ['mkdir -p', path.join(config.deployPath, 'current/web')].join(' '),
-  ['mkdir -p', path.join(config.deployPath, 'previous')].join(' '),
-  ['mkdir -p', path.join(config.deployPath, 'static/uploads')].join(' '),
-  deployEnv == 'production' ? ['mkdir -p', path.join(config.deployPath, 'static/cache')].join(' ') : false,
+  `mkdir -p ${path.join(config.deployPath, 'current/web')}`,
+  `mkdir -p ${path.join(config.deployPath, 'previous')}`,
+  `mkdir -p ${path.join(config.deployPath, 'static/uploads')}`,
+  deployEnv === 'production' ? `mkdir -p ${path.join(config.deployPath, 'static/cache')}` : false,
   // Create an empty .env config file
-  ['touch', path.join(config.deployPath, 'static/.env')].join(' '),
+  `touch ${path.join(config.deployPath, 'static/.env')}`,
   // Create an index.php inside webroot
-  ['echo -e "<?php phpinfo();\n" >', path.join(config.deployPath, 'current/web/index.php')].join(' ')
+  `echo -e "<?php phpinfo();\n" > ${path.join(config.deployPath, 'current/web/index.php')}`
 ].filter(cmd => cmd).join(' && ')
 
 const ssh = new NodeSSH()
@@ -37,7 +37,7 @@ ssh.connect(config.deploySSH)
   console.log(`- Set up the web server with webroot in "${config.deployPath}/current/web".`)
   console.log(`- Configure ${config.deployPath}/static/.env.`)
   console.log(`- Make ${config.deployPath}/static/uploads writable for the PHP process group.`)
-  if (deployEnv == 'production') {
+  if (deployEnv === 'production') {
     console.log(`- Make ${config.deployPath}/static/cache writable for the PHP process group and your SSH user.`)
   }
   ssh.dispose()

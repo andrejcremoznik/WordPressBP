@@ -19,8 +19,8 @@ fs.readdir(inDir, (err, files) => {
   if (err) throw err
   files.filter(file => file.substr(-4) === 'scss').forEach(scss => {
     const fileObj = path.parse(path.join(inDir, scss))
-    const css = path.join(outDir, [fileObj.name, '.css'].join(''))
-    const map = [css, '.map'].join('')
+    const css = path.join(outDir, `${fileObj.name}.css`)
+    const map = `${css}.map`
 
     sass.render({
       file: path.join(fileObj.dir, fileObj.base),

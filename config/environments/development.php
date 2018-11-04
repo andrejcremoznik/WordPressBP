@@ -3,7 +3,6 @@
 define('SAVEQUERIES', true);
 define('WP_DEBUG', true);
 define('SCRIPT_DEBUG', true);
-define('DISALLOW_FILE_MODS', true);
 define('WP_CACHE', false);
 
 function dump($var) {

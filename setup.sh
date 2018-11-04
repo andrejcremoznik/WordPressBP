@@ -68,7 +68,7 @@ echo -e "# ${namespace}\n" > ${project_path}/README.md
 cp ${project_path}/.env.example ${project_path}/.env
 
 # Add git export ignore rules for files that shouldn't be in build
-echo -e "\nsync.sh export-ignore\nconfig/scripts/ export-ignore\nweb/app/uploads/ export-ignore\nweb/app/themes/**/css/ export-ignore\nweb/app/themes/**/js/ export-ignore\n" >> ${project_path}/.gitattributes
+echo -e "\nsync.sh.example export-ignore\nconfig/scripts/ export-ignore\nweb/app/uploads/ export-ignore\nweb/app/themes/**/css/ export-ignore\nweb/app/themes/**/js/ export-ignore\n" >> ${project_path}/.gitattributes
 
 # Replace WordPressBP in file contents with $namespace
 echo -e "==> Namespacing file contents…"

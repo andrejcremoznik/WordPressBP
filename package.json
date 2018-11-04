@@ -18,13 +18,12 @@
     "deploy:revert": "node config/scripts/deploy-revert.js",
     "deploy:init": "node config/scripts/deploy-init.js"
   },
-  "browserslist": "last 2 Chrome versions,last 2 Firefox versions,last 1 Edge version,last 2 Safari versions,last 1 Android version,last 2 iOS versions",
+  "browserslist": "last 1 version,not dead,> 1%",
   "babel": {
     "presets": [
       [
         "env",
         {
-          "targets": "last 2 Chrome versions,last 2 Firefox versions,last 1 Edge version,last 2 Safari versions,last 1 Android version,last 2 iOS versions",
           "modules": false
         }
       ]
