@@ -22,9 +22,6 @@ abbr[title] {
   text-decoration: underline dotted;
 }
 
-b,
-strong { font-weight: bolder; }
-
 small { font-size: 80%; }
 
 sub,
@@ -87,9 +84,48 @@ button::-moz-focus-inner,
   visibility: hidden;
 }
 
+.visuallyhidden {
+  position: absolute;
+  width: 0; height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 // Set defaults for SVG images
 .svg {
   display: inline-block;
   vertical-align: middle;
   pointer-events: none;
 }
+
+// Vertical flow
+.margin-bottom_0 { margin-bottom: 0; }
+.margin-bottom_s { margin-bottom: $gutter / 3; }
+.margin-bottom_m { margin-bottom: $gutter / 2; }
+.margin-bottom_l { margin-bottom: $gutter; }
+.margin-top_0 { margin-top: 0; }
+.margin-top_s { margin-top: $gutter / 3; }
+.margin-top_m { margin-top: $gutter / 2; }
+.margin-top_l { margin-top: $gutter; }
+@media (min-width: $breakpoint) {
+  .margin-bottom_s { margin-bottom: $gutter / 2; }
+  .margin-bottom_m { margin-bottom: $gutter; }
+  .margin-bottom_l { margin-bottom: $gutter * 2; }
+  .margin-top_s { margin-top: $gutter / 2; }
+  .margin-top_m { margin-top: $gutter; }
+  .margin-top_l { margin-top: $gutter * 2; }
+}
+
+// Responsive placeholder
+.responsive { position: relative; }
+.responsive_16by9 { padding-bottom: pc(9, 16); }
+.responsive__element {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+}
+img.responsive__element { object-fit: cover; }

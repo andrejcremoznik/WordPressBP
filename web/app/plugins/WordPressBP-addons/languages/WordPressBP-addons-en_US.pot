@@ -7,9 +7,3 @@ msgstr ""
 "Language: en_US\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 # http://localization-guide.readthedocs.org/en/latest/l10n/pluralforms.html
-
-#
-# includes/class-WordPressBP-addons-activator.php
-#
-msgid "Super Editor"
-msgstr ""

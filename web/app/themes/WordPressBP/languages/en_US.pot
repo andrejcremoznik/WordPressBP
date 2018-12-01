@@ -8,10 +8,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 # http://localization-guide.readthedocs.org/en/latest/l10n/pluralforms.html
 
-# base.twig
-msgid "Sorry, no content."
-msgstr ""
-
 # 404.twig
 msgid "Oops! 404"
 msgstr ""

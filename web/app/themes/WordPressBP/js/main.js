@@ -5,19 +5,28 @@
  * so you can use the latest and greatest ES2015+
  */
 
+// Run on DOM ready
 const runners = {
-  default: function () {
+  default: () => {
     console.log('Run on every page')
   },
   /**
    * Body class based runners
    */
-  'blog': function () {
+  'blog': () => {
     console.log('Run on blog index')
   }
 }
 
+// Run on window load
+const lazyRunners = {
+  default: () => {
+    console.log('Run after window load event')
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  runners.default()
   Object.keys(runners)
     .filter(key => key !== 'default')
     .forEach(key => {
@@ -25,5 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
         runners[key]()
       }
     })
-  runners.default()
+})
+
+window.addEventListener('load', () => {
+  lazyRunners.default()
 })

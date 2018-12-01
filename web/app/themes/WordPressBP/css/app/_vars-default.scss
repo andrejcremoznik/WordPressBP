@@ -2,11 +2,11 @@
 $public_assets_uri: '/app/themes/WordPressBP/assets/default/';
 
 // Font families
-$default_font_family: system-ui, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+$default_font_family: -apple-system, system-ui, Roboto, "Segoe UI", Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
 
-// Font sizes
-$default_font_size: 16;    // absolute value, no unit
-$default_line_height: 1.5; // relative value, no unit
+// Font sizes (pixel unit implied)
+$default_font_size: 16;
+$default_line_height: 1.5; // relative to font-size
 
 $font_s: 12;
 $font_m: $default_font_size;
@@ -19,9 +19,6 @@ $font_h3: 20;
 // Basic colors
 $default_tx_color: #333;
 $default_bg_color: #fff;
-
-$content_link_color: #346994;
-$content_link_hover_color: lighten($content_link_color, 30%);
 
 // Layout
 $gutter: 30px;

@@ -12,7 +12,7 @@ if (!function_exists('get_field') && !is_admin()) {
 
 new Timber\Timber();
 Timber::$dirname = ['views'];
-Timber::$cache = WP_CACHE;
+Timber::$cache = false; // WP_CACHE
 
 class WordPressBP extends Timber\Site {
 
@@ -88,6 +88,11 @@ class WordPressBP extends Timber\Site {
       'env' => WP_ENV
     ];
 
+    $context['jsglobals'] = [
+      'themeUri' => $this->theme->uri,
+      'themeVersion' => $this->asset_version
+    ];
+
     // Menus
     $context['menus'] = [
       'primary' => new Timber\Menu('primary', ['depth' => 2])
@@ -101,7 +106,17 @@ class WordPressBP extends Timber\Site {
    */
   public function timber_twig($twig) {
     $twig->enableStrictVariables();
+    // Helper functions for referencing versioned assets from templates
+    // $twig->addFunction(new Twig_Function('symbol', [$this, 'symbol_uri']));
+    // $twig->addFunction(new Twig_Function('asset', [$this, 'asset_uri']));
     return $twig;
+  }
+  public function symbol_uri($hash) {
+    return $this->theme->uri . '/assets/symbols.svg?ver=' . $this->asset_version . $hash;
+  }
+  public function asset_uri($filename, $versioned = false) {
+    $uri = $this->theme->uri . '/assets/default/' . $filename;
+    return $versioned ? $uri . '?ver=' . $this->asset_version : $uri;
   }
 
   /**

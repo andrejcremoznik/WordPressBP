@@ -125,17 +125,16 @@ server {
   #location /app/uploads/ { try_files $uri @production; }
   #location @production { rewrite ^ https://production.site/$request_uri permanent; }
 
-  location / { try_files $uri $uri/ /index.php?$args; }
-
   location ~ \.php$ {
     try_files $uri =404;
     fastcgi_index index.php;
     include fastcgi_params;
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    # PHP FPM socket:
     fastcgi_pass unix:/run/php-fpm/php-fpm.sock; # Arch
     #fastcgi_pass unix:/var/run/php/php7.2-fpm.sock; # Ubuntu
   }
+
+  location / { try_files $uri $uri/ /index.php?$args; }
 }
 ```
 
@@ -318,14 +317,15 @@ If your server requires public key authentication, locally the key needs to be m
   flush privileges;
   \q
   ```
-6. Dump local database and import it on the server: `wp db export - | ssh user@host -p 54321 'mysql -u dbuser -psome_password mywebsitedb'` (run this locally, the `-p<password>` is intentionally without space after `-p`).
+6. Dump local database and import it on the server.
 7. Set up the environment in `<directory_from_step_1>/static/.env`.
 8. Make `<directory_from_step_1>/static/uploads` writable for the PHP process group:
   ```
   chown user:www-data uploads # you might need to sudo this
   chmod g+w uploads
   ```
-9. Finally, deploy the code: `npm run deploy` or `npm run deploy [environment]`.
+9. Deploy the code: `npm run deploy` or `npm run deploy [environment]`.
+7. Run a search-replace for the domain on the database and flush rewrite rules: `wp search-replace devdomain.dev realdomain.com && wp rewrite flush`.
 
 
 ### Deploying and reverting

@@ -15,6 +15,7 @@ class WordPressBP_Addons {
 
   public function run() {
     // Actions
+    add_action('init',                        [$this, 'cron_cleanup']);
     add_action('init',                        [$this, 'plugin_textdomain'], 0);
     // add_action('init',                        [$this, 'taxonomies'], 0);
     // add_action('init',                        [$this, 'post_types']);
@@ -125,6 +126,16 @@ class WordPressBP_Addons {
       unset($fields['url']);
     }
     return $fields;
+  }
+
+  /**
+   * Remove useless scheduled cron tasks
+   */
+  public function cron_cleanup() {
+    wp_clear_scheduled_hook('wp_version_check');
+    wp_clear_scheduled_hook('wp_update_plugins');
+    wp_clear_scheduled_hook('wp_update_themes');
+    wp_clear_scheduled_hook('wp_privacy_delete_old_export_files');
   }
 
   /**
