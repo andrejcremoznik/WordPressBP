@@ -25,24 +25,26 @@ const revertProcedure = [
   deployEnv === 'production' ? `wp transient delete --all --path=${config.wpCliPath}` : false,
   deployEnv === 'production' ? `wp cache flush --path=${config.wpCliPath}` : false,
   // Remove broken release dir
-  `rm -fr ${path.join(config.deployPath, 'broken')}`
+  `rm -fr ${path.join(config.deployPath, 'broken')}`,
+  // Add empty previous dir to avoid a warning on next deploy
+  `mkdir ${path.join(config.deployPath, 'previous')}`
 ].filter(cmd => cmd).join(' && ')
 
 // Run
 const ssh = new NodeSSH()
 console.log(`==> Reverting to previous deploy on: ${deployEnv}`)
 ssh.connect(config.deploySSH)
-.then(() => {
-  console.log(`==> Connected.`)
-  return ssh.execCommand(revertProcedure)
-})
-.then(() => {
-  console.log(`==> Done.`)
-  ssh.dispose()
-})
-.catch(err => {
-  console.error(`==> Failed.`)
-  console.log(err)
-  process.exitCode = 1
-  ssh.dispose()
-})
+  .then(() => {
+    console.log(`==> Connected.`)
+    return ssh.execCommand(revertProcedure)
+  })
+  .then(() => {
+    console.log(`==> Done.`)
+    ssh.dispose()
+  })
+  .catch(err => {
+    console.error(`==> Failed.`)
+    console.log(err)
+    process.exitCode = 1
+    ssh.dispose()
+  })

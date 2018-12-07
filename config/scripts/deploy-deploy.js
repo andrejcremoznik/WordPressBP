@@ -59,7 +59,7 @@ const deployProcedure = [
   // Move new release to current
   `mv ${config.deployReleasePath} ${path.join(config.deployPath, 'current')}`,
   // Clear cache on production
-  deployEnv === 'production' ? `wp timber clear_cache --path=${config.wpCliPath}` : false,
+  // deployEnv === 'production' ? `wp timber clear_cache --path=${config.wpCliPath}` : false,
   deployEnv === 'production' ? `wp transient delete --all --path=${config.wpCliPath}` : false,
   deployEnv === 'production' ? `wp cache flush --path=${config.wpCliPath}` : false,
   // Remove uploaded build tarball
@@ -70,21 +70,21 @@ const deployProcedure = [
 const ssh = new NodeSSH()
 console.log(`==> Deploying to: ${deployEnv}`)
 ssh.connect(config.deploySSH)
-.then(() => {
-  console.log(`==> Connected. Uploading…`)
-  return ssh.putFile('build/build.tar.gz', config.deployTmp)
-})
-.then(() => {
-  console.log(`==> Applying new build…`)
-  return ssh.execCommand(deployProcedure)
-})
-.then(() => {
-  console.log(`==> Done.`)
-  ssh.dispose()
-})
-.catch(err => {
-  console.error(`==> Failed.`)
-  console.log(err)
-  process.exitCode = 1
-  ssh.dispose()
-})
+  .then(() => {
+    console.log(`==> Connected. Uploading…`)
+    return ssh.putFile('build/build.tar.gz', config.deployTmp)
+  })
+  .then(() => {
+    console.log(`==> Applying new build…`)
+    return ssh.execCommand(deployProcedure)
+  })
+  .then(() => {
+    console.log(`==> Done.`)
+    ssh.dispose()
+  })
+  .catch(err => {
+    console.error(`==> Failed.`)
+    console.log(err)
+    process.exitCode = 1
+    ssh.dispose()
+  })
