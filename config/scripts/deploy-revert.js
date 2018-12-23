@@ -20,10 +20,10 @@ const revertProcedure = [
   `mv ${path.join(config.deployPath, 'current')} ${path.join(config.deployPath, 'broken')}`,
   // Rename folder for previous (working) release to current
   `mv ${path.join(config.deployPath, 'previous')} ${path.join(config.deployPath, 'current')}`,
-  // Clear cache on production
-  deployEnv === 'production' ? `wp timber clear_cache --path=${config.wpCliPath}` : false,
-  deployEnv === 'production' ? `wp transient delete --all --path=${config.wpCliPath}` : false,
-  deployEnv === 'production' ? `wp cache flush --path=${config.wpCliPath}` : false,
+  // NOTE: Clear cache on production
+  // deployEnv === 'production' ? `wp timber clear_cache --path=${config.wpCliPath}` : false,
+  // deployEnv === 'production' ? `wp transient delete --all --path=${config.wpCliPath}` : false,
+  // deployEnv === 'production' ? `wp cache flush --path=${config.wpCliPath}` : false,
   // Remove broken release dir
   `rm -fr ${path.join(config.deployPath, 'broken')}`,
   // Add empty previous dir to avoid a warning on next deploy

@@ -1,5 +1,5 @@
-// Public asset uri (use with asset() function)
-$public_assets_uri: '/app/themes/WordPressBP/assets/default/';
+// Public asset uri (use with asset() function - see _mixins.scss)
+$public_assets_uri: './default/';
 
 // Font families
 $default_font_family: -apple-system, system-ui, Roboto, "Segoe UI", Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
@@ -23,4 +23,8 @@ $default_bg_color: #fff;
 // Layout
 $gutter: 30px;
 
-$breakpoint: 720px;
+$breakpoint_tablet: 760px;
+$breakpoint_desktop: 1000px;
+
+$z_header: 100;
+$z_modal: 500;

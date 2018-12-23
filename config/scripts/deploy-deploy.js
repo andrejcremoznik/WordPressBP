@@ -39,29 +39,28 @@ const deployProcedure = [
     path.join(config.deployPath, 'static/.env'),
     path.join(config.deployReleasePath, '.env')
   ].join(' '),
-  // NOTE: Set up a symlink to "certs/.well-known" directory
+  // NOTE: Set up a symlink to a common `.well-known` webroot for Certbot
   // [
   //   'ln -s',
   //   '/srv/http/certs/.well-known',
   //   path.join(config.deployReleasePath, 'web/.well-known')
   // ].join(' '),
-
-  // Enable object cache on production
-  deployEnv === 'production' ? [
-    'cp',
-    path.join(config.deployReleasePath, 'web/app/plugins/redis-cache/includes/object-cache.php'),
-    path.join(config.deployReleasePath, 'web/app/object-cache.php')
-  ].join(' ') : false,
+  // NOTE: Enable object cache on production
+  // deployEnv === 'production' ? [
+  //   'cp',
+  //   path.join(config.deployReleasePath, 'web/app/plugins/redis-cache/includes/object-cache.php'),
+  //   path.join(config.deployReleasePath, 'web/app/object-cache.php')
+  // ].join(' ') : false,
   // Remove previous release dir
   `rm -fr ${path.join(config.deployPath, 'previous')}`,
   // Move current release to previous
   `mv ${path.join(config.deployPath, 'current')} ${path.join(config.deployPath, 'previous')}`,
   // Move new release to current
   `mv ${config.deployReleasePath} ${path.join(config.deployPath, 'current')}`,
-  // Clear cache on production
+  // NOTE: Clear cache on production
   // deployEnv === 'production' ? `wp timber clear_cache --path=${config.wpCliPath}` : false,
-  deployEnv === 'production' ? `wp transient delete --all --path=${config.wpCliPath}` : false,
-  deployEnv === 'production' ? `wp cache flush --path=${config.wpCliPath}` : false,
+  // deployEnv === 'production' ? `wp transient delete --all --path=${config.wpCliPath}` : false,
+  // deployEnv === 'production' ? `wp cache flush --path=${config.wpCliPath}` : false,
   // Remove uploaded build tarball
   `rm -f ${config.deployTmp}`
 ].filter(cmd => cmd).join(' && ')

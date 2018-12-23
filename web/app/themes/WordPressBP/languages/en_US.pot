@@ -12,5 +12,5 @@ msgstr ""
 msgid "Oops! 404"
 msgstr ""
 
-msgid "The page you’re trying to access doesn’t exist."
+msgid "The page you requested could not be found."
 msgstr ""

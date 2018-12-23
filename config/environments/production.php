@@ -7,6 +7,7 @@ define('SCRIPT_DEBUG', false);
 /**
  * Disable fake WP cron and set up a real crontjob on server using WP-CLI:
  * -- wp cron event run --due-now --path=/srv/http/mywebsite.tld/current/web/wp > /dev/null 2>&1
+ * -- Instructions: https://gist.github.com/andrejcremoznik/7e78bd412678c08970d436cbd3fdd315
  */
 define('DISABLE_WP_CRON', true);
 

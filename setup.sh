@@ -4,7 +4,7 @@ if [ $# -lt 2 ]; then
   echo -e "\nUsage:"
   echo -e "  $0 <namespace> <project_path> [<branch>]"
   echo -e "\nParams:"
-  echo -e "  <namespace>:    Lowercase alphanumeric name for your project. Must not start with a number. Must be directory / file system / URL friendly."
+  echo -e "  <namespace>:    Lowercase alphanumeric name for your project. Must not start with a number. Must be directory, file system and URL friendly."
   echo -e "  <project_path>: Absolute path to directory where the project will be set up."
   echo -e "  <branch>:       Branch from which to create the project. Defaults to 'master'."
   echo -e "\nExample:"
@@ -83,8 +83,7 @@ composer require \
   composer/installers \
   vlucas/phpdotenv \
   johnpbloch/wordpress \
-  timber/timber \
-  wpackagist-plugin/disable-emojis
+  timber/timber
 
 # Install NPM dependencies
 echo -e "\n==> Installing NPM dependencies…"
@@ -159,16 +158,16 @@ read -e -p "Admin e-mail: " wp_email
 
 # Install WordPress
 echo -e "\n==> Installing WordPress…"
-wp core install --url=http://${namespace}.dev --title="${wp_title}" --admin_user=${wp_user} --admin_password=${wp_pass} --admin_email=${wp_email}
+wp core install --url=${namespace}.dev --title="${wp_title}" --admin_user=${wp_user} --admin_password=${wp_pass} --admin_email=${wp_email} --skip-email
 
 # Remove demo content
 echo -e "==> Removing demo content…"
 wp site empty --yes
 wp widget delete search-2 recent-posts-2 recent-comments-2 archives-2 categories-2 meta-2
 
-# Activate disable-emojis
+# Activate addons plugin
 echo -e "==> Activating plugins…"
-wp plugin activate disable-emojis
+wp plugin activate ${namespace}-addons
 
 # Activate included barebones theme
 echo -e "==> Activating $namespace theme…"

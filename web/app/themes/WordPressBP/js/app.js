@@ -5,8 +5,9 @@
  * so you can use the latest and greatest ES2015+
  */
 
-// Run on DOM ready
-const runners = {
+// Execute code based on a body class
+// - create function expressions named after class names (with `default` as an always execute special case)
+const onDomReady = {
   default: () => {
     console.log('Run on every page')
   },
@@ -18,24 +19,23 @@ const runners = {
   }
 }
 
-// Run on window load
-const lazyRunners = {
+const onWindowLoad = {
   default: () => {
     console.log('Run after window load event')
   }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  runners.default()
-  Object.keys(runners)
+  onDomReady.default()
+  Object.keys(onDomReady)
     .filter(key => key !== 'default')
     .forEach(key => {
       if (document.body.classList.contains(key)) {
-        runners[key]()
+        onDomReady[key]()
       }
     })
 })
 
 window.addEventListener('load', () => {
-  lazyRunners.default()
+  onWindowLoad.default()
 })

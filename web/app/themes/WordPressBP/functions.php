@@ -12,7 +12,7 @@ if (!function_exists('get_field') && !is_admin()) {
 
 new Timber\Timber();
 Timber::$dirname = ['views'];
-Timber::$cache = false; // WP_CACHE
+Timber::$cache = false; // WP_CACHE // Read up on this in config/environments/production.php
 
 class WordPressBP extends Timber\Site {
 
@@ -25,38 +25,22 @@ class WordPressBP extends Timber\Site {
     $this->cache_itr = $this->get_cache_itr();
 
     // Run action hooks
-    add_action('after_setup_theme',     [$this, 'setup']);
-    // add_action('widgets_init',          [$this, 'widgets_init']);
-    add_action('wp_enqueue_scripts',    [$this, 'scripts_styles']);
-    add_action('save_post',             [$this, 'flush_theme_cache']);
-    add_action('deleted_post',          [$this, 'flush_theme_cache']);
+    add_action('after_setup_theme', [$this, 'setup']);
+    // add_action('widgets_init', [$this, 'widgets_init']);
+    add_action('wp_enqueue_scripts', [$this, 'scripts_styles']);
+    add_action('save_post', [$this, 'flush_theme_cache']);
+    add_action('deleted_post', [$this, 'flush_theme_cache']);
 
     // Run filters
-    // add_filter('body_class',            [$this, 'body_class']);
-    add_filter('timber/context',        [$this, 'timber_context']);
-    add_filter('timber/twig',           [$this, 'timber_twig']);
+    // add_filter('body_class', [$this, 'body_class']);
+    add_filter('timber/context', [$this, 'timber_context']);
+    add_filter('timber/twig', [$this, 'timber_twig']);
     add_filter('timber/cache/location', function () { return CACHE_DIR . '/timber/'; });
 
     // NOTE: Hide ACF admin on production
     // if (WP_ENV == 'production') {
     //   add_filter('acf/settings/show_admin', '__return_false');
     // }
-
-    /**
-     * Clean up wp_head()
-     * http://codex.wordpress.org/Plugin_API/Action_Reference/wp_head
-     */
-    remove_action('wp_head', 'rsd_link');
-    remove_action('wp_head', 'wp_generator');
-    // remove_action('wp_head', 'feed_links', 2);
-    remove_action('wp_head', 'feed_links_extra', 3);
-    remove_action('wp_head', 'wlwmanifest_link');
-    remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
-    remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
-    remove_action('wp_head', 'rest_output_link_wp_head', 10);
-    remove_action('wp_head', 'wp_oembed_add_discovery_links', 10);
-    remove_action('template_redirect', 'rest_output_link_header', 11, 0);
-    remove_action('try_gutenberg_panel', 'wp_try_gutenberg_panel');
 
     parent::__construct();
   }
@@ -220,28 +204,6 @@ class WordPressBP extends Timber\Site {
     // Enqueue scripts
     wp_enqueue_script('app');
   }
-
-
-  /**
-   * NOTE: Example how to use caching for expensive operations done by the theme.
-   * - Outside of this class use $theme->cache_itr to get the current iterator.
-   * - Iterator will automatically increase whenever a post is saved or deleted.
-   */
-  /*
-  public function do_something_expensive() {
-    // Create a unique cache key using the cache iterator
-    $cache_key = 'expensive_operation_' . $this->cache_itr;
-    // Get result from cache
-    $expensive_operation = wp_cache_get($cache_key);
-    // If there is no cache, recreate it
-    if ($expensive_operation === false) {
-      $expensive_operation = 'The result of something you do not want to run on every load.';
-      wp_cache_set($cache_key, $expensive_operation);
-    }
-    // Return result
-    return $expensive_operation;
-  }
-  */
 }
 
 $theme = new WordPressBP();

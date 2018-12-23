@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 #
 # This script will:
 # 1. check if WP-CLI is available locally and on server

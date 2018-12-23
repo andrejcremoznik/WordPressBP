@@ -18,7 +18,7 @@ if (compress) {
 }
 
 rollup.rollup({
-  input: path.resolve('./web/app/themes/WordPressBP/js/main.js'),
+  input: path.resolve('./web/app/themes/WordPressBP/js/app.js'),
   external: ['jquery'],
   plugins,
   onwarn ({ loc, message }) {
