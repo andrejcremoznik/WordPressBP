@@ -1,8 +1,8 @@
 // A string replace helper
-@function str-replace($string, $search, $replace: '') {
-  $index: str-index($string, $search);
+@function str_replace($string, $search, $replace: '') {
+  $index: str_index($string, $search);
   @if $index {
-    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+    @return str_slice($string, 1, $index - 1) + $replace + str_replace(str_slice($string, $index + str_length($search)), $search, $replace);
   }
   @return $string;
 }
@@ -10,10 +10,15 @@
 /**
  * Convert PX units to REMs.
  * Ex: font-size: rem(16);
+ * Ex: font-size: rem($font_h2, desktop);
  */
-@function rem($pxval, $rootpxval: $default_font_size) {
-  @return #{$pxval / $rootpxval}rem;
-}
+ @function rem($pxval, $breakpoint: mobile) {
+   @if type_of($pxval) == map {
+     @return #{map_get($pxval, $breakpoint) / map_get($default_font_size, $breakpoint)}rem;
+   } @else {
+     @return #{$pxval / map_get($default_font_size, $breakpoint)}rem;
+   }
+ }
 
 /**
  * Per-cent calculation
@@ -38,6 +43,17 @@
  * Ex: background: svg('<svg width="10" height="10"><circle r="5" cy="5" cx="5" fill="#00f"/></svg>');
  */
 @function svg($svg) {
-  $svg: str-replace($svg, '<svg ', '<svg xmlns="http://www.w3.org/2000/svg" ');
-  @return url('data:image/svg+xml,' + str-replace($svg, '#', '%23'));
+  $svg: str_replace($svg, '<svg ', '<svg xmlns="http://www.w3.org/2000/svg" ');
+  @return url('data:image/svg+xml,' + str_replace($svg, '#', '%23'));
+}
+
+/*
+ * Create media query scoped blocks with named breakpoints
+ * Ex: @include breakpoint(tablet) { ... } - applied when min-width == $breakpoints[tablet]
+ * Ex: @include breakpoint(tablet, below) { ... } - applied when max-width == $breakpoints[tablet] - 1
+ */
+@mixin breakpoint($name, $apply: over) {
+  @media (#{if($apply == over, min-width, max-width)}: #{map_get($breakpoints, $name) - if($apply != over, 1, 0)}px) {
+    @content;
+  }
 }

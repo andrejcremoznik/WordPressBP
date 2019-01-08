@@ -1,5 +1,29 @@
-// Typography
-html { font-size: #{$default_font_size}px ; }
+// Font sizes
+html { font-size: #{map_get($default_font_size, mobile)}px ; }
+.h1, h1 { font-size: rem($font_h1); }
+.h2, h2 { font-size: rem($font_h2); }
+.h3, h3 { font-size: rem($font_h3); }
+.f_s { font-size: rem($font_s); }
+.f_m { font-size: rem($font_m); }
+.f_l { font-size: rem($font_l); }
+@include breakpoint(tablet) {
+  html { font-size: #{map_get($default_font_size, tablet)}px; }
+  .h1, h1 { font-size: rem($font_h1, tablet); }
+  .h2, h2 { font-size: rem($font_h2, tablet); }
+  .h3, h3 { font-size: rem($font_h3, tablet); }
+  .f_s { font-size: rem($font_s, tablet); }
+  .f_m { font-size: rem($font_m, tablet); }
+  .f_l { font-size: rem($font_l, tablet); }
+}
+@include breakpoint(desktop) {
+  html { font-size: #{map_get($default_font_size, desktop)}px; }
+  .h1, h1 { font-size: rem($font_h1, desktop); }
+  .h2, h2 { font-size: rem($font_h2, desktop); }
+  .h3, h3 { font-size: rem($font_h3, desktop); }
+  .f_s { font-size: rem($font_s, desktop); }
+  .f_m { font-size: rem($font_m, desktop); }
+  .f_l { font-size: rem($font_l, desktop); }
+}
 
 body {
   color: $default_tx_color;
@@ -9,11 +33,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-img {
+img, svg {
+  display: inline-block;
   max-width: 100%;
   height: auto;
   vertical-align: middle;
 }
+svg { pointer-events: none; }
 
 p, ul, ol, table, blockquote, figure {
   margin: 0 0 #{$default_line_height}em;
@@ -36,13 +62,6 @@ blockquote {
   font-weight: bold;
   &:first-child { margin-top: 0; }
 }
-.h1, h1 { font-size: rem($font_h1); }
-.h2, h2 { font-size: rem($font_h2); }
-.h3, h3 { font-size: rem($font_h3); }
-
-.f_s { font-size: rem($font_s); }
-.f_m { font-size: rem($font_m); }
-.f_l { font-size: rem($font_l); }
 
 .f_inherit { font: inherit; }
 .f_bold, strong, b { font-weight: bold; }

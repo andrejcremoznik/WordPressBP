@@ -94,13 +94,6 @@ button::-moz-focus-inner,
   white-space: nowrap;
 }
 
-// Set defaults for SVG images
-.svg {
-  display: inline-block;
-  vertical-align: middle;
-  pointer-events: none;
-}
-
 // Vertical flow
 .margin-bottom_0 { margin-bottom: 0; }
 .margin-bottom_s { margin-bottom: $gutter / 3; }
