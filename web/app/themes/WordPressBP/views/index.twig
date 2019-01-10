@@ -1,10 +1,8 @@
 {% extends "base.twig" %}
 
 {% block content %}
-{% if posts %}
-  <div class="excerpts">
-    {% for post in posts %}{% include 'partial/excerpt.twig' %}{% endfor %}
-  </div>
-  {% include 'partial/pagination.twig' with { pagination: posts.pagination({ show_all: false, mid_size: 3, end_size: 2 }) } %}
-{% endif %}
+<div class="excerpts">
+  {% for post in posts %}{% include 'partial/excerpt.twig' %}{% endfor %}
+</div>
+{% include 'partial/pagination.twig' with { pagination: posts.pagination({ show_all: false, mid_size: 2, end_size: 1 }) } %}
 {% endblock %}

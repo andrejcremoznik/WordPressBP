@@ -12,7 +12,7 @@ if (!function_exists('get_field') && !is_admin()) {
 
 new Timber\Timber();
 Timber::$dirname = ['views'];
-Timber::$cache = WP_CACHE;
+Timber::$cache = false; // WP_CACHE // Read up on this in config/environments/production.php
 
 class WordPressBP extends Timber\Site {
 
@@ -25,41 +25,29 @@ class WordPressBP extends Timber\Site {
     $this->cache_itr = $this->get_cache_itr();
 
     // Run action hooks
-    add_action('after_setup_theme',     [$this, 'setup']);
-    // add_action('widgets_init',          [$this, 'widgets_init']);
-    add_action('wp_enqueue_scripts',    [$this, 'scripts_styles']);
-    add_action('save_post',             [$this, 'flush_theme_cache']);
-    add_action('deleted_post',          [$this, 'flush_theme_cache']);
+    add_action('after_setup_theme', [$this, 'setup']);
+    // add_action('widgets_init', [$this, 'widgets_init']);
+    add_action('wp_enqueue_scripts', [$this, 'scripts_styles']);
+    add_action('save_post', [$this, 'flush_theme_cache']);
+    add_action('deleted_post', [$this, 'flush_theme_cache']);
 
     // Run filters
-    add_filter('body_class',            [$this, 'body_class']);
-    add_filter('timber/context',        [$this, 'timber_context']);
-    add_filter('timber/twig',           [$this, 'timber_twig']);
-    add_filter('timber/cache/location', [$this, 'timber_cache']);
+    // add_filter('body_class', [$this, 'body_class']);
+    add_filter('timber/context', [$this, 'timber_context']);
+    add_filter('timber/twig', [$this, 'timber_twig']);
+    add_filter('timber/cache/location', function () { return CACHE_DIR . '/timber/'; });
 
     // NOTE: Hide ACF admin on production
     // if (WP_ENV == 'production') {
     //   add_filter('acf/settings/show_admin', '__return_false');
     // }
 
-    /**
-     * Clean up wp_head()
-     * http://codex.wordpress.org/Plugin_API/Action_Reference/wp_head
-     */
-    remove_action('wp_head', 'rsd_link');
-    remove_action('wp_head', 'wp_generator');
-    // remove_action('wp_head', 'feed_links', 2);
-    remove_action('wp_head', 'feed_links_extra', 3);
-    remove_action('wp_head', 'wlwmanifest_link');
-    remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
-    remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
-    remove_action('wp_head', 'rest_output_link_wp_head', 10);
-    remove_action('wp_head', 'wp_oembed_add_discovery_links', 10);
-    remove_action('template_redirect', 'rest_output_link_header', 11, 0);
-
     parent::__construct();
   }
 
+  /**
+   * Cache versioning functions
+   */
   private function get_cache_itr() {
     $cache_itr = wp_cache_get('theme_cache_itr');
     if ($cache_itr === false) {
@@ -67,6 +55,9 @@ class WordPressBP extends Timber\Site {
       wp_cache_set('theme_cache_itr', $cache_itr);
     }
     return $cache_itr;
+  }
+  public function flush_theme_cache() {
+    wp_cache_incr('theme_cache_itr');
   }
 
   /**
@@ -79,6 +70,11 @@ class WordPressBP extends Timber\Site {
       'language' => $this->language,
       'theme_uri' => $this->theme->uri,
       'env' => WP_ENV
+    ];
+
+    $context['jsglobals'] = [
+      'themeUri' => $this->theme->uri,
+      'themeVersion' => $this->asset_version
     ];
 
     // Menus
@@ -94,14 +90,17 @@ class WordPressBP extends Timber\Site {
    */
   public function timber_twig($twig) {
     $twig->enableStrictVariables();
+    // Helper functions for referencing versioned assets from templates
+    // $twig->addFunction(new Twig_Function('symbol', [$this, 'symbol_uri']));
+    // $twig->addFunction(new Twig_Function('asset', [$this, 'asset_uri']));
     return $twig;
   }
-
-  /**
-   * Timber cache directory
-   */
-  public function timber_cache() {
-    return CACHE_DIR . '/timber/';
+  public function symbol_uri($hash) {
+    return $this->theme->uri . '/assets/symbols.svg?ver=' . $this->asset_version . $hash;
+  }
+  public function asset_uri($filename, $versioned = false) {
+    $uri = $this->theme->uri . '/assets/default/' . $filename;
+    return $versioned ? $uri . '?ver=' . $this->asset_version : $uri;
   }
 
   /**
@@ -147,25 +146,21 @@ class WordPressBP extends Timber\Site {
      * Define custom image sizes with 'add_image_size'.
      *
      * To list any of the defined sizes in WP media manager dropdown
-     * uncomment the 'image_size_names_choose' filter and add them to the
-     * 'image_sizes' function defined below
+     * use the 'image_size_names_choose' filter
      */
-    //add_image_size('size_name', 300, 200, true);
-    //add_filter('image_size_names_choose', [$this, 'image_sizes']);
+    // add_image_size('size_name', 300, 200, true);
 
+    // add_filter('image_size_names_choose', function ($sizes) {
+    //   $sizes['size_name'] = __('Size name', 'WordPressBP');
+    //   return $sizes;
+    // };
   }
-  /*
-  function image_sizes($sizes) {
-    $sizes['size_name'] = __('New size label', 'WordPressBP');
-    return $sizes;
-  }
-  */
 
   /**
-   * Modify classes on <body>
+   * Add a unique class to <body> based on request URI
    */
   public function body_class($classes) {
-    $url_parts = explode('/', substr($_SERVER['REQUEST_URI'], 1));
+    $url_parts = array_filter(explode('/', $_SERVER['REQUEST_URI']));
     array_pop($url_parts);
     if (empty($url_parts)) $url_parts[] = 'frontpage';
     array_splice($url_parts, 0, 0, ['path']);
@@ -209,38 +204,6 @@ class WordPressBP extends Timber\Site {
     // Enqueue scripts
     wp_enqueue_script('app');
   }
-
-  /**
-   * Helper to invalidate theme's caches by
-   * increasing the theme cache iterator
-   *
-   * - see below for an example function how to correctly use the cache
-   */
-  public function flush_theme_cache() {
-    wp_cache_incr('theme_cache_itr');
-  }
-
-
-  /**
-   * NOTE: Example how to use caching for expensive operations done by the theme.
-   * - Outside of this class use $theme->cache_itr to get the current iterator.
-   * - Iterator will automatically increase whenever a post is saved or deleted.
-   */
-  /*
-  public function do_something_expensive() {
-    // Create a unique cache key using the cache iterator
-    $cache_key = 'expensive_operation_' . $this->cache_itr;
-    // Get result from cache
-    $expensive_operation = wp_cache_get($cache_key);
-    // If there is no cache, recreate it
-    if ($expensive_operation === false) {
-      $expensive_operation = 'The result of something you do not want to run on every load.';
-      wp_cache_set($cache_key, $expensive_operation);
-    }
-    // Return result
-    return $expensive_operation;
-  }
-  */
 }
 
 $theme = new WordPressBP();

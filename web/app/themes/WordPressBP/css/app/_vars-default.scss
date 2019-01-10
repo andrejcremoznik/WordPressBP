@@ -1,29 +1,32 @@
-// Public asset uri (use with asset() function)
-$public_assets_uri: '/app/themes/WordPressBP/assets/default/';
+// Public asset uri (use with asset() function - see _mixins.scss)
+$public_assets_uri: './default/';
+
+// Layout
+$breakpoints: (tablet: 760, desktop: 1020);
+
+$gutter: 30px;
+
+$z_header: 100;
+$z_modal: 500;
 
 // Font families
-$default_font_family: Arial, Helvetica, sans-serif;
+$default_font_family: -apple-system, system-ui, Roboto, "Segoe UI", Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+
+// Font sizes (pixel unit implied)
+$default_line_height: 1.5; // relative to font-size
+$default_font_size: 16;
 
 // Font sizes
-$default_font_size: 16;    // absolute value, no unit
-$default_line_height: 1.5; // relative value, no unit
+$default_font_size: (mobile: 14, tablet: 15, desktop: 16);
 
-$font_s: 12;
-$font_m: $default_font_size;
-$font_l: 20;
+$font_h1: (mobile: 24, tablet: 32, desktop: 32);
+$font_h2: (mobile: 20, tablet: 24, desktop: 24);
+$font_h3: (mobile: 18, tablet: 20, desktop: 20);
 
-$font_h1: 32;
-$font_h2: 24;
-$font_h3: 20;
+$font_s: (mobile: 12, tablet: 12, desktop: 14);
+$font_m: (mobile: 14, tablet: 15, desktop: 16);
+$font_l: (mobile: 16, tablet: 18, desktop: 20);
 
 // Basic colors
 $default_tx_color: #333;
 $default_bg_color: #fff;
-
-$content_link_color: #346994;
-$content_link_hover_color: lighten($content_link_color, 30%);
-
-// Layout
-$gutter: 30px;
-
-$breakpoint: 720px;

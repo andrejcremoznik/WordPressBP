@@ -6,24 +6,10 @@
   {{ wp_head }}
 </head>
 <body class="{{ body_class }}">
-
-  <header class="header">
-    <a class="header__logo" href="/" title="{{ site.name }}">{{ site.name }}</a>
-    {% include 'partial/nav-primary.twig' with { items: menus.primary.items } %}
-  </header>
-
-  <main class="main">
-    {% block content %}
-      <article class="post post_empty">
-        <p>{{ __('Sorry, no content.', 'WordPressBP') }}</p>
-      </article>
-    {% endblock %}
-  </main>
-
-  {% if sidebar is defined and sidebar %}
-    <aside class="aside">{{ sidebar }}</aside>
-  {% endif %}
-
+  {% include 'partial/header.twig' %}
+  <main class="main">{% block content %}{% endblock %}</main>
+  {% include 'partial/footer.twig' %}
+  <script>window.WordPressBP=JSON.parse('{{ jsglobals|json_encode }}')</script>
   {{ wp_footer }}
 </body>
 </html>

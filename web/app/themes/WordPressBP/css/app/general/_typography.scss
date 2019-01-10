@@ -1,25 +1,47 @@
-// Typography
-html { font: #{$default_font_size}px/#{$default_line_height} $default_font_family; }
+// Font sizes
+html { font-size: #{map_get($default_font_size, mobile)}px ; }
+.h1, h1 { font-size: rem($font_h1); }
+.h2, h2 { font-size: rem($font_h2); }
+.h3, h3 { font-size: rem($font_h3); }
+.f_s { font-size: rem($font_s); }
+.f_m { font-size: rem($font_m); }
+.f_l { font-size: rem($font_l); }
+@include breakpoint(tablet) {
+  html { font-size: #{map_get($default_font_size, tablet)}px; }
+  .h1, h1 { font-size: rem($font_h1, tablet); }
+  .h2, h2 { font-size: rem($font_h2, tablet); }
+  .h3, h3 { font-size: rem($font_h3, tablet); }
+  .f_s { font-size: rem($font_s, tablet); }
+  .f_m { font-size: rem($font_m, tablet); }
+  .f_l { font-size: rem($font_l, tablet); }
+}
+@include breakpoint(desktop) {
+  html { font-size: #{map_get($default_font_size, desktop)}px; }
+  .h1, h1 { font-size: rem($font_h1, desktop); }
+  .h2, h2 { font-size: rem($font_h2, desktop); }
+  .h3, h3 { font-size: rem($font_h3, desktop); }
+  .f_s { font-size: rem($font_s, desktop); }
+  .f_m { font-size: rem($font_m, desktop); }
+  .f_l { font-size: rem($font_l, desktop); }
+}
 
 body {
   color: $default_tx_color;
   background: $default_bg_color;
+  font-family: $default_font_family;
+  line-height: $default_line_height;
   -webkit-font-smoothing: antialiased;
 }
 
-a {
-  color: $content_link_color;
-  &:focus,
-  &:hover { color: $content_link_hover_color; }
-}
-
-img {
+img, svg {
+  display: inline-block;
   max-width: 100%;
   height: auto;
   vertical-align: middle;
 }
+svg { pointer-events: none; }
 
-p, ul, ol, table, blockquote {
+p, ul, ol, table, blockquote, figure {
   margin: 0 0 #{$default_line_height}em;
   &:last-child { margin-bottom: 0; }
 }
@@ -35,20 +57,14 @@ blockquote {
 .h1, h1,
 .h2, h2,
 .h3, h3 {
-  margin: 1.5em 0;
+  margin: 1.5em 0 .75em;
   line-height: 1.2;
   font-weight: bold;
+  &:first-child { margin-top: 0; }
 }
-.h1, h1 { font-size: rem($font_h1); }
-.h2, h2 { font-size: rem($font_h2); }
-.h3, h3 { font-size: rem($font_h3); }
-
-.f_s { font-size: rem($font_s); }
-.f_m { font-size: rem($font_m); }
-.f_l { font-size: rem($font_l); }
 
 .f_inherit { font: inherit; }
-.f_bold { font-weight: bold; }
+.f_bold, strong, b { font-weight: bold; }
 .f_italic { font-style: italic; }
 .f_normal {
   font-weight: normal;
@@ -58,7 +74,11 @@ blockquote {
 .t_left { text-align: left; }
 .t_right { text-align: right; }
 .t_center { text-align: center; }
-.t_justify { text-align: justify; }
+.t_justify {
+  text-align: justify;
+  word-break: normal;
+  // hyphens: auto;
+}
 .t_wrap { white-space: normal; }
 .t_nowrap { white-space: nowrap; }
 .t_uppercase { text-transform: uppercase; }
@@ -67,19 +87,3 @@ blockquote {
 .t_normal { text-transform: none; }
 
 .c_inherit { color: inherit; }
-
-// Smaller for mobile
-@media (max-width: $breakpoint - 1) {
-  html { font-size: #{$default_font_size - 2}px; }
-  .h1, h1 { font-size: rem($font_h1 - 6, $default_font_size - 2); }
-  .h2, h2 { font-size: rem($font_h2 - 5, $default_font_size - 2); }
-  .h3, h3 { font-size: rem($font_h3 - 4, $default_font_size - 2); }
-  .f_s { font-size: rem($font_s - 2,  $default_font_size - 2); }
-  .f_m { font-size: rem($font_m - 3,  $default_font_size - 2); }
-  .f_l { font-size: rem($font_l - 4,  $default_font_size - 2); }
-
-  blockquote {
-    margin-left: 1em;
-    padding-left: 1em;
-  }
-}

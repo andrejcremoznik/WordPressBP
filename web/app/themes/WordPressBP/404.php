@@ -1,3 +1,5 @@
 <?php
 
-Timber::render('404.twig');
+$context = Timber::get_context();
+
+Timber::render('404.twig', $context);

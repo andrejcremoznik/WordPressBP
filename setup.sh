@@ -4,7 +4,7 @@ if [ $# -lt 2 ]; then
   echo -e "\nUsage:"
   echo -e "  $0 <namespace> <project_path> [<branch>]"
   echo -e "\nParams:"
-  echo -e "  <namespace>:    Lowercase alphanumeric name for your project. Must not start with a number. Must be directory / file system / URL friendly."
+  echo -e "  <namespace>:    Lowercase alphanumeric name for your project. Must not start with a number. Must be directory, file system and URL friendly."
   echo -e "  <project_path>: Absolute path to directory where the project will be set up."
   echo -e "  <branch>:       Branch from which to create the project. Defaults to 'master'."
   echo -e "\nExample:"
@@ -68,7 +68,7 @@ echo -e "# ${namespace}\n" > ${project_path}/README.md
 cp ${project_path}/.env.example ${project_path}/.env
 
 # Add git export ignore rules for files that shouldn't be in build
-echo -e "\nsync.sh export-ignore\nconfig/scripts/ export-ignore\nweb/app/uploads/ export-ignore\nweb/app/themes/**/css/ export-ignore\nweb/app/themes/**/js/ export-ignore\n" >> ${project_path}/.gitattributes
+echo -e "\nsync.sh.example export-ignore\nconfig/scripts/ export-ignore\nweb/app/uploads/ export-ignore\nweb/app/themes/**/css/ export-ignore\nweb/app/themes/**/js/ export-ignore\n" >> ${project_path}/.gitattributes
 
 # Replace WordPressBP in file contents with $namespace
 echo -e "==> Namespacing file contents…"
@@ -79,19 +79,47 @@ cd $project_path
 
 # Install Composer dependencies
 echo -e "\n==> Installing composer dependencies…"
-composer require composer/installers vlucas/phpdotenv johnpbloch/wordpress timber/timber wpackagist-plugin/disable-emojis
+composer require \
+  composer/installers \
+  vlucas/phpdotenv \
+  johnpbloch/wordpress \
+  timber/timber
 
 # Install NPM dependencies
 echo -e "\n==> Installing NPM dependencies…"
-npm install --save-dev node-sass postcss postcss-csso autoprefixer node-ssh npm-run-all shelljs shx watch babel-preset-env babel-plugin-external-helpers rollup rollup-plugin-babel rollup-plugin-babel-minify rollup-plugin-commonjs rollup-plugin-node-resolve
+npm install --save-dev \
+  @babel/preset-env \
+  @babel/plugin-proposal-object-rest-spread \
+  autoprefixer \
+  node-sass \
+  node-ssh \
+  npm-run-all \
+  postcss \
+  postcss-csso \
+  rollup \
+  rollup-plugin-babel \
+  rollup-plugin-babel-minify \
+  rollup-plugin-commonjs \
+  rollup-plugin-node-resolve \
+  shelljs \
+  shx \
+  standard \
+  watch
 
-echo -e "\n==> Done.\n"
+# Build front end assets
+echo -e "\n==> Building front-end assets…"
+npm run build
+
+echo -e "==> Done.\n"
 
 # Set up the database and install WordPress
 echo -e "==> The following steps require a MySQL user with CREATE DATABASE privileges OR a user with basic use privileges for an existing database."
-read -e -p "Do you wish to continue setting up WordPress? (y/n): " cont
+read -e -p "Do you wish to continue setting up WordPress? (y/n): " -i "y" cont
 if [ "$cont" != "y" ]; then
-  echo -e "Edit $project_path/.env with your database settings and install WordPress using WP-CLI or your browser."
+  echo -e "- Edit $project_path/.env with your database settings and install WordPress using WP-CLI or your browser."
+  echo -e "- Set up the web server to serve $namespace.dev from $project_path/web."
+  echo -e "- Map the server IP to $namespace.dev in your local hosts file."
+  echo -e "- Log in at http://$namespace.dev/wp/wp-login.php\n"
   exit
 fi
 
@@ -113,11 +141,11 @@ sed -i "s/wpdb_/${dbprefix}/g" .env
 sed -i "s/wpdb_/${dbprefix}/g" sync.sh.example
 
 # Create the DB or prompt user to create it
-read -e -p "Does user $dbuser have CREATE DATABASE privileges? Create database now? (y/n): " dbperms
+read -e -p "Does user $dbuser have CREATE DATABASE privileges? Create database now? (y/n): " -i "y" dbperms
 if [ "$dbperms" == "y" ]; then
   wp db create
 else
-  read -p "Please create $dbname database manually and grant $dbuser all basic use privileges. Press [Enter] when done…"
+  read -e -p "Please create $dbname database manually and grant $dbuser all basic use privileges. Press [Enter] when done…"
 fi
 
 # Ensure an empty DB
@@ -131,16 +159,16 @@ read -e -p "Admin e-mail: " wp_email
 
 # Install WordPress
 echo -e "\n==> Installing WordPress…"
-wp core install --url=http://${namespace}.dev --title="${wp_title}" --admin_user=${wp_user} --admin_password=${wp_pass} --admin_email=${wp_email}
+wp core install --url=${namespace}.dev --title="${wp_title}" --admin_user=${wp_user} --admin_password=${wp_pass} --admin_email=${wp_email} --skip-email
 
 # Remove demo content
 echo -e "==> Removing demo content…"
 wp site empty --yes
 wp widget delete search-2 recent-posts-2 recent-comments-2 archives-2 categories-2 meta-2
 
-# Activate disable-emojis
+# Activate addons plugin
 echo -e "==> Activating plugins…"
-wp plugin activate disable-emojis
+wp plugin activate ${namespace}-addons
 
 # Activate included barebones theme
 echo -e "==> Activating $namespace theme…"
@@ -149,10 +177,6 @@ wp theme activate ${namespace}
 # Create a dev admin account
 echo -e "==> Creating developer admin account (login: dev / dev)."
 wp user create dev dev@dev.dev --user_pass=dev --role=administrator
-
-# Build front end assets
-echo -e "==> Building front-end assets…"
-npm run build
 
 # Finish
 echo -e "==> All done.\n"

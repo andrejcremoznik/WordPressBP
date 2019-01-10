@@ -3,11 +3,11 @@ const rollup = require('rollup')
 const babel = require('rollup-plugin-babel')
 const minify = require('rollup-plugin-babel-minify')
 const commonjs = require('rollup-plugin-commonjs')
-const resolve  = require('rollup-plugin-node-resolve')
+const resolve = require('rollup-plugin-node-resolve')
 
 const compress = process.argv[2] === 'minify'
 
-let plugins = [
+const plugins = [
   resolve({ jsnext: true }),
   commonjs({ include: 'node_modules/**' }),
   babel()
@@ -18,10 +18,10 @@ if (compress) {
 }
 
 rollup.rollup({
-  input: path.resolve('./web/app/themes/WordPressBP/js/main.js'),
+  input: path.resolve('./web/app/themes/WordPressBP/js/app.js'),
   external: ['jquery'],
   plugins,
-  onwarn({ loc, message }) {
+  onwarn ({ loc, message }) {
     if (loc) {
       console.warn(`${loc.file} (${loc.line}:${loc.column}) ${message}`)
     } else {
@@ -29,8 +29,7 @@ rollup.rollup({
     }
   }
 })
-.then(bundle => {
-  return bundle.write({
+  .then(bundle => bundle.write({
     file: path.join(path.resolve('./web/app/themes/WordPressBP/assets'), 'app.js'),
     format: 'umd',
     name: 'WordPressBP',
@@ -38,6 +37,5 @@ rollup.rollup({
     globals: {
       jquery: 'jQuery'
     }
-  })
-})
-.catch(console.error)
+  }))
+  .catch(console.error)

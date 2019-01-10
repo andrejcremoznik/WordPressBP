@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 #
 # This script will:
 # 1. check if WP-CLI is available locally and on server
@@ -31,7 +30,7 @@ wp db reset --yes
 echo -e "==> Importing database from production…"
 ssh -C $ssh_connection "wp --path=$remote_wordpress db export -" | wp db import -
 
-# TODO: Deactivate plugins you don't want locally
+# TODO: Deactivate plugins you don't need locally
 #echo -e "==> Deactivating production only plugins…"
 #wp plugin deactivate wordpress-seo
 
@@ -50,8 +49,5 @@ wp rewrite flush
 
 echo -e "==> Creating admin account for development (login: dev / dev)"
 wp user create dev dev@dev.dev --user_pass=dev --role=administrator
-
-echo -e "==> Optimizing database…"
-wp db optimize
 
 echo -e "==> Done."

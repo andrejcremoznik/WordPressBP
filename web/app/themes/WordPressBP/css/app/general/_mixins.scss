@@ -1,10 +1,24 @@
+// A string replace helper
+@function str_replace($string, $search, $replace: '') {
+  $index: str_index($string, $search);
+  @if $index {
+    @return str_slice($string, 1, $index - 1) + $replace + str_replace(str_slice($string, $index + str_length($search)), $search, $replace);
+  }
+  @return $string;
+}
+
 /**
  * Convert PX units to REMs.
  * Ex: font-size: rem(16);
+ * Ex: font-size: rem($font_h2, desktop);
  */
-@function rem($pxval, $rootpxval: $default_font_size) {
-  @return #{$pxval / $rootpxval}rem;
-}
+ @function rem($pxval, $breakpoint: mobile) {
+   @if type_of($pxval) == map {
+     @return #{map_get($pxval, $breakpoint) / map_get($default_font_size, $breakpoint)}rem;
+   } @else {
+     @return #{$pxval / map_get($default_font_size, $breakpoint)}rem;
+   }
+ }
 
 /**
  * Per-cent calculation
@@ -16,9 +30,38 @@
 
 /**
  * Asset public url helper
- * Ex: asset('image.jpg')
- * or: asset('shared_image.jpg', '/app/themes/WordPressBP/assets/')
+ * Ex: background: asset('image.jpg')
+ * or: background: asset('shared_image.jpg', '/app/themes/WordPressBP/assets/')
  */
 @function asset($file, $path: $public_assets_uri) {
   @return url("#{$path + $file}");
 }
+
+/**
+ * Inline SVG as data URI
+ * - skip the xmlns attribute on the svg root node
+ * Ex: background: svg('<svg width="10" height="10"><circle r="5" cy="5" cx="5" fill="#00f"/></svg>');
+ */
+@function svg($svg) {
+  $svg: str_replace($svg, '<svg ', '<svg xmlns="http://www.w3.org/2000/svg" ');
+  @return url('data:image/svg+xml,' + str_replace($svg, '#', '%23'));
+}
+
+/*
+ * Create media query scoped blocks with named breakpoints
+ * Ex: @include breakpoint(tablet) { ... } - apply when min-width == $breakpoints[tablet]
+ * Ex: @include breakpoint(tablet, below) { ... } - apply when max-width == $breakpoints[tablet] - 1
+ * Ex: @include breakpoint(720) - apply when min-width == 720
+ * Ex: @include breakpoint(720, below) - apply when max-width == 719
+ */
+ @mixin breakpoint($value, $apply: over) {
+   @if type_of($value) == number {
+     @media (#{if($apply == over, min-width, max-width)}: #{$value - if($apply != over, 1, 0)}px) {
+       @content;
+     }
+   } @else {
+     @media (#{if($apply == over, min-width, max-width)}: #{map_get($breakpoints, $value) - if($apply != over, 1, 0)}px) {
+       @content;
+     }
+   }
+ }

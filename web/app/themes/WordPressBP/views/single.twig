@@ -1,14 +1,14 @@
 {% extends "base.twig" %}
 
 {% block content %}
-<article class="post post_{{ post.post_type }}">
-  <header class="post__header">
-    <h1 class="post__title">{{ post.title }}</h1>
-    <p class="post__meta">
-      <span class="post__date"><time datetime="{{ post.post_date|date('c') }}" pubdate>{{ post.post_date|date }}</time></span>
-      <span class="post__author"><a href="{{ post.author.path }}">{{ post.author.name }}</a></span>
+<article class="article">
+  <header class="article__header">
+    <h1 class="article__title">{{ post.title }}</h1>
+    <p class="article__meta">
+      <time datetime="{{ post.post_date|date('c') }}" pubdate>{{ post.post_date|date }}</time>
+      <a href="{{ post.author.path }}">{{ post.author.name }}</a>
     </p>
   </header>
-  <section class="post__content">{{ post.content }}</section>
+  {{ post.content }}
 </article>
 {% endblock %}

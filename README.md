@@ -24,6 +24,7 @@ If you need a stripped down version to manage WordPress installations with 3rd-p
 * [Development](#development)
   * [Front-end](#front-end)
     * [Including NPM dependencies](#including-npm-dependencies)
+    * [Theming tips and WordPressBP defaults](#theming-tips-and-wordpressbp-defaults)
   * [Back-end](#back-end)
     * [WordPress config](#wordpress-config)
     * [Including free plugins and themes](#including-free-plugins-and-themes)
@@ -43,7 +44,9 @@ If you need a stripped down version to manage WordPress installations with 3rd-p
 
 ## System requirements
 
-* LEMP stack (Linux, Nginx, MySQL, PHP 5.6+)
+WordPressBP has been extensively tested on Linux but will probably work with any Unix environment (macOS, BSD,…). It does *not* work on Windows in which case you should use a Linux VM for development.
+
+* LEMP stack (Linux, Nginx, MySQL, PHP 7+)
 * Git
 * NodeJS (`node`) and NPM (`npm`)
 * [Composer](https://getcomposer.org/)
@@ -66,6 +69,7 @@ Read [this Gist](https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd) o
 
 Continue reading for details.
 
+
 ### Setup script
 
 ```
@@ -74,7 +78,7 @@ Usage:
   ./setup.sh <namespace> <project_path> [<branch>]
 
 Params:
-  <namespace>:    Lowercase alphanumeric name for your project. Must not start with a number. Must be directory / file system / URL friendly.
+  <namespace>:    Lowercase alphanumeric name for your project. Must not start with a number. Must be directory, file system and URL friendly.
   <project_path>: Path to directory where the project structure will be set up.
   <branch>:       Branch from which to create the project structure. Defaults to 'master'.
 
@@ -100,7 +104,7 @@ Create `/etc/nginx/sites-enabled/mywebsite.dev.conf` with the following content 
 #server {
 #  listen [::]:80;
 #  listen 80;
-#  server_name mywebsite.dev www.mywebsite.dev;
+#  server_name mywebsite.dev;
 #  return 301 https://mywebsite.dev$request_uri;
 #}
 
@@ -125,20 +129,20 @@ server {
   #location /app/uploads/ { try_files $uri @production; }
   #location @production { rewrite ^ https://production.site/$request_uri permanent; }
 
-  location / { try_files $uri $uri/ @wordpress; }
-  location @wordpress { rewrite ^ /index.php last; }
-
   location ~ \.php$ {
     try_files $uri =404;
     fastcgi_index index.php;
     include fastcgi_params;
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    # PHP FPM socket:
     fastcgi_pass unix:/run/php-fpm/php-fpm.sock; # Arch
     #fastcgi_pass unix:/var/run/php/php7.2-fpm.sock; # Ubuntu
   }
+
+  location / { try_files $uri $uri/ /index.php$is_args$args; }
 }
 ```
+
+Read up on [how to create self signed certificates](https://gist.github.com/andrejcremoznik/41fe07e342ac4d2376b8547155d6e049) for development. If you do create SSL certs, enable them in the Nginx config (above) and change the URLs in `.env`.
 
 To be able to access `http://mywebsite.dev` you need to map the server IP to `mywebsite.dev` domain in `/etc/hosts`. If you're running the server on your local machine, the IP is `127.0.0.1`, if you are using a virtual environment (and you should), then use the IP of that VM.
 
@@ -186,8 +190,45 @@ Languages are build from `.po` files with `msgfmt`. Build process is coded in `c
 
 #### Including NPM dependencies
 
-* Include dependencies: `npm install momentjs`
-* Keep dependecies updated: `npm update`
+* Include dependencies: `npm install <package>`
+* Keep dependencies updated: `npm update`
+
+
+#### Theming tips and WordPressBP defaults
+
+**Referencing assets from twigs with optional cache busting**
+
+There are two helper functions (disabled by default) you can use to reference assets from `.twig` files:
+
+```
+{{ asset('image.png') }}       # http://mywebsite.dev/app/theme/mywebsite/assets/default/image.png
+{{ asset('image.png', true) }} # http://mywebsite.dev/app/theme/mywebsite/assets/default/image.png?ver=123456
+E.g. <img src="{{ asset('hero.jpg') }}" alt="">
+
+{{ symbol('#icon1') }}         # http://mywebsite.dev/app/theme/mywebsite/assets/symbols.svg?ver=123456#icon1
+E.g. <svg><use xlink:href="{{ symbol('#icon1') }}"></svg>
+```
+
+To enable these, search for `timber_twig` in `functions.php` and uncomment them. The cache busting string will be a timestamp set at deploy time. When developing, the value will default to `vDEV`.
+
+**Disabled `wp_head()` garbage and emojis**
+
+The accompanying plugin cleans up `wp_head` by removing a bunch of old and unneeded content. It also removes WordPress emojis scripts. If you need those for whatever reason, review the `mywebsite-addons.php` in the addons plugin.
+
+**Use object cache wherever possible**
+
+In your theme's controllers, whenever you're running IO/CPU heavy tasks, use cache like so:
+
+```php
+$cache_key = 'mydata' . $theme->cache_itr; // concat with $post->ID if you need a post/page unique key
+$context['mydata'] = wp_cache_get($cache_key);
+if ($context['mydata'] === false) {
+  $context['mydata'] = 'some expensive result';
+  wp_cache_set($cache_key, $context['mydata']);
+}
+```
+
+The `$theme->cache_itr` is a unique cache iteration index which is increased whenever a post is saved or deleted (check `flush_theme_cache` in `functions.php`). Saving settings, widgets or menu configuration is not hooked to the `flush_theme_cache` in which case you'll need to manually flush the cache. I recommend using Redis with the [Redis Object Cache](https://wordpress.org/plugins/redis-cache/) plugin.
 
 
 ### Back-end
@@ -208,7 +249,7 @@ WordPress configuration is set in the following files:
 
 #### Including free plugins and themes
 
-Use **composer** to pull in free plugins and themes from [WordPres Packagist](https://wpackagist.org/). You can also include any packages from [Packagist](https://packagist.org/) and other compatible repositories.
+Use **composer** to pull in free plugins and themes from [WordPres Packagist](https://wpackagist.org/). You can also include any packages from [Packagist](https://packagist.org/).
 
 * Include a plugin: `composer require wpackagist-plugin/wordpress-seo`
 * Keep dependencies updated: `composer update`
@@ -218,9 +259,9 @@ Use **composer** to pull in free plugins and themes from [WordPres Packagist](ht
 
 You want to keep those out of the repository but still deploy them with the rest of the code. `.gitignore` is set up to ignore everything inside `web/app/{themes,plugins}/` unless the name starts with `<namespace>` so you can easily place non-free themes and plugin there for local development.
 
-Then open `config/scripts/deploy-pack.js` and make sure these files are copied into the `build` directory before deploy. Look for the `TODO` comment near the top of the file for examples.
+Then open `config/scripts/deploy-pack.js` and make sure these files are copied into the `build` directory before deploy. Look for the `NOTE` comment near the top of the file for examples.
 
-**Protip:** If you're developing multiple sites on the same dev environment and share a plugin between them (like ACF Pro), symlink it from a single source everywhere you need it. When the project is being packed for deploy, the `copy` command will resolve the symlink and copy the files instead. E.g.:
+**Protip:** If you're developing multiple sites on the same dev environment and share a plugin between them (like ACF Pro), symlink it from a single source everywhere you need. When the project is being packed for deploy, the `copy` command will resolve the symlink and copy the files. E.g.:
 
 * Shared plugin: `/srv/http/shared-plugin`
 * Project 1 `/srv/http/project1/web/app/plugins/shared-plugin -> /srv/http/shared-plugin` - a symlink to shared plugin
@@ -247,7 +288,7 @@ Then edit `config/scripts/deploy-pack.js` and make sure these files are copied i
 
 Syncing requires `wp` (WP-CLI) also available in non-interactive shells on the server. [This gist](https://gist.github.com/andrejcremoznik/07429341fff4f318c5dd) explains that as well.
 
-Copy `sync.sh.example` to `sync.sh`, open it and look for `TODO` comments. Set those up before you use the script.
+Copy `sync.sh.example` to `sync.sh`, open it and look for `TODO` comments. Set those up and make the file executable with `chmod u+x sync.sh`. The script will drop your local database so make sure to make a backup if needed.
 
 
 ### Set up a new development environment
@@ -257,11 +298,11 @@ Copy `sync.sh.example` to `sync.sh`, open it and look for `TODO` comments. Set t
 3. Clone the repository
 4. Copy `.env.example` to `.env` and set it up
 5. Install dependencies and build the project
-  ```
-  composer install
-  npm install
-  npm run build
-  ```
+   ```
+   composer install
+   npm install
+   npm run build
+   ```
 6. Sync the database `./sync.sh`
 7. Set up the web server and `/etc/hosts`
 
@@ -276,7 +317,7 @@ Keep notes on what to configure when you push everything to production.
 
 WordPressBP includes a simple automated deployment script using `node-shell` and `node-ssh` packages. You can deploy your website by running `npm run deploy` but this requires some setup. All the configuration for deploys is in `config/scripts` directory.
 
-Deploy requires **Git**, **SSH** and **tar**. It's been tested on Linux environments, Mac should work, but Windows probably won't.
+Deploy requires **Git**, **SSH** and **tar**.
 
 
 ### How it works
@@ -304,6 +345,8 @@ Copy `config/scripts/deploy-config.js.example` to `config/scripts/deploy-config.
 
 If your server requires public key authentication, locally the key needs to be managed by an SSH agent so that NodeJS can access it through the `SSH_AUTH_SOCK` environment variable.
 
+**Review the deploy procedure:** `config/scripts/deploy-deploy.js` contains the entire deploy procedure. `const deployProcedure` is a string of shell commands that will run on the server to unpack the tarball. Read through everything and add commands to set up needed symlinks, cache flushing etc. **Also review** `config/scripts/deploy-revert.js`.
+
 
 ### First deploy
 
@@ -312,21 +355,22 @@ If your server requires public key authentication, locally the key needs to be m
 3. Configure the web server to serve from `<directory_from_step_1>/current/web`.
 4. Visit your website. If everything is correct you should see a `phpinfo()` page.
 5. Create the database:
-  ```
-  $ mysql -u root -p
-  create database mywebsitedb;
-  grant all privileges on mywebsitedb.* to 'dbuser'@'localhost' identified by 'some_password';
-  flush privileges;
-  \q
-  ```
-6. Dump local database and import it on the server: `wp db export - | ssh user@host -p 54321 'mysql -u dbuser -psome_password mywebsitedb'` (run this locally, the `-p<password>` is intentionally without space after `-p`).
+   ```
+   $ mysql -u root -p
+   create database mywebsitedb;
+   grant all privileges on mywebsitedb.* to 'dbuser'@'localhost' identified by 'some_password';
+   flush privileges;
+   \q
+   ```
+6. Dump local database and import it on the server.
 7. Set up the environment in `<directory_from_step_1>/static/.env`.
 8. Make `<directory_from_step_1>/static/uploads` writable for the PHP process group:
-  ```
-  chown user:www-data uploads # you might need to sudo this
-  chmod g+w uploads
-  ```
-9. Finally, deploy the code: `npm run deploy` or `npm run deploy [environment]`.
+   ```
+   chown -R user:www-data uploads # you might need to sudo this
+   chmod g+w uploads
+   ```
+9. Deploy the code: `npm run deploy` or `npm run deploy [environment]`.
+7. Run a search-replace for the domain on the database and flush rewrite rules: `wp search-replace devdomain.dev realdomain.com && wp rewrite flush`.
 
 
 ### Deploying and reverting
@@ -348,9 +392,9 @@ You don't need plugins for sliders, lightboxes, social widgets etc. and you cert
 Here are some developer-friendly and maintained plugins that you can use:
 
 * [Advanced Custom Fields](https://www.advancedcustomfields.com/) - custom fields for posts
-* [Polylang](http://wordpress.org/plugins/polylang/) - multilingual sites
 * [Yoast SEO](http://wordpress.org/plugins/wordpress-seo/) - SEO metadata for posts, sitemap…
-* [Ninja Forms](http://wordpress.org/plugins/ninja-forms/) - forms plugin
+* [Polylang](http://wordpress.org/plugins/polylang/) - multilingual sites
+* [Redis Object Cache](https://wordpress.org/plugins/redis-cache/) - object cache
 
 And some of my own plugins:
 

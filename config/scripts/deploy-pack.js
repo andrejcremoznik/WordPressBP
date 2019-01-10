@@ -10,7 +10,7 @@ sh.mkdir('build')
 // Export repository contents to build dir
 sh.exec('git archive --format=tar --prefix=build/ HEAD | (tar xf -)')
 
-// TODO: Copy files outside git or composer into CONTENT_DIR
+// NOTE: Copy files outside git or composer into CONTENT_DIR
 // - Don't use wildcards here, copy them 1 by 1
 // - Destination is always inside build directory
 // Examples:
@@ -19,8 +19,8 @@ sh.exec('git archive --format=tar --prefix=build/ HEAD | (tar xf -)')
 // sh.cp('-fr', 'web/app/languages/*', 'build/web/app/languages/') // You may use a wildcard for languages
 
 // Copy generated static assets into the build dir
-sh.cp(assets + '/*.js', 'build/' + assets)
-sh.cp(assets + '/*.css', 'build/' + assets)
+sh.cp(`${assets}/*.js`, `build/${assets}/`)
+sh.cp(`${assets}/*.css`, `build/${assets}/`)
 sh.find('./web/app')
   .filter(file => file.match(/\.mo$/) && (file.match('plugins/WordPressBP') || file.match('themes/WordPressBP')))
   .forEach(lang => {
@@ -34,7 +34,7 @@ sh.sed('-i', 'vDEV', version, path.resolve('./build/web/app/themes/WordPressBP/f
 sh.cd('build')
 sh.exec('composer install -o')
 
-// TODO: Include themes and plugins bundled with WP in CONTENT_DIR
+// NOTE: Include themes and plugins bundled with WP in CONTENT_DIR
 // sh.mv('web/wp/wp-content/themes/*', 'web/app/themes/')
 // sh.mv('web/wp/wp-content/plugins/*', 'web/app/plugins/')
 // sh.rm('-f', 'web/app/plugins/hello.php')

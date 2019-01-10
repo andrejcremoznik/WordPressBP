@@ -10,48 +10,41 @@ if (!(deployEnv in deployConf.deployEnvSSH)) {
 
 const config = {
   deploySSH: deployConf['deployEnvSSH'][deployEnv],
-  deployPath: deployConf['deployEnvPaths'][deployEnv]
+  deployPath: deployConf['deployEnvPaths'][deployEnv],
+  wpCliPath: path.join(deployConf['deployEnvPaths'][deployEnv], 'current/web/wp')
 }
 
 // Build bash shell command to exeute on the server
-let revertProcedure = [
+const revertProcedure = [
   // Rename folder for current release to broken
-  [
-    'mv',
-    path.join(config.deployPath, 'current'),
-    path.join(config.deployPath, 'broken')
-  ].join(' '),
+  `mv ${path.join(config.deployPath, 'current')} ${path.join(config.deployPath, 'broken')}`,
   // Rename folder for previous (working) release to current
-  [
-    'mv',
-    path.join(config.deployPath, 'previous'),
-    path.join(config.deployPath, 'current')
-  ].join(' '),
-
-  // NOTE: If you use caching plugins this is the place to flush the cache. The example uses WP CLI which needs to be available to the user deploying in a non-interactive shell
-  // deployEnv === 'production' ? ['wp cache flush --path=', path.join(config.deployPath, 'current/web/wp')].join('') : false,
-
+  `mv ${path.join(config.deployPath, 'previous')} ${path.join(config.deployPath, 'current')}`,
+  // NOTE: Clear cache on production
+  // deployEnv === 'production' ? `wp timber clear_cache --path=${config.wpCliPath}` : false,
+  // deployEnv === 'production' ? `wp transient delete --all --path=${config.wpCliPath}` : false,
+  // deployEnv === 'production' ? `wp cache flush --path=${config.wpCliPath}` : false,
   // Remove broken release dir
-  ['rm -fr', path.join(config.deployPath, 'broken')].join(' ')
+  `rm -fr ${path.join(config.deployPath, 'broken')}`,
+  // Add empty previous dir to avoid a warning on next deploy
+  `mkdir ${path.join(config.deployPath, 'previous')}`
 ].filter(cmd => cmd).join(' && ')
 
 // Run
-let ssh = new NodeSSH()
+const ssh = new NodeSSH()
 console.log(`==> Reverting to previous deploy on: ${deployEnv}`)
 ssh.connect(config.deploySSH)
-.then(() => {
-  console.log(`==> Connected.`)
-  ssh.execCommand(revertProcedure)
+  .then(() => {
+    console.log(`==> Connected.`)
+    return ssh.execCommand(revertProcedure)
+  })
   .then(() => {
     console.log(`==> Done.`)
-    process.exit()
+    ssh.dispose()
   })
   .catch(err => {
     console.error(`==> Failed.`)
-    throw err
+    console.log(err)
+    process.exitCode = 1
+    ssh.dispose()
   })
-})
-.catch(err => {
-  console.error(`==> Connection failed.`)
-  throw err
-})

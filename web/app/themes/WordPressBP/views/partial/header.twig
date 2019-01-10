@@ -1,0 +1,6 @@
+<header class="header">
+  <a class="header__logo" href="/">{{ site.name }}</a>
+  <nav class="header__nav">
+    {% include 'partial/nav.twig' with { items: menus.primary.items } %}
+  </nav>
+</header>

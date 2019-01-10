@@ -15,16 +15,50 @@ class WordPressBP_Addons {
 
   public function run() {
     // Actions
-    add_action('init',                        [$this, 'plugin_textdomain'], 0);
-    // add_action('init',                        [$this, 'taxonomies'], 0);
-    // add_action('init',                        [$this, 'post_types']);
-    // add_action('pre_get_posts',               [$this, 'pre_get_posts']);
-    add_action('wp_default_scripts',          [$this, 'remove_jquery_migrate']);
+    add_action('init', [$this, 'plugin_textdomain'], 0);
+    // add_action('init', [$this, 'taxonomies'], 0);
+    // add_action('init', [$this, 'post_types']);
+    // add_action('pre_get_posts', [$this, 'pre_get_posts']);
+    add_action('wp_default_scripts', [$this, 'remove_jquery_migrate']);
 
     // Filters
-    add_filter('upload_mimes',                [$this, 'upload_mimes']);
-    add_filter('jpeg_quality',                [$this, 'jpeg_quality'], 1, 0);
+    add_filter('upload_mimes', [$this, 'upload_mimes']);
+    add_filter('jpeg_quality', [$this, 'jpeg_quality'], 1, 0);
     add_filter('comment_form_default_fields', [$this, 'comment_form_default_fields']);
+
+    // Disable update nagging because we're managing everything with composer
+    add_action('admin_init', [$this, 'disable_update_nag']);
+    add_action('schedule_event', [$this, 'filter_cron_events']);
+    add_filter('pre_site_transient_update_themes', [$this, 'last_checked_atm']);
+    add_filter('pre_site_transient_update_plugins', [$this, 'last_checked_atm']);
+    add_filter('pre_site_transient_update_core', [$this, 'last_checked_atm']);
+    add_action('pre_set_site_transient_update_themes', [$this, 'last_checked_atm'], 21, 1);
+    add_action('pre_set_site_transient_update_plugins', [$this, 'last_checked_atm'], 21, 1);
+
+    // Disable trash output by wp_head()
+    // - https://core.trac.wordpress.org/browser/tags/5.0.1/src/wp-includes/default-filters.php
+    remove_action('wp_head', 'rsd_link');
+    remove_action('wp_head', 'wp_generator');
+    // remove_action('wp_head', 'feed_links', 2); // Uncomment if no blog
+    remove_action('wp_head', 'feed_links_extra', 3);
+    remove_action('wp_head', 'wlwmanifest_link');
+    remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
+    remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
+    remove_action('wp_head', 'rest_output_link_wp_head', 10);
+    remove_action('wp_head', 'wp_oembed_add_discovery_links', 10);
+    remove_action('template_redirect', 'rest_output_link_header', 11, 0);
+    // Disable emojis
+    remove_action('wp_head', 'print_emoji_detection_script', 7);
+    remove_action('admin_print_scripts', 'print_emoji_detection_script');
+    remove_action('wp_print_styles', 'print_emoji_styles');
+    remove_action('admin_print_styles', 'print_emoji_styles');
+    remove_filter('the_content_feed', 'wp_staticize_emoji');
+    remove_filter('comment_text_rss', 'wp_staticize_emoji');
+    remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
+    add_filter('wp_resource_hints', [$this, 'disable_emoji_dns_prefetch'], 10, 2);
+    add_filter('tiny_mce_plugins', function ($plugins) {
+      return is_array($plugins) ? array_diff($plugins, ['wpemoji']) : [];
+    });
   }
 
   /**
@@ -114,7 +148,7 @@ class WordPressBP_Addons {
    * Set default JPEG quality for generated images
    */
   public function jpeg_quality() {
-    return 70;
+    return 65;
   }
 
   /**
@@ -137,6 +171,58 @@ class WordPressBP_Addons {
   }
   private static function remove_role_super_editor() {
     remove_role('super_editor');
+  }
+
+  /**
+   * Disable update checking and nagging.
+   */
+  public function disable_update_nag() {
+    global $current_user;
+    $current_user->allcaps['update_plugins'] = 0;
+    remove_action('admin_notices', 'update_nag', 3);
+    remove_action('network_admin_notices', 'update_nag', 3);
+    remove_action('admin_notices', 'maintenance_nag');
+    remove_action('network_admin_notices', 'maintenance_nag');
+    remove_action('load-update-core.php', 'wp_update_themes');
+    remove_action('load-update-core.php', 'wp_update_plugins');
+    wp_clear_scheduled_hook('wp_update_themes');
+    wp_clear_scheduled_hook('wp_update_plugins');
+    wp_clear_scheduled_hook('wp_version_check');
+  }
+
+  public function filter_cron_events($event) {
+    switch ($event->hook) {
+      case 'wp_version_check':
+      case 'wp_update_plugins':
+      case 'wp_update_themes':
+      case 'wp_maybe_auto_update':
+        $event = false;
+        break;
+    }
+    return $event;
+  }
+
+  public function last_checked_atm() {
+    global $wp_version;
+    $current = (object)[];
+    $current->updates = [];
+    $current->version_checked = $wp_version;
+    $current->last_checked = time();
+    return $current;
+  }
+
+  /**
+   * Disable prefetching DNS location of emojis
+   */
+  public function disable_emoji_dns_prefetch($urls, $type) {
+    if ($type === 'dns-prefetch') {
+      foreach ($urls as $key => $url) {
+        if (strpos($url, 'https://s.w.org/images/core/emoji/') !== false) {
+          unset($urls[$key]);
+        }
+      }
+    }
+    return $urls;
   }
 
   /**
