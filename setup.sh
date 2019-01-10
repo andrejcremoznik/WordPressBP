@@ -103,6 +103,7 @@ npm install --save-dev \
   rollup-plugin-node-resolve \
   shelljs \
   shx \
+  standard \
   watch
 
 # Build front end assets

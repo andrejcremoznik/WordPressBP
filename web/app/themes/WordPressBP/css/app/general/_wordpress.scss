@@ -9,7 +9,7 @@ figure {
   max-width: 100%;
 }
 
-@media (min-width: $breakpoint) {
+@include breakpoint(tablet) {
   .alignright { float: right; }
   .alignleft { float: left; }
 }

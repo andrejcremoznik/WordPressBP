@@ -1,5 +1,5 @@
 {% spaceless %}
-<ul class="nav nav_lv1">
+<ul class="nav nav-{{ name|default('default') }} nav_lv1">
   {% for item in items %}
   <li class="{{ ['nav__item']|merge(item.classes)|join(' ') }}">
     <a class="nav__link" href="{{ item.link }}" target="{{ item.target ?: '_self' }}">{{ item.title }}</a>

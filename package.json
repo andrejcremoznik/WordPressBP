@@ -31,5 +31,10 @@
     "plugins": [
       "@babel/plugin-proposal-object-rest-spread"
     ]
-  }
+  },
+  "standard": {
+    "globals": [
+      "WordPressBP"
+    ]
+  },
 }

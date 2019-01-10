@@ -103,7 +103,7 @@ button::-moz-focus-inner,
 .margin-top_s { margin-top: $gutter / 3; }
 .margin-top_m { margin-top: $gutter / 2; }
 .margin-top_l { margin-top: $gutter; }
-@media (min-width: $breakpoint) {
+@include breakpoint(tablet) {
   .margin-bottom_s { margin-bottom: $gutter / 2; }
   .margin-bottom_m { margin-bottom: $gutter; }
   .margin-bottom_l { margin-bottom: $gutter * 2; }

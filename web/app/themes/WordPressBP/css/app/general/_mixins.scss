@@ -49,11 +49,19 @@
 
 /*
  * Create media query scoped blocks with named breakpoints
- * Ex: @include breakpoint(tablet) { ... } - applied when min-width == $breakpoints[tablet]
- * Ex: @include breakpoint(tablet, below) { ... } - applied when max-width == $breakpoints[tablet] - 1
+ * Ex: @include breakpoint(tablet) { ... } - apply when min-width == $breakpoints[tablet]
+ * Ex: @include breakpoint(tablet, below) { ... } - apply when max-width == $breakpoints[tablet] - 1
+ * Ex: @include breakpoint(720) - apply when min-width == 720
+ * Ex: @include breakpoint(720, below) - apply when max-width == 719
  */
-@mixin breakpoint($name, $apply: over) {
-  @media (#{if($apply == over, min-width, max-width)}: #{map_get($breakpoints, $name) - if($apply != over, 1, 0)}px) {
-    @content;
-  }
-}
+ @mixin breakpoint($value, $apply: over) {
+   @if type_of($value) == number {
+     @media (#{if($apply == over, min-width, max-width)}: #{$value - if($apply != over, 1, 0)}px) {
+       @content;
+     }
+   } @else {
+     @media (#{if($apply == over, min-width, max-width)}: #{map_get($breakpoints, $value) - if($apply != over, 1, 0)}px) {
+       @content;
+     }
+   }
+ }

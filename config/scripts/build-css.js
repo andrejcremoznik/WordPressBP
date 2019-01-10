@@ -18,7 +18,7 @@ postCssPlugins.push(autoprefixer({ cascade: false }))
 fs.readdir(inDir, (err, files) => {
   if (err) throw err
 
-  files.filter(file => file.substring(-4) === 'scss').forEach(scss => {
+  files.filter(file => file.substring(file.length - 4) === 'scss').forEach(scss => {
     const fileObj = path.parse(path.join(inDir, scss))
     const css = path.join(outDir, `${fileObj.name}.css`)
     const map = `${css}.map`
