@@ -103,10 +103,9 @@ class WordPressBP_Addons {
       'taxonomies'          => ['category', 'post_tag'],
       'hierarchical'        => false,
       'public'              => true,
-      'exclude_from_search' => false,
       'delete_with_user'    => false,
       'has_archive'         => true,
-      'rewrite'             => ['slug' => __('thing', 'WordPressBP-addons')]
+      'rewrite'             => ['slug' => 'things']
     ]);
   }
   */
