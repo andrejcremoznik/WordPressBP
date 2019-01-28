@@ -13,11 +13,8 @@ $z_modal: 500;
 $default_font_family: -apple-system, system-ui, Roboto, "Segoe UI", Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
 
 // Font sizes (pixel unit implied)
-$default_line_height: 1.5; // relative to font-size
-$default_font_size: 16;
-
-// Font sizes
 $default_font_size: (mobile: 14, tablet: 15, desktop: 16);
+$default_line_height: 1.5; // relative to font-size
 
 $font_h1: (mobile: 24, tablet: 32, desktop: 32);
 $font_h2: (mobile: 20, tablet: 24, desktop: 24);
