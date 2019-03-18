@@ -12,13 +12,13 @@
  * Ex: font-size: rem(16);
  * Ex: font-size: rem($font_h2, desktop);
  */
- @function rem($pxval, $breakpoint: mobile) {
-   @if type_of($pxval) == map {
-     @return #{map_get($pxval, $breakpoint) / map_get($default_font_size, $breakpoint)}rem;
-   } @else {
-     @return #{$pxval / map_get($default_font_size, $breakpoint)}rem;
-   }
- }
+@function rem($pxval, $breakpoint: mobile) {
+  @if type_of($pxval) == map {
+    @return #{map_get($pxval, $breakpoint) / map_get($default_font_size, $breakpoint)}rem;
+  } @else {
+    @return #{$pxval / map_get($default_font_size, $breakpoint)}rem;
+  }
+}
 
 /**
  * Per-cent calculation
@@ -54,14 +54,14 @@
  * Ex: @include breakpoint(720) - apply when min-width == 720
  * Ex: @include breakpoint(720, below) - apply when max-width == 719
  */
- @mixin breakpoint($value, $apply: over) {
-   @if type_of($value) == number {
-     @media (#{if($apply == over, min-width, max-width)}: #{$value - if($apply != over, 1, 0)}px) {
-       @content;
-     }
-   } @else {
-     @media (#{if($apply == over, min-width, max-width)}: #{map_get($breakpoints, $value) - if($apply != over, 1, 0)}px) {
-       @content;
-     }
-   }
- }
+@mixin breakpoint($value, $apply: over) {
+  @if type_of($value) == number {
+    @media (#{if($apply == over, min-width, max-width)}: #{$value - if($apply != over, 1, 0)}px) {
+      @content;
+    }
+  } @else {
+    @media (#{if($apply == over, min-width, max-width)}: #{map_get($breakpoints, $value) - if($apply != over, 1, 0)}px) {
+      @content;
+    }
+  }
+}
