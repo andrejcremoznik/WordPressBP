@@ -8,7 +8,7 @@ const resolve = require('rollup-plugin-node-resolve')
 const compress = process.argv[2] === 'minify'
 
 const plugins = [
-  resolve({ jsnext: true }),
+  resolve(),
   commonjs({ include: 'node_modules/**' }),
   babel({ exclude: 'node_modules/**' })
 ]
