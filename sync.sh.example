@@ -24,17 +24,17 @@ function findWPCLI {
 findWPCLI locally
 ssh $ssh_connection "$(typeset -f); findWPCLI 'on server'" || exit 1;
 
-echo -e "==> Dropping local database…"
+echo "==> Dropping local database…"
 wp db reset --yes
 
-echo -e "==> Importing database from production…"
+echo "==> Importing database from production…"
 ssh -C $ssh_connection "wp --path=$remote_wordpress db export -" | wp db import -
 
 # TODO: Deactivate plugins you don't need locally
 #echo -e "==> Deactivating production only plugins…"
 #wp plugin deactivate wordpress-seo
 
-echo -e "==> Cleaning up…"
+echo "==> Cleaning up…"
 wp comment delete $(wp comment list --status=spam --format=ids) --force
 wp db query "DELETE FROM wpdb_posts WHERE post_type = 'revision'"
 wp transient delete --all
@@ -44,10 +44,10 @@ wp cache flush
 #echo -e "==> Search/replace hostname…"
 #wp search-replace production.site WordPressBP.dev
 
-echo -e "==> Flushing rewrite rules…"
+echo "==> Flushing rewrite rules…"
 wp rewrite flush
 
-echo -e "==> Creating admin account for development (login: dev / dev)"
+echo "==> Creating admin account for development (login: dev / dev)…"
 wp user create dev dev@dev.dev --user_pass=dev --role=administrator
 
-echo -e "==> Done."
+echo "==> Done."

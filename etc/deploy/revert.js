@@ -1,6 +1,6 @@
 const path = require('path')
 const NodeSSH = require('node-ssh')
-const deployConf = require('./deploy-config')
+const deployConf = require('../deploy-config')
 const deployEnv = process.argv[2] || deployConf.defaultDeployEnv
 
 if (!(deployEnv in deployConf.deployEnvSSH)) {
@@ -40,11 +40,12 @@ ssh.connect(config.deploySSH)
   })
   .then(() => {
     console.log(`==> Done.`)
-    ssh.dispose()
   })
   .catch(err => {
     console.error(`==> Failed.`)
     console.log(err)
     process.exitCode = 1
+  })
+  .finally(() => {
     ssh.dispose()
   })

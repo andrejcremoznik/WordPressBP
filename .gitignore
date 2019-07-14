@@ -7,14 +7,12 @@
 db-sync
 *dump*.sql
 
-# Dotenv
+# Secrets
 .env
 .env.*
-!.env.example
-
-# Config
-config/scripts/deploy-config.js
+etc/deploy-config.js
 sync.sh
+!*.example
 
 # Application
 web/wp/
@@ -38,7 +36,7 @@ web/app/themes/WordPressBP/assets/*.map
 web/app/**/*.mo
 
 # Build directory
-build/
+./build/
 
 # Keep folders with .gitkeep even when ignore rules match
 !.gitkeep

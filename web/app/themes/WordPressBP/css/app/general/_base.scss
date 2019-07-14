@@ -95,26 +95,26 @@ button::-moz-focus-inner,
 }
 
 // Vertical flow
-.margin-bottom_0 { margin-bottom: 0; }
-.margin-bottom_s { margin-bottom: $gutter / 3; }
-.margin-bottom_m { margin-bottom: $gutter / 2; }
-.margin-bottom_l { margin-bottom: $gutter; }
-.margin-top_0 { margin-top: 0; }
-.margin-top_s { margin-top: $gutter / 3; }
-.margin-top_m { margin-top: $gutter / 2; }
-.margin-top_l { margin-top: $gutter; }
+.margin-bottom--0 { margin-bottom: 0; }
+.margin-bottom--s { margin-bottom: $gutter / 3; }
+.margin-bottom--m { margin-bottom: $gutter / 2; }
+.margin-bottom--l { margin-bottom: $gutter; }
+.margin-top--0 { margin-top: 0; }
+.margin-top--s { margin-top: $gutter / 3; }
+.margin-top--m { margin-top: $gutter / 2; }
+.margin-top--l { margin-top: $gutter; }
 @include breakpoint(tablet) {
-  .margin-bottom_s { margin-bottom: $gutter / 2; }
-  .margin-bottom_m { margin-bottom: $gutter; }
-  .margin-bottom_l { margin-bottom: $gutter * 2; }
-  .margin-top_s { margin-top: $gutter / 2; }
-  .margin-top_m { margin-top: $gutter; }
-  .margin-top_l { margin-top: $gutter * 2; }
+  .margin-bottom--s { margin-bottom: $gutter / 2; }
+  .margin-bottom--m { margin-bottom: $gutter; }
+  .margin-bottom--l { margin-bottom: $gutter * 2; }
+  .margin-top--s { margin-top: $gutter / 2; }
+  .margin-top--m { margin-top: $gutter; }
+  .margin-top--l { margin-top: $gutter * 2; }
 }
 
 // Responsive placeholder
 .responsive { position: relative; }
-.responsive_16by9 { padding-bottom: pc(9, 16); }
+.responsive--16by9 { padding-bottom: pc(9, 16); }
 .responsive__element {
   position: absolute;
   top: 0; left: 0;
