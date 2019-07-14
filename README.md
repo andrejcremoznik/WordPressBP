@@ -253,7 +253,7 @@ WordPress configuration is set in the following files:
 
 #### Including free plugins and themes
 
-Use **composer** to pull in free plugins and themes from [WordPres Packagist](https://wpackagist.org/). You can also include any packages from [Packagist](https://packagist.org/).
+Use **composer** to pull in free plugins and themes from [WordPress Packagist](https://wpackagist.org/). You can also include any packages from [Packagist](https://packagist.org/).
 
 * Include a plugin: `composer require wpackagist-plugin/wordpress-seo`
 * Keep dependencies updated: `composer update`

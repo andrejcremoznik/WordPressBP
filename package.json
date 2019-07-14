@@ -12,6 +12,7 @@
     "clean": "shx rm -fr build",
     "build": "npm-run-all --sequential 'css minify' 'js minify' lang",
     "pack": "node etc/deploy/pack.js",
+    "test": "standard web/app/themes/WordPressBP/js/**/*.js etc/**/*.js",
     "predeploy": "npm-run-all --sequential clean build pack",
     "deploy": "node etc/deploy/deploy.js",
     "postdeploy": "npm run clean",

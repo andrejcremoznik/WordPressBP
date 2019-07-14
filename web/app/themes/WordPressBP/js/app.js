@@ -4,7 +4,7 @@ const onDomReady = {
   default: () => {
     console.log('Run on every page')
   },
-  'blog': () => {
+  blog: () => {
     console.log('Run if "<body>" contains class "blog".')
   }
 }
