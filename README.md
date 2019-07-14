@@ -1,9 +1,6 @@
 # WordPress Boilerplate
 
-The WordPress Boilerplate is a starting base for development of any [WordPress](http://wordpress.org)
-based web project. It provides all the files and most common code patterns — the bare essentials needed
-to get down and dirty quickly without wasting time setting up directory and file structure, importing
-CSS resets, setting up the `functions.php` file etc.
+The WordPress Boilerplate is a starting base for development of any [WordPress](http://wordpress.org) based web project. It provides all the files and most common code patterns — the bare essentials needed to get started quickly without wasting time setting up directory and file structure, importing CSS resets, setting up the `functions.php` file etc.
 
 WordPressBP is **meant for developers** developing a WordPress site **from scratch** using a scalable and modern approach.
 
@@ -78,7 +75,7 @@ Usage:
   ./setup.sh <namespace> <project_path> [<branch>]
 
 Params:
-  <namespace>:    Lowercase alphanumeric name for your project. Must not start with a number. Must be directory, file system and URL friendly.
+  <namespace>:    Lowercase alphanumeric name for your project. Must not start with a number. Must be file system and URL friendly.
   <project_path>: Path to directory where the project structure will be set up.
   <branch>:       Branch from which to create the project structure. Defaults to 'master'.
 
@@ -144,7 +141,7 @@ server {
 
 Read up on [how to create self signed certificates](https://gist.github.com/andrejcremoznik/41fe07e342ac4d2376b8547155d6e049) for development. If you do create SSL certs, enable them in the Nginx config (above) and change the URLs in `.env`.
 
-To be able to access `http://mywebsite.dev` you need to map the server IP to `mywebsite.dev` domain in `/etc/hosts`. If you're running the server on your local machine, the IP is `127.0.0.1`, if you are using a virtual environment (and you should), then use the IP of that VM.
+To be able to access `http://mywebsite.dev` you need to map the server IP to `mywebsite.dev` domain in `/etc/hosts`. If you're running the server on your local machine, the IP is `127.0.0.1`, if you are using a virtual environment, then use the IP of that VM.
 
 ```
 $ /etc/hosts
@@ -173,19 +170,26 @@ git push -u origin master
 
 Front-end dependencies are handled by NPM and will be installed in the `node_modules` sub-folder.
 
-* `npm run watch` will watch CSS and JS in the theme directory for changes and compile on every change
-* `npm run lang` will compile translations (`.po` files)
-* `npm run build` will compile and minify CSS and JS and compile translations
+* `npm run build` will compile and minify CSS and JS and compile translations.
+* `npm run watch` will watch CSS, JS and language files in the theme directory for changes and compile on every change.
+* `npm run test` will run syntax style checks. You should run this before every commit.
 
 Run `npm run` to list all available tasks as configured in `package.json`.
 
+**Code style:**
+
+Use an editor that supports [EditorConfig](https://editorconfig.org/).
+JavaScript code style should follow the [JS Standard style](https://standardjs.com/rules.html). You should set up your editor to support these tools:
+
+* Atom: `apm install busy-signal editorconfig hyperclick intentions linter linter-js-standard-engine linter-ui-default`
+
 **Compilation details:**
 
-JS is compiled with [Rollup](https://rollupjs.org/) from **ES2015+**. Build process is coded in `config/scripts/build-js.js` which you can adjust as needed.
+JS is compiled with [Rollup](https://rollupjs.org/) from **ES2015+**. Build process is coded in `etc/build/js.js` which you can adjust as needed.
 
-CSS is compiled with `node-sass` from **Sass** sources. Build process is coded in `config/scripts/build-css.js`.
+CSS is compiled with `node-sass` from **Sass** sources. Build process is coded in `etc/build/css.js`.
 
-Languages are build from `.po` files with `msgfmt`. Build process is coded in `config/scripts/build-lang.js`.
+Languages are build from `.po` files with `msgfmt`. Build process is coded in `etc/build/lang.js`.
 
 
 #### Including NPM dependencies
@@ -259,7 +263,7 @@ Use **composer** to pull in free plugins and themes from [WordPres Packagist](ht
 
 You want to keep those out of the repository but still deploy them with the rest of the code. `.gitignore` is set up to ignore everything inside `web/app/{themes,plugins}/` unless the name starts with `<namespace>` so you can easily place non-free themes and plugin there for local development.
 
-Then open `config/scripts/deploy-pack.js` and make sure these files are copied into the `build` directory before deploy. Look for the `NOTE` comment near the top of the file for examples.
+Then open `etc/deploy/pack.js` and make sure these files are copied into the `build` directory before deploy. Look for the `NOTE` comment near the top of the file for examples.
 
 **Protip:** If you're developing multiple sites on the same dev environment and share a plugin between them (like ACF Pro), symlink it from a single source everywhere you need. When the project is being packed for deploy, the `copy` command will resolve the symlink and copy the files. E.g.:
 
@@ -268,7 +272,7 @@ Then open `config/scripts/deploy-pack.js` and make sure these files are copied i
 * Project 2 `/srv/http/project2/web/app/plugins/shared-plugin -> /srv/http/shared-plugin` - a symlink to shared plugin
 * Then for every project copy the common plugin into `build` when deploying:
   ```
-  add to: config/scripts/deploy-pack.js:
+  add to: etc/deploy/pack.js:
   ...
   sh.cp('-fr', 'web/app/plugins/shared-plugin', 'build/web/app/plugins/')
   ...
@@ -279,7 +283,7 @@ Then open `config/scripts/deploy-pack.js` and make sure these files are copied i
 
 You could set up composer to use [WP language packs by Koodimonni](https://wp-languages.github.io/) or you can manually download the language pack you need and place the files in `web/app/languages/`.
 
-Then edit `config/scripts/deploy-pack.js` and make sure these files are copied into the `build` directory before deploy.
+Then edit `etc/deploy/pack.js` and make sure these files are copied into the `build` directory before deploy.
 
 
 ## Sync from staging or production
@@ -315,7 +319,7 @@ Keep notes on what to configure when you push everything to production.
 
 ## Deployment
 
-WordPressBP includes a simple automated deployment script using `node-shell` and `node-ssh` packages. You can deploy your website by running `npm run deploy` but this requires some setup. All the configuration for deploys is in `config/scripts` directory.
+WordPressBP includes a simple automated deployment script using `node-shell` and `node-ssh` packages. You can deploy your website by running `npm run deploy` but this requires some setup. All the configuration for deploys is in `etc/deploy` directory.
 
 Deploy requires **Git**, **SSH** and **tar**.
 
@@ -337,21 +341,21 @@ If your server is correctly configured, the deployment scripts will never requir
 
 ### Deploy configuration
 
-Copy `config/scripts/deploy-config.js.example` to `config/scripts/deploy-config.js` and open it.
+Copy `etc/deploy-config.js.example` to `etc/deploy-config.js` and open it.
 
 * `defaultDeployEnv` - default environment to deploy to. Needs an entry in `deployEnvSSH` and `deployEnvPaths`
 * `deployEnvSSH` - SSH connection parameters for all environments you want to deploy too
-* `deployEnvPaths` - Path to directory where you want to deploy the files to for all environments
+* `deployEnvPaths` - Path to directory where you want to deploy the files to for each environment
 
 If your server requires public key authentication, locally the key needs to be managed by an SSH agent so that NodeJS can access it through the `SSH_AUTH_SOCK` environment variable.
 
-**Review the deploy procedure:** `config/scripts/deploy-deploy.js` contains the entire deploy procedure. `const deployProcedure` is a string of shell commands that will run on the server to unpack the tarball. Read through everything and add commands to set up needed symlinks, cache flushing etc. **Also review** `config/scripts/deploy-revert.js`.
+**Review the deploy procedure:** `etc/deploy/deploy.js` contains the entire deploy procedure. `const deployProcedure` is a string of shell commands that will run on the server to unpack the tarball. Read through everything and add commands to set up needed symlinks, cache flushing etc. **Also review** `etc/deploy/revert.js`.
 
 
 ### First deploy
 
-1. Create a **writable** (for the SSH user) directory on the server where you want to store the files. This should be the path set in `deployEnvPaths` in `config/scripts/deploy-config.js`.
-2. On development machine run `npm run deploy:init` or `npm run deploy:init [environment]`. This will create the needed directory structure.
+1. Create a **writable** (for the SSH user) directory on the server where you want to store the files. This should be the path set in `deployEnvPaths` in `etc/deploy-config.js`.
+2. On development machine run `npm run deploy:init` or `npm run deploy:init [environment]`. This will create the needed directory structure on the server.
 3. Configure the web server to serve from `<directory_from_step_1>/current/web`.
 4. Visit your website. If everything is correct you should see a `phpinfo()` page.
 5. Create the database:
@@ -375,7 +379,7 @@ If your server requires public key authentication, locally the key needs to be m
 
 ### Deploying and reverting
 
-All commands support optional environment. If you don't specify it, the default from `config/scripts/deploy-config.js` will be used.
+All commands support optional environment. If you don't specify it, the default from `etc/deploy-config.js` will be used.
 
 * `npm run deploy [environment]` will deploy the current Git `HEAD` to `environment`. If you leave out the environment, the `defaultDeployEnv` will be used.
 * `npm run deploy:revert [environment]` allows you to revert **1 time** to previously deployed release.

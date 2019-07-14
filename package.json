@@ -3,22 +3,22 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "css": "node config/scripts/build-css.js",
-    "js": "node config/scripts/build-js.js",
-    "lang": "node config/scripts/build-lang.js",
+    "css": "node etc/build/css.js",
+    "js": "node etc/build/js.js",
+    "lang": "node etc/build/lang.js",
     "watch:css": "watch 'npm run css' web/app/themes/WordPressBP/css/ --wait=2 --ignoreDotFiles",
     "watch:js": "watch 'npm run js' web/app/themes/WordPressBP/js/ --wait=2 --ignoreDotFiles",
-    "watch": "npm-run-all --parallel watch:*",
+    "watch": "npm-run-all --parallel --silent watch:*",
     "clean": "shx rm -fr build",
-    "build": "npm-run-all 'css minify' 'js minify' lang",
-    "pack": "node config/scripts/deploy-pack.js",
-    "predeploy": "npm-run-all clean build pack",
-    "deploy": "node config/scripts/deploy-deploy.js",
+    "build": "npm-run-all --sequential 'css minify' 'js minify' lang",
+    "pack": "node etc/deploy/pack.js",
+    "predeploy": "npm-run-all --sequential clean build pack",
+    "deploy": "node etc/deploy/deploy.js",
     "postdeploy": "npm run clean",
-    "deploy:revert": "node config/scripts/deploy-revert.js",
-    "deploy:init": "node config/scripts/deploy-init.js"
+    "deploy:revert": "node etc/deploy/revert.js",
+    "deploy:init": "node etc/deploy/init.js"
   },
-  "browserslist": "last 1 version,not dead,> 1%",
+  "browserslist": "> 1%,last 2 versions,not dead,not ie <= 11",
   "babel": {
     "presets": [
       [
@@ -36,5 +36,5 @@
     "globals": [
       "WordPressBP"
     ]
-  },
+  }
 }

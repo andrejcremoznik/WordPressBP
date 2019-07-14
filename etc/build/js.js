@@ -10,7 +10,7 @@ const compress = process.argv[2] === 'minify'
 const plugins = [
   resolve({ jsnext: true }),
   commonjs({ include: 'node_modules/**' }),
-  babel()
+  babel({ exclude: 'node_modules/**' })
 ]
 
 if (compress) {
@@ -31,7 +31,7 @@ rollup.rollup({
 })
   .then(bundle => bundle.write({
     file: path.join(path.resolve('./web/app/themes/WordPressBP/assets'), 'app.js'),
-    format: 'umd',
+    format: 'iife',
     name: 'WordPressBP',
     sourcemap: !compress,
     globals: {

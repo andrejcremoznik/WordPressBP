@@ -1,21 +1,11 @@
 /*! WordPressBP | MIT License | https://keybase.io/andrejcremoznik */
 
-/**
- * Babel transpilation is configured with Rollup
- * so you can use the latest and greatest ES2015+
- */
-
-// Execute code based on a body class
-// - create function expressions named after class names (with `default` as an always execute special case)
 const onDomReady = {
   default: () => {
     console.log('Run on every page')
   },
-  /**
-   * Body class based runners
-   */
   'blog': () => {
-    console.log('Run on blog index')
+    console.log('Run if "<body>" contains class "blog".')
   }
 }
 
@@ -25,17 +15,22 @@ const onWindowLoad = {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  onDomReady.default()
-  Object.keys(onDomReady)
+// Bootstrap
+const run = runners => {
+  runners.default()
+  Object.keys(runners)
     .filter(key => key !== 'default')
     .forEach(key => {
       if (document.body.classList.contains(key)) {
-        onDomReady[key]()
+        runners[key]()
       }
     })
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  run(onDomReady)
 })
 
 window.addEventListener('load', () => {
-  onWindowLoad.default()
+  run(onWindowLoad)
 })

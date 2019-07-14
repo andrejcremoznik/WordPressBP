@@ -64,6 +64,8 @@ class WordPressBP extends Timber\Site {
    * Add custom values global Timber context
    */
   public function timber_context($context) {
+    $context['cache_itr'] = $this->cache_itr;
+
     $context['site'] = [
       'name' => $this->name,
       'charset' => $this->charset,
@@ -77,7 +79,6 @@ class WordPressBP extends Timber\Site {
       'themeVersion' => $this->asset_version
     ];
 
-    // Menus
     $context['menus'] = [
       'primary' => new Timber\Menu('primary', ['depth' => 2])
     ];
@@ -206,4 +207,4 @@ class WordPressBP extends Timber\Site {
   }
 }
 
-$theme = new WordPressBP();
+new WordPressBP();

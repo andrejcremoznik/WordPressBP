@@ -3,26 +3,26 @@ html { font-size: #{map_get($default_font_size, mobile)}px ; }
 .h1, h1 { font-size: rem($font_h1); }
 .h2, h2 { font-size: rem($font_h2); }
 .h3, h3 { font-size: rem($font_h3); }
-.f_s { font-size: rem($font_s); }
-.f_m { font-size: rem($font_m); }
-.f_l { font-size: rem($font_l); }
+.f--s { font-size: rem($font_s); }
+.f--m { font-size: rem($font_m); }
+.f--l { font-size: rem($font_l); }
 @include breakpoint(tablet) {
   html { font-size: #{map_get($default_font_size, tablet)}px; }
   .h1, h1 { font-size: rem($font_h1, tablet); }
   .h2, h2 { font-size: rem($font_h2, tablet); }
   .h3, h3 { font-size: rem($font_h3, tablet); }
-  .f_s { font-size: rem($font_s, tablet); }
-  .f_m { font-size: rem($font_m, tablet); }
-  .f_l { font-size: rem($font_l, tablet); }
+  .f--s { font-size: rem($font_s, tablet); }
+  .f--m { font-size: rem($font_m, tablet); }
+  .f--l { font-size: rem($font_l, tablet); }
 }
 @include breakpoint(desktop) {
   html { font-size: #{map_get($default_font_size, desktop)}px; }
   .h1, h1 { font-size: rem($font_h1, desktop); }
   .h2, h2 { font-size: rem($font_h2, desktop); }
   .h3, h3 { font-size: rem($font_h3, desktop); }
-  .f_s { font-size: rem($font_s, desktop); }
-  .f_m { font-size: rem($font_m, desktop); }
-  .f_l { font-size: rem($font_l, desktop); }
+  .f--s { font-size: rem($font_s, desktop); }
+  .f--m { font-size: rem($font_m, desktop); }
+  .f--l { font-size: rem($font_l, desktop); }
 }
 
 body {
@@ -63,27 +63,27 @@ blockquote {
   &:first-child { margin-top: 0; }
 }
 
-.f_inherit { font: inherit; }
-.f_bold, strong, b { font-weight: bold; }
-.f_italic { font-style: italic; }
-.f_normal {
+.f--inherit { font: inherit; }
+.f--bold, strong, b { font-weight: bold; }
+.f--italic { font-style: italic; }
+.f--normal {
   font-weight: normal;
   font-style: normal;
 }
 
-.t_left { text-align: left; }
-.t_right { text-align: right; }
-.t_center { text-align: center; }
-.t_justify {
+.t--left { text-align: left; }
+.t--right { text-align: right; }
+.t--center { text-align: center; }
+.t--justify {
   text-align: justify;
   word-break: normal;
   // hyphens: auto;
 }
-.t_wrap { white-space: normal; }
-.t_nowrap { white-space: nowrap; }
-.t_uppercase { text-transform: uppercase; }
-.t_lowercase { text-transform: lowercase; }
-.t_capitalize { text-transform: capitalize; }
-.t_normal { text-transform: none; }
+.t--wrap { white-space: normal; }
+.t--nowrap { white-space: nowrap; }
+.t--uppercase { text-transform: uppercase; }
+.t--lowercase { text-transform: lowercase; }
+.t--capitalize { text-transform: capitalize; }
+.t--normal { text-transform: none; }
 
-.c_inherit { color: inherit; }
+.c--inherit { color: inherit; }
