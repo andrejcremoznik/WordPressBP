@@ -12,7 +12,6 @@
 if (!defined('WPINC')) die();
 
 class WordPressBP_Addons {
-
   public function run() {
     // Actions
     add_action('init', [$this, 'plugin_textdomain'], 0);

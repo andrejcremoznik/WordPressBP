@@ -1,9 +1,9 @@
 const path = require('path')
 const rollup = require('rollup')
 const babel = require('rollup-plugin-babel')
-const minify = require('rollup-plugin-babel-minify')
-const commonjs = require('rollup-plugin-commonjs')
-const resolve = require('rollup-plugin-node-resolve')
+const { terser } = require('rollup-plugin-terser')
+const commonjs = require('@rollup/plugin-commonjs')
+const { default: resolve } = require('@rollup/plugin-node-resolve')
 
 const compress = process.argv[2] === 'minify'
 
@@ -14,7 +14,7 @@ const plugins = [
 ]
 
 if (compress) {
-  plugins.push(minify({ comments: false }))
+  plugins.push(terser())
 }
 
 rollup.rollup({

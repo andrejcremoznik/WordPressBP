@@ -8,7 +8,7 @@
     "lang": "node etc/build/lang.js",
     "watch:css": "watch 'npm run css' web/app/themes/WordPressBP/css/ --wait=2 --ignoreDotFiles",
     "watch:js": "watch 'npm run js' web/app/themes/WordPressBP/js/ --wait=2 --ignoreDotFiles",
-    "watch": "npm-run-all --parallel --silent watch:*",
+    "watch": "npm-run-all --parallel watch:*",
     "clean": "shx rm -fr build",
     "build": "npm-run-all --sequential 'css minify' 'js minify' lang",
     "pack": "node etc/deploy/pack.js",

@@ -71,7 +71,7 @@ console.log(`==> Deploying to: ${deployEnv}`)
 ssh.connect(config.deploySSH)
   .then(() => {
     console.log(`==> Connected. Uploading…`)
-    return ssh.putFile('build/build.tar.gz', config.deployTmp)
+    return ssh.putFile('build/build.tar.gz', config.deployTmp, null, { concurrency: 1 })
   })
   .then(() => {
     console.log(`==> Applying new build…`)

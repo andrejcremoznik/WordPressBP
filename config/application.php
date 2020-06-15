@@ -7,7 +7,7 @@ if (!file_exists($root_dir . '/.env')) {
   die('<b>.env<b/> not found. Please configure your environment.');
 }
 
-$dotenv = Dotenv\Dotenv::create($root_dir);
+$dotenv = Dotenv\Dotenv::createImmutable($root_dir);
 $dotenv->load();
 $dotenv->required([
   'DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_PREFIX',

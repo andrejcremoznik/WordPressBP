@@ -5,38 +5,38 @@
 
 # WP-CLI
 db-sync
-*dump*.sql
+*.sql
 
 # Secrets
 .env
 .env.*
-etc/deploy-config.js
-sync.sh
+/etc/deploy-config.js
+/sync.sh
 !*.example
 
 # Application
-web/wp/
-web/app/languages/*
-!web/app/languages/plugins*
-web/app/plugins/*
-!web/app/plugins/WordPressBP*
-web/app/themes/*
-!web/app/themes/WordPressBP*
-web/app/uploads/*
-web/app/object-cache.php
+/web/wp/
+/web/app/languages/*
+!/web/app/languages/plugins*
+/web/app/plugins/*
+!/web/app/plugins/WordPressBP*
+/web/app/themes/*
+!/web/app/themes/WordPressBP*
+/web/app/uploads/*
+/web/app/object-cache.php
 
 # 3rd party dependencies
-vendor/
-node_modules/
+/vendor/
+/node_modules/
 
 # Compiled assets
-web/app/themes/WordPressBP/assets/*.css
-web/app/themes/WordPressBP/assets/*.js
-web/app/themes/WordPressBP/assets/*.map
-web/app/**/*.mo
+/web/app/themes/WordPressBP/assets/*.css
+/web/app/themes/WordPressBP/assets/*.js
+/web/app/themes/WordPressBP/assets/*.map
+/web/app/**/*.mo
 
 # Build directory
-./build/
+/build/
 
 # Keep folders with .gitkeep even when ignore rules match
 !.gitkeep
